@@ -16,11 +16,6 @@
                     <a href="{{ route('dashboard.team', ['discipline' => 'Mekanikal']) }}" class="{{ request('discipline') == 'Mekanikal' ? 'bg-gradient-to-r from-indigo-600 to-blue-500 text-white shadow-md' : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50' }} px-5 py-2.5 rounded-full text-[13px] font-bold shadow-sm transition-all duration-300">Mekanikal</a>
                     <a href="{{ route('dashboard.team', ['discipline' => 'Elektrikal']) }}" class="{{ request('discipline') == 'Elektrikal' ? 'bg-gradient-to-r from-indigo-600 to-blue-500 text-white shadow-md' : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50' }} px-5 py-2.5 rounded-full text-[13px] font-bold shadow-sm transition-all duration-300">Elektrikal</a>
                 </div>
-                <div>
-                    <button onclick="document.getElementById('teamModal').classList.remove('hidden')" class="bg-gradient-to-r from-indigo-600 to-blue-500 hover:from-indigo-500 hover:to-blue-400 text-white font-bold px-6 py-2.5 rounded-xl shadow-[0_4px_15px_rgba(79,70,229,0.3)] hover:shadow-[0_8px_20px_rgba(79,70,229,0.4)] hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2">
-                        <i class="fas fa-plus"></i> Add Member
-                    </button>
-                </div>
             </div>
         </div>
         
@@ -46,17 +41,40 @@
     </div>
 
     <!-- Team Table -->
-    <form id="bulkDeleteForm" method="POST" action="{{ route('team.bulkDestroy') }}">
-        @csrf
-        <div class="mb-4 flex justify-end hidden" id="bulkActionContainer">
-            <button type="button" onclick="confirmBulkDelete()" class="bg-rose-500 hover:bg-rose-600 text-white font-bold px-5 py-2 rounded-xl shadow-md flex items-center gap-2 transition-all">
-                <i class="far fa-trash-alt"></i> Delete Selected (<span id="selectedCount">0</span>)
-            </button>
-        </div>
-        
-        <div class="bg-white border-2 border-gray-200 rounded-[24px] shadow-[0_8px_30px_rgba(0,0,0,0.04)] overflow-hidden mb-8 p-1 hover-glow">
-            <div class="bg-white rounded-[20px] overflow-hidden">
-            <table class="w-full text-left border-collapse whitespace-nowrap min-w-[700px]">
+    <div class="bg-white border-2 border-gray-200 rounded-[20px] shadow-[0_4px_24px_rgba(0,0,0,0.02)] overflow-hidden hover-glow mb-8">
+            <!-- Table Header Bar -->
+            <div class="bg-gradient-to-r from-indigo-50/50 to-blue-50/50 px-6 py-4 border-b-2 border-gray-200">
+                <h3 class="font-bold text-indigo-900 text-[14px]">Team Members List</h3>
+            </div>
+            
+            <div class="p-6 pb-2">
+                <!-- Top Actions Bar -->
+                <div class="flex justify-between items-center mb-6">
+                    <div class="flex items-center gap-3">
+                        <button type="button" onclick="document.getElementById('teamModal').classList.remove('hidden')" class="bg-gradient-to-r from-indigo-600 to-blue-500 hover:from-indigo-500 hover:to-blue-400 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-all shadow-[0_4px_15px_rgba(79,70,229,0.3)] hover:shadow-[0_6px_20px_rgba(79,70,229,0.4)] transform hover:-translate-y-0.5 flex items-center gap-2">
+                            Add Member <span class="text-lg font-normal leading-none mb-0.5">+</span>
+                        </button>
+                        <div id="bulkActionContainer" class="hidden">
+                            <button type="button" onclick="confirmBulkDelete()" class="bg-rose-500 hover:bg-rose-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm shadow-md flex items-center gap-2 transition-all">
+                                <i class="far fa-trash-alt"></i> Delete (<span id="selectedCount">0</span>)
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <form method="GET" action="{{ route('dashboard.team') }}" class="relative group">
+                        @if(request('discipline'))
+                            <input type="hidden" name="discipline" value="{{ request('discipline') }}">
+                        @endif
+                        <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm group-focus-within:text-indigo-500 transition-colors"></i>
+                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Search members..." class="border border-gray-200 rounded-full px-4 pl-10 py-2.5 text-sm w-64 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-transparent transition-all shadow-sm" oninput="clearTimeout(this.timer); this.timer = setTimeout(() => { this.form.submit(); }, 600);" {{ request('search') ? 'autofocus onfocus=this.setSelectionRange(this.value.length,this.value.length)' : '' }}>
+                    </form>
+                </div>
+
+                <form id="bulkDeleteForm" method="POST" action="{{ route('team.bulkDestroy') }}" class="hidden">
+                    @csrf
+                </form>
+                <div class="overflow-x-auto w-full">
+                <table class="w-full text-left border-collapse whitespace-nowrap min-w-[700px]">
                 <thead>
                     <tr class="bg-gradient-to-r from-indigo-50/50 to-blue-50/50 border-b-2 border-gray-200">
                         <th class="py-5 px-6 text-xs font-bold text-gray-500 w-12 text-center">
@@ -72,9 +90,9 @@
                 </thead>
             <tbody class="divide-y-2 divide-gray-100">
                 @foreach($members as $member)
-                <tr class="hover:bg-[#FCFAFC] hover:scale-[1.002] transition-all duration-300">
+                <tr class="hover:bg-[#FCFAFC] transition-all duration-300">
                     <td class="py-5 px-6 text-center">
-                        <input type="checkbox" name="members[]" value="{{ $member->id }}" class="member-checkbox rounded border-gray-300 text-indigo-500 focus:ring-indigo-500 cursor-pointer">
+                        <input type="checkbox" name="members[]" value="{{ $member->id }}" form="bulkDeleteForm" class="member-checkbox rounded border-gray-300 text-indigo-500 focus:ring-indigo-500 cursor-pointer">
                     </td>
                     <td class="py-5 px-6">
                         <div class="flex items-center gap-3">
@@ -122,11 +140,15 @@
                     </td>
                 </tr>
                 @endforeach
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+            </div>
+            
+            <!-- Pagination -->
+            <div class="px-6 py-4 mt-2 custom-pagination">
+                {{ $members->links() }}
+            </div>
         </div>
-    </div>
-    </form>
 
 </div>
 

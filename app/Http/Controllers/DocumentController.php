@@ -15,17 +15,21 @@ class DocumentController extends Controller
             'category' => 'nullable|string|max:255',
         ]);
 
-        $project = Project::first();
+        $projectId = session('active_project_id');
+        $project = $projectId ? Project::find($projectId) : Project::first();
+        
         $file = $request->file('document');
 
-        // Simple mock of file upload for this prototype
-        // In reality you would use $file->store('documents')
+        $path = $file->store('documents', 'public');
         
         $title = $file->getClientOriginalName();
         $type = strtoupper($file->getClientOriginalExtension());
         $sizeBytes = $file->getSize();
-        $sizeMb = round($sizeBytes / 1024 / 1024, 1);
+        $sizeMb = round($sizeBytes / 1024 / 1024, 2);
         $sizeStr = $sizeMb . ' MB';
+        if ($sizeBytes < 1048576) {
+            $sizeStr = round($sizeBytes / 1024, 0) . ' KB';
+        }
 
         ProjectDocument::create([
             'project_id' => $project->id,
@@ -33,6 +37,7 @@ class DocumentController extends Controller
             'title' => $title,
             'file_type' => $type ?: 'FILE',
             'file_size' => $sizeStr,
+            'file_path' => $path,
         ]);
 
         return redirect()->back()->with('success', 'Document uploaded successfully.');
@@ -40,7 +45,18 @@ class DocumentController extends Controller
 
     public function destroy(ProjectDocument $projectDocument)
     {
+        if ($projectDocument->file_path && \Storage::disk('public')->exists($projectDocument->file_path)) {
+            \Storage::disk('public')->delete($projectDocument->file_path);
+        }
         $projectDocument->delete();
         return redirect()->back()->with('success', 'Document deleted.');
+    }
+
+    public function download(ProjectDocument $projectDocument)
+    {
+        if ($projectDocument->file_path && \Storage::disk('public')->exists($projectDocument->file_path)) {
+            return response()->download(storage_path('app/public/' . $projectDocument->file_path), $projectDocument->title);
+        }
+        return redirect()->back()->with('error', 'File not found.');
     }
 }

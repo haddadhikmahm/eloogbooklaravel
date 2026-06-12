@@ -54,7 +54,7 @@
                     </button>
                     <form method="GET" action="{{ route('dashboard.sprint') }}" class="relative group">
                         <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm group-focus-within:text-indigo-500 transition-colors"></i>
-                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Search..." class="border border-gray-200 rounded-full px-4 pl-10 py-2.5 text-sm w-64 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-transparent transition-all shadow-sm">
+                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Search..." class="border border-gray-200 rounded-full px-4 pl-10 py-2.5 text-sm w-64 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-transparent transition-all shadow-sm" oninput="clearTimeout(this.timer); this.timer = setTimeout(() => { this.form.submit(); }, 600);" {{ request('search') ? 'autofocus onfocus=this.setSelectionRange(this.value.length,this.value.length)' : '' }}>
                     </form>
                 </div>
 
@@ -110,11 +110,8 @@
             </div>
             
             <!-- Pagination -->
-            <div class="px-6 py-4 flex flex-col sm:flex-row justify-between items-center text-gray-500 gap-4">
-                <p class="text-[11px] font-medium tracking-wide">Menampilkan {{ $backlogs->firstItem() ?? 0 }} dari {{ $backlogs->total() }} poin</p>
-                <div class="flex gap-2">
-                    {{ $backlogs->links('pagination::tailwind') }}
-                </div>
+            <div class="px-6 py-4 mt-2 custom-pagination">
+                {{ $backlogs->links() }}
             </div>
         </div>
     </div>

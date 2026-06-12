@@ -60,10 +60,28 @@
     </div>
 
     <!-- Data Table -->
-    <div class="bg-white border-2 border-gray-200 rounded-[24px] shadow-[0_8px_30px_rgba(0,0,0,0.04)] overflow-hidden mb-8 p-1 hover-glow">
-        <div class="bg-white rounded-[20px] overflow-hidden">
-        <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse whitespace-nowrap min-w-[800px]">
+    <div class="bg-white border-2 border-gray-200 rounded-[20px] shadow-[0_4px_24px_rgba(0,0,0,0.02)] overflow-hidden hover-glow mb-8">
+        <!-- Table Header Bar -->
+        <div class="bg-gradient-to-r from-indigo-50/50 to-blue-50/50 px-6 py-4 border-b-2 border-gray-200">
+            <h3 class="font-bold text-indigo-900 text-[14px]">Daftar Revisi Klien</h3>
+        </div>
+        
+        <div class="p-6 pb-2">
+            <!-- Top Actions Bar -->
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-indigo-900 text-[15px] font-bold tracking-wide">Data Logbook</h2>
+                
+                <form method="GET" action="{{ route('dashboard.logbook') }}" class="relative group">
+                    @if(request('status'))
+                        <input type="hidden" name="status" value="{{ request('status') }}">
+                    @endif
+                    <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm group-focus-within:text-indigo-500 transition-colors"></i>
+                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Search revisions..." class="border border-gray-200 rounded-full px-4 pl-10 py-2.5 text-sm w-64 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-transparent transition-all shadow-sm" oninput="clearTimeout(this.timer); this.timer = setTimeout(() => { this.form.submit(); }, 600);" {{ request('search') ? 'autofocus onfocus=this.setSelectionRange(this.value.length,this.value.length)' : '' }}>
+                </form>
+            </div>
+
+            <div class="overflow-x-auto w-full">
+                <table class="w-full text-left border-collapse whitespace-nowrap min-w-[800px]">
                 <thead>
                     <tr class="bg-gradient-to-r from-indigo-50/50 to-blue-50/50 border-b-2 border-gray-200">
                         <th class="py-5 px-6 font-bold text-gray-700 text-sm text-center w-36">Tanggal</th>
@@ -76,7 +94,7 @@
                 </thead>
                 <tbody class="divide-y-2 divide-gray-100">
                     @foreach($revisions as $revision)
-                    <tr class="hover:bg-[#FCFAFC] hover:scale-[1.002] transition-all duration-300">
+                    <tr class="hover:bg-[#FCFAFC] transition-all duration-300">
                         <td class="py-4 px-6 text-xs font-semibold text-gray-600 text-center">{{ \Carbon\Carbon::parse($revision->date)->format('Y-m-d') }}</td>
                         <td class="py-4 px-6 text-xs font-semibold text-gray-800">{{ $revision->document_name }}</td>
                         <td class="py-4 px-6 text-xs font-semibold text-gray-600 text-center">{{ $revision->revision_code }}</td>
@@ -103,17 +121,14 @@
                     @endforeach
                 </tbody>
             </table>
+            </div>
+            
+            <!-- Pagination -->
+            <div class="px-6 py-4 mt-2 custom-pagination">
+                {{ $revisions->links() }}
+            </div>
         </div>
     </div>
-
-    <!-- Pagination -->
-    <div class="flex flex-col sm:flex-row justify-between items-center mt-6 gap-4">
-        <p class="text-[11px] text-gray-500 font-medium tracking-wide">Menampilkan {{ $revisions->firstItem() ?? 0 }} dari {{ $revisions->total() }} revisi</p>
-        <div class="flex gap-1.5">
-            {{ $revisions->links('pagination::tailwind') }}
-        </div>
-    </div>
-</div>
 
     <!-- Modal Form Create Revision -->
     <div id="revisionModal" class="fixed inset-0 bg-black/50 hidden z-50 flex items-center justify-center">

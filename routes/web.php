@@ -26,6 +26,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/documents', [DashboardController::class, 'documents'])->name('dashboard.documents');
     Route::get('/team', [DashboardController::class, 'team'])->name('dashboard.team');
     Route::get('/scurve', [DashboardController::class, 'scurve'])->name('dashboard.scurve');
+    // Global Search
+    Route::get('/api/global-search', [DashboardController::class, 'globalSearch'])->name('global.search');
 
     // Projects CRUD
     Route::post('/projects', [ProjectController::class, 'store'])->name('projects.store');
@@ -54,6 +56,7 @@ Route::middleware('auth')->group(function () {
     // Documents CRUD
     Route::post('/documents', [DocumentController::class, 'store'])->name('documents.store');
     Route::delete('/documents/{projectDocument}', [DocumentController::class, 'destroy'])->name('documents.destroy');
+    Route::get('/documents/{projectDocument}/download', [DocumentController::class, 'download'])->name('documents.download');
 
     // Comments CRUD
     Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');

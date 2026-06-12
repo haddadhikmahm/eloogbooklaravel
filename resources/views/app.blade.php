@@ -102,22 +102,29 @@
                     <div class="hidden sm:block bg-white/20 backdrop-blur-sm text-white px-4 py-1.5 rounded-full text-sm font-medium whitespace-nowrap border border-white/20">
                         {{ $activeProject->type ?? 'Detailed Engineering Design' }}
                     </div>
-                    <form method="GET" action="{{ route('dashboard.kanban') }}" class="relative w-full max-w-xs md:max-w-none hidden sm:block group">
-                        <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 group-focus-within:text-indigo-600 text-sm transition-colors"></i>
-                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Search tasks.." class="w-full pl-10 pr-4 py-2 rounded-full bg-white/10 text-sm text-white focus:outline-none focus:ring-2 focus:ring-indigo-400/50 shadow-sm border border-transparent focus:border-indigo-400/30 placeholder-gray-300 transition-all duration-300 backdrop-blur-sm">
-                    </form>
+                    <div class="relative w-full max-w-xs md:max-w-none hidden sm:block group z-50">
+                        <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-white/60 group-focus-within:text-white text-sm transition-colors z-10"></i>
+                        <input type="text" id="globalSearchInput" placeholder="Search everywhere..." class="w-full pl-10 pr-4 py-2 rounded-full bg-white/10 text-sm text-white focus:outline-none focus:ring-2 focus:ring-white/50 shadow-sm border border-transparent focus:border-white/30 placeholder-white/60 transition-all duration-300 backdrop-blur-sm relative" autocomplete="off">
+                        
+                        <!-- Autocomplete Dropdown -->
+                        <div id="globalSearchDropdown" class="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden hidden z-50">
+                            <div id="globalSearchResults" class="max-h-80 overflow-y-auto">
+                                <!-- Results injected via JS -->
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Notification & Profile -->
-                <div class="flex items-center gap-4 border-l border-gray-200 pl-4 md:pl-5 ml-auto">
+                <div class="flex items-center gap-4 ml-auto">
                         <!-- Notification Bell -->
                         @php
                             $recentKanbans = \App\Models\KanbanTask::latest()->take(2)->get();
                             $recentRevisions = \App\Models\ClientRevision::latest()->take(2)->get();
                             $hasNotifications = $recentKanbans->count() > 0 || $recentRevisions->count() > 0;
                         @endphp
-                        <div class="relative group">
-                            <button class="text-gray-400 hover:text-gray-600 relative transition p-1 focus:outline-none">
+                        <div class="relative">
+                            <button type="button" id="notifButton" class="text-white/80 hover:text-white relative transition p-1 focus:outline-none">
                                 <i class="far fa-bell text-lg"></i>
                                 @if($hasNotifications)
                                 <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
@@ -125,7 +132,7 @@
                             </button>
                             
                             <!-- Notification Dropdown -->
-                            <div class="absolute right-0 mt-2 w-72 bg-white rounded-md shadow-lg border border-gray-100 hidden group-hover:block z-50 overflow-hidden">
+                            <div id="notifDropdown" class="absolute right-0 mt-2 w-72 bg-white rounded-md shadow-lg border border-gray-100 hidden z-50 overflow-hidden">
                                 <div class="bg-gray-50 px-4 py-2 border-b border-gray-100">
                                     <h3 class="text-[11px] font-bold text-gray-700 uppercase tracking-wider">Recent Activity</h3>
                                 </div>
@@ -134,30 +141,42 @@
                                     <div class="p-4 text-center text-sm text-gray-500">No recent activity.</div>
                                     @else
                                         @foreach($recentKanbans as $kt)
-                                        <div class="px-4 py-3 border-b border-gray-50 hover:bg-gray-50 transition cursor-pointer">
+                                        <a href="{{ route('dashboard.kanban', ['search' => $kt->title]) }}" class="block px-4 py-3 border-b border-gray-50 hover:bg-indigo-50/50 transition cursor-pointer">
                                             <p class="text-[10px] text-gray-400 font-bold mb-0.5">KANBAN TASK</p>
                                             <p class="text-[13px] font-bold text-gray-800 line-clamp-2 leading-tight">{{ $kt->title }}</p>
                                             <p class="text-[10px] text-gray-500 mt-1">{{ $kt->created_at->diffForHumans() }}</p>
-                                        </div>
+                                        </a>
                                         @endforeach
                                         @foreach($recentRevisions as $rr)
-                                        <div class="px-4 py-3 border-b border-gray-50 hover:bg-gray-50 transition cursor-pointer">
+                                        <a href="{{ route('dashboard.logbook', ['search' => $rr->revision_code ?? $rr->description]) }}" class="block px-4 py-3 border-b border-gray-50 hover:bg-rose-50/50 transition cursor-pointer">
                                             <p class="text-[10px] text-red-400 font-bold mb-0.5">CLIENT REVISION</p>
                                             <p class="text-[13px] font-bold text-gray-800 line-clamp-2 leading-tight">{{ $rr->description }}</p>
                                             <p class="text-[10px] text-gray-500 mt-1">{{ $rr->created_at->diffForHumans() }}</p>
-                                        </div>
+                                        </a>
                                         @endforeach
                                     @endif
                                 </div>
                             </div>
                         </div>
                         
-                        <div class="flex items-center gap-3 bg-white/10 hover:bg-white/20 transition-colors duration-300 rounded-full py-1 pr-1 pl-4 cursor-pointer border border-white/10">
-                            <div class="hidden md:block text-right">
-                                <p class="text-[13px] font-bold text-white leading-tight">{{ auth()->user()->name ?? 'Guest User' }}</p>
-                                <p class="text-[10px] text-gray-200">{{ auth()->user()->email ?? 'guest@eloogbook.com' }}</p>
+                        <div class="relative">
+                            <div id="profileButton" class="flex items-center gap-3 bg-white/10 hover:bg-white/20 transition-colors duration-300 rounded-full py-1 pr-1 pl-4 cursor-pointer border border-white/10">
+                                <div class="hidden md:block text-right">
+                                    <p class="text-[13px] font-bold text-white leading-tight">{{ auth()->user()->name ?? 'Guest User' }}</p>
+                                    <p class="text-[10px] text-gray-200">{{ auth()->user()->email ?? 'guest@eloogbook.com' }}</p>
+                                </div>
+                                <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name ?? 'Guest User') }}&background=4f46e5&color=fff&bold=true" alt="Profile" class="w-8 h-8 md:w-9 md:h-9 rounded-full object-cover border-2 border-white/50 shadow-sm">
                             </div>
-                            <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name ?? 'Guest User') }}&background=4f46e5&color=fff&bold=true" alt="Profile" class="w-8 h-8 md:w-9 md:h-9 rounded-full object-cover border-2 border-white/50 shadow-sm">
+                            
+                            <!-- Profile Dropdown -->
+                            <div id="profileDropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-100 hidden z-50 overflow-hidden">
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <a href="{{ route('logout') }}" onclick="event.preventDefault(); this.closest('form').submit();" class="flex items-center px-4 py-3 text-sm text-rose-500 hover:bg-rose-50 transition-colors font-medium">
+                                        <i class="fas fa-sign-out-alt w-5 text-center mr-2"></i> Logout
+                                    </a>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -235,18 +254,6 @@
                     </div>
                 </div>
 
-                <!-- Bottom Actions -->
-                <div class="bg-slate-900 text-white/90">
-                    <div class="flex items-center px-5 py-3 text-sm opacity-50 cursor-not-allowed">
-                        <i class="far fa-question-circle w-6 text-center mr-2 sidebar-icon"></i> <span class="sidebar-text">Help Center</span>
-                    </div>
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <a href="{{ route('logout') }}" onclick="event.preventDefault(); this.closest('form').submit();" class="flex items-center px-5 py-3 text-sm hover:bg-indigo-600 transition-colors border-t border-white/10">
-                            <i class="fas fa-sign-out-alt w-6 text-center mr-2 sidebar-icon"></i> <span class="sidebar-text">Logout</span>
-                        </a>
-                    </form>
-                </div>
             </aside>
 
             <!-- Content Area -->
@@ -367,6 +374,94 @@
                     });
                 });
             });
+        });
+    </script>
+    @yield('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Global Search Logic
+            const searchInput = document.getElementById('globalSearchInput');
+            const searchDropdown = document.getElementById('globalSearchDropdown');
+            const searchResults = document.getElementById('globalSearchResults');
+            let searchTimeout;
+
+            if(searchInput) {
+                searchInput.addEventListener('input', function() {
+                    clearTimeout(searchTimeout);
+                    const query = this.value.trim();
+                    
+                    if (query.length < 2) {
+                        searchDropdown.classList.add('hidden');
+                        return;
+                    }
+
+                    searchTimeout = setTimeout(() => {
+                        fetch(`/api/global-search?q=${encodeURIComponent(query)}`)
+                            .then(res => res.json())
+                            .then(data => {
+                                searchResults.innerHTML = '';
+                                if (data.length === 0) {
+                                    searchResults.innerHTML = '<div class="p-5 text-center text-sm text-gray-500"><i class="fas fa-search mb-2 opacity-20 text-2xl block"></i>No results found</div>';
+                                } else {
+                                    data.forEach(item => {
+                                        searchResults.innerHTML += `
+                                            <a href="${item.url}" class="flex items-center gap-3 px-4 py-3 hover:bg-indigo-50/50 transition border-b border-gray-50 last:border-0 cursor-pointer">
+                                                <div class="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center flex-shrink-0 border border-gray-200/50">
+                                                    <i class="fas ${item.icon} ${item.color} text-[13px]"></i>
+                                                </div>
+                                                <div class="overflow-hidden">
+                                                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">${item.type}</p>
+                                                    <p class="text-[13px] font-semibold text-gray-800 truncate">${item.title}</p>
+                                                </div>
+                                            </a>
+                                        `;
+                                    });
+                                }
+                                searchDropdown.classList.remove('hidden');
+                            });
+                    }, 300);
+                });
+
+                // Close dropdown when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!searchInput.contains(e.target) && !searchDropdown.contains(e.target)) {
+                        searchDropdown.classList.add('hidden');
+                    }
+                });
+            }
+
+            // Notification Dropdown Logic
+            const notifButton = document.getElementById('notifButton');
+            const notifDropdown = document.getElementById('notifDropdown');
+            if (notifButton && notifDropdown) {
+                notifButton.addEventListener('click', function(e) {
+                    notifDropdown.classList.toggle('hidden');
+                    e.stopPropagation();
+                });
+                
+                // Close dropdown when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!notifButton.contains(e.target) && !notifDropdown.contains(e.target)) {
+                        notifDropdown.classList.add('hidden');
+                    }
+                });
+            }
+
+            // Profile Dropdown Logic
+            const profileButton = document.getElementById('profileButton');
+            const profileDropdown = document.getElementById('profileDropdown');
+            if (profileButton && profileDropdown) {
+                profileButton.addEventListener('click', function(e) {
+                    profileDropdown.classList.toggle('hidden');
+                    e.stopPropagation();
+                });
+                
+                document.addEventListener('click', function(e) {
+                    if (!profileButton.contains(e.target) && !profileDropdown.contains(e.target)) {
+                        profileDropdown.classList.add('hidden');
+                    }
+                });
+            }
         });
     </script>
 </body>

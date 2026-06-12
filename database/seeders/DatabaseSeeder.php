@@ -10,6 +10,7 @@ use App\Models\SprintBacklog;
 use App\Models\ProjectDocument;
 use App\Models\ProjectMember;
 use App\Models\ProjectComment;
+use App\Models\ProjectProgress;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -50,6 +51,21 @@ class DatabaseSeeder extends Seeder
         ProjectDocument::factory(10)->create(['project_id' => $project->id]);
         ProjectMember::factory(8)->create(['project_id' => $project->id]);
         ProjectComment::factory(15)->create(['project_id' => $project->id]);
+
+        // Seed Project Progress for the main project
+        $months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+        $plannedData = [0, 5, 12, 25, 45, 62, 75, 88, 95, 100, 100, 100];
+        $actualData = [0, 3, 10, 20, 35, null, null, null, null, null, null, null]; // Only first 5 months have actual history
+
+        foreach ($months as $index => $month) {
+            ProjectProgress::create([
+                'project_id' => $project->id,
+                'period' => $month,
+                'order_index' => $index + 1,
+                'planned_percentage' => $plannedData[$index],
+                'actual_percentage' => $actualData[$index]
+            ]);
+        }
         
         // Optionally create more random projects to populate other pages
         Project::factory(3)->create()->each(function ($p) {
@@ -69,6 +85,18 @@ class DatabaseSeeder extends Seeder
             ProjectDocument::factory(5)->create(['project_id' => $p->id]);
             ProjectMember::factory(4)->create(['project_id' => $p->id]);
             ProjectComment::factory(5)->create(['project_id' => $p->id]);
+
+            // Seed Project Progress for random projects
+            $months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+            foreach ($months as $index => $month) {
+                ProjectProgress::create([
+                    'project_id' => $p->id,
+                    'period' => $month,
+                    'order_index' => $index + 1,
+                    'planned_percentage' => min(100, ($index + 1) * 10),
+                    'actual_percentage' => $index < 5 ? min(100, ($index + 1) * 8) : null
+                ]);
+            }
         });
     }
 }
