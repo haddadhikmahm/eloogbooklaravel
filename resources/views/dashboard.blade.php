@@ -136,25 +136,25 @@
             <button onclick="document.getElementById('revisionModal').classList.add('hidden')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
                 <i class="fas fa-times text-xl"></i>
             </button>
-            <h2 class="text-xl font-bold text-[#6D6257] mb-5">Create New Revision</h2>
+            <h2 class="text-xl font-bold text-gray-800 mb-5">Create New Revision</h2>
             <form method="POST" action="{{ route('revisions.store') }}" class="flex flex-col gap-4">
                 @csrf
                 <div>
                     <label class="block text-xs font-bold text-gray-700 mb-1">Tanggal</label>
-                    <input type="date" name="date" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-[#BCA99D]" required>
+                    <input type="date" name="date" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all" required>
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-gray-700 mb-1">Nama Dokumen</label>
-                    <input type="text" name="document_name" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-[#BCA99D]" required>
+                    <input type="text" name="document_name" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all" required>
                 </div>
                 <div class="flex gap-4">
                     <div class="flex-1">
                         <label class="block text-xs font-bold text-gray-700 mb-1">Kode Revisi</label>
-                        <input type="text" name="revision_code" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-[#BCA99D]" required>
+                        <input type="text" name="revision_code" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all" required>
                     </div>
                     <div class="flex-1">
                         <label class="block text-xs font-bold text-gray-700 mb-1">Status</label>
-                        <select name="status" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-[#BCA99D]" required>
+                        <select name="status" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all" required>
                             <option value="Open">Open</option>
                             <option value="Close">Close</option>
                         </select>
@@ -162,7 +162,7 @@
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-gray-700 mb-1">Revisi Klien (Deskripsi)</label>
-                    <textarea name="description" rows="3" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-[#BCA99D]" required></textarea>
+                    <textarea name="description" rows="3" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all" required></textarea>
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-gray-700 mb-1">Personil</label>

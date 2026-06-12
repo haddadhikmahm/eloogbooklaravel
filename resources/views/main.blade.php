@@ -5,7 +5,7 @@
     <!-- Top Header & Project Progress -->
     <div class="flex justify-between items-start mb-8 pt-2">
         <div>
-            <h1 class="text-[36px] font-bold text-[#3D3A37] leading-tight mb-1 tracking-tight">Welcome, Kayla</h1>
+            <h1 class="text-[36px] font-bold text-gray-800 leading-tight mb-1 tracking-tight">Welcome, Kayla</h1>
             <p class="text-[13px] text-gray-500 font-medium">Fase {{ $project->type ?? 'Detailed Engineering Design' }} • {{ str_replace('DED ', '', $project->name ?? 'Coal Terminal') }}</p>
         </div>
         
@@ -83,8 +83,8 @@
         <!-- Progress per Disiplin & Comment Widget Area -->
         <div class="flex-1 flex flex-col">
             <div class="flex justify-between items-center mb-6">
-                <h2 class="text-xl font-bold text-[#3D3A37] tracking-tight">Progress per Disiplin</h2>
-                <a href="{{ route('dashboard.scurve') }}" class="text-[11px] font-bold text-[#BCA99D] hover:text-[#867B6F] transition-colors flex items-center gap-1 group">
+                <h2 class="text-xl font-bold text-gray-800 tracking-tight">Progress per Disiplin</h2>
+                <a href="{{ route('dashboard.scurve') }}" class="text-[11px] font-bold text-gray-400 hover:text-gray-600 transition-colors flex items-center gap-1 group">
                     Lihat Detail <i class="fas fa-arrow-right text-[9px] transform group-hover:translate-x-1 transition-transform"></i>
                 </a>
             </div>
@@ -93,16 +93,16 @@
                 @forelse($disciplines as $disc)
                 <div class="bg-white border-2 border-gray-200 rounded-[20px] p-6 shadow-[0_4px_20px_rgba(0,0,0,0.02)] hover:shadow-[0_12px_32px_rgba(0,0,0,0.06)] transition-all duration-300 group hover-glow">
                     <div class="flex justify-between items-center mb-3">
-                        <h3 class="font-bold text-[#6D6257] text-[13px] tracking-wide">{{ $disc->discipline }}</h3>
-                        <span class="text-[#3D3A37] font-bold bg-[#F8F5F2] px-2 py-0.5 rounded-md text-xs">{{ $disc->percentage }}%</span>
+                        <h3 class="font-bold text-gray-700 text-[13px] tracking-wide">{{ $disc->discipline }}</h3>
+                        <span class="text-gray-800 font-bold bg-gray-100 px-2 py-0.5 rounded-md text-xs">{{ $disc->percentage }}%</span>
                     </div>
-                    <p class="text-[11px] text-[#BCA99D] font-bold mb-4 flex items-center gap-1"><i class="far fa-file-alt"></i> {{ $disc->total_docs }} Dokumen</p>
+                    <p class="text-[11px] text-gray-400 font-bold mb-4 flex items-center gap-1"><i class="far fa-file-alt"></i> {{ $disc->total_docs }} Dokumen</p>
                     <div class="w-full bg-gray-100 h-2.5 rounded-full overflow-hidden border border-gray-200 shadow-inner">
                         <div class="bg-gradient-to-r from-indigo-400 to-blue-500 h-full rounded-full transition-all duration-1000 ease-out shadow-[0_0_8px_rgba(99,102,241,0.5)]" style="width: {{ $disc->percentage }}%;"></div>
                     </div>
                 </div>
                 @empty
-                <div class="col-span-2 text-sm text-gray-500 py-4 text-center bg-white rounded-[20px] border border-dashed border-[#E2DDD8]">Belum ada data progres sprint per disiplin.</div>
+                <div class="col-span-2 text-sm text-gray-500 py-4 text-center bg-white rounded-[20px] border border-dashed border-gray-300">Belum ada data progres sprint per disiplin.</div>
                 @endforelse
             </div>
         </div>
@@ -113,12 +113,12 @@
                 <!-- Widget Header -->
                 <div class="px-6 py-5 flex justify-between items-center border-b-2 border-gray-200 bg-gradient-to-r from-white to-gray-50/50">
                     <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-full bg-[#F8F5F2] flex items-center justify-center">
-                            <i class="fas fa-comment-dots text-[#BCA99D]"></i>
+                        <div class="w-8 h-8 rounded-full bg-indigo-50 flex items-center justify-center">
+                            <i class="fas fa-comment-dots text-indigo-400"></i>
                         </div>
-                        <h3 class="font-bold text-[#6D6257] text-[14px]">Comment Register</h3>
+                        <h3 class="font-bold text-gray-800 text-[14px]">Comment Register</h3>
                     </div>
-                    <a href="#" class="text-[10px] font-bold text-[#BCA99D] hover:text-[#867B6F] flex items-center gap-1 group transition-colors">
+                    <a href="#" class="text-[10px] font-bold text-indigo-400 hover:text-indigo-600 flex items-center gap-1 group transition-colors">
                         Semua <i class="fas fa-chevron-right text-[8px] transform group-hover:translate-x-1 transition-transform"></i>
                     </a>
                 </div>
@@ -128,7 +128,7 @@
                     @foreach($comments as $comment)
                     <div class="bg-white border-2 border-gray-200 rounded-2xl p-4 hover:shadow-[0_4px_15px_rgba(0,0,0,0.03)] transition-all duration-300 group hover-glow">
                         <div class="flex justify-between items-start mb-3">
-                            <h4 class="text-[11px] font-bold text-[#6D6257] bg-[#F8F5F2] px-2 py-1 rounded-md">{{ $comment->document_code }}</h4>
+                            <h4 class="text-[11px] font-bold text-gray-700 bg-gray-100 px-2 py-1 rounded-md">{{ $comment->document_code }}</h4>
                             <div class="flex items-center gap-2">
                                 <form method="POST" action="{{ route('comments.updateStatus', $comment->id) }}" class="inline">
                                     @csrf
@@ -136,9 +136,9 @@
                                     <input type="hidden" name="status" value="{{ $comment->status == 'OPEN' ? 'CLOSE' : 'OPEN' }}">
                                     <button type="submit" class="hover:opacity-80 transition transform hover:scale-105" title="Toggle Status">
                                         @if($comment->status == 'OPEN')
-                                        <span class="bg-[#FFF5F5] text-[#D39B8F] text-[9px] font-bold px-2.5 py-1 rounded-full border border-[#D39B8F]/30 shadow-sm">OPEN</span>
+                                        <span class="bg-rose-50 text-rose-500 text-[9px] font-bold px-2.5 py-1 rounded-full border border-rose-200 shadow-sm">OPEN</span>
                                         @else
-                                        <span class="bg-[#F0FDF4] text-[#4A7C4A] text-[9px] font-bold px-2.5 py-1 rounded-full border border-[#4A7C4A]/30 shadow-sm">CLOSE</span>
+                                        <span class="bg-emerald-50 text-emerald-600 text-[9px] font-bold px-2.5 py-1 rounded-full border border-emerald-200 shadow-sm">CLOSE</span>
                                         @endif
                                     </button>
                                 </form>
@@ -156,10 +156,10 @@
                         </p>
                         <div class="flex justify-between items-center pl-1">
                             <div class="flex items-center gap-2.5">
-                                <div class="w-6 h-6 rounded-full {{ $comment->status == 'OPEN' ? 'bg-gradient-to-br from-[#E8DFD5] to-[#D3C9BE] text-[#6D6257]' : 'bg-gradient-to-br from-[#D4E2D4] to-[#B5D5B5] text-[#4A7C4A]' }} flex items-center justify-center text-[9px] font-bold shadow-sm">{{ $comment->author_initials }}</div>
-                                <span class="text-[11px] font-semibold text-[#6D6257]">{{ $comment->author_name }}</span>
+                                <div class="w-6 h-6 rounded-full {{ $comment->status == 'OPEN' ? 'bg-indigo-100 text-indigo-600' : 'bg-emerald-100 text-emerald-600' }} flex items-center justify-center text-[9px] font-bold shadow-sm">{{ $comment->author_initials }}</div>
+                                <span class="text-[11px] font-semibold text-gray-700">{{ $comment->author_name }}</span>
                             </div>
-                            <span class="text-[10px] font-semibold text-[#BCA99D]">{{ \Carbon\Carbon::parse($comment->date)->translatedFormat('d F Y') }}</span>
+                            <span class="text-[10px] font-semibold text-gray-400">{{ \Carbon\Carbon::parse($comment->date)->translatedFormat('d F Y') }}</span>
                         </div>
                     </div>
                     @endforeach
@@ -170,10 +170,10 @@
                     <form method="POST" action="{{ route('comments.store') }}" class="flex flex-col gap-2 relative">
                         @csrf
                         <div class="flex gap-2">
-                            <input type="text" name="document_code" placeholder="Doc Code" class="w-24 border border-[#E2DDD8] rounded-xl px-3 py-2.5 text-[11px] focus:outline-none focus:ring-2 focus:ring-[#BCA99D]/30 focus:border-transparent transition-all shadow-sm" required>
+                            <input type="text" name="document_code" placeholder="Doc Code" class="w-24 border border-gray-200 rounded-xl px-3 py-2.5 text-[11px] focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-transparent transition-all shadow-sm" required>
                             <div class="flex-1 relative">
-                                <input type="text" name="text" placeholder="Add a comment..." class="w-full border border-[#E2DDD8] rounded-xl pl-3 pr-10 py-2.5 text-[11px] focus:outline-none focus:ring-2 focus:ring-[#BCA99D]/30 focus:border-transparent transition-all shadow-sm" required>
-                                <button type="submit" class="absolute right-1.5 top-1/2 transform -translate-y-1/2 w-7 h-7 bg-[#BCA99D] hover:bg-[#867B6F] text-white rounded-lg flex items-center justify-center transition-colors shadow-sm">
+                                <input type="text" name="text" placeholder="Add a comment..." class="w-full border border-gray-200 rounded-xl pl-3 pr-10 py-2.5 text-[11px] focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-transparent transition-all shadow-sm" required>
+                                <button type="submit" class="absolute right-1.5 top-1/2 transform -translate-y-1/2 w-7 h-7 bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg flex items-center justify-center transition-colors shadow-sm">
                                     <i class="fas fa-paper-plane text-[10px]"></i>
                                 </button>
                             </div>

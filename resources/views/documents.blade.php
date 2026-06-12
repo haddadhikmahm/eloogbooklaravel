@@ -113,7 +113,7 @@
                             @php
                                 $bgClass = $formatColors[strtoupper($doc->file_type)] ?? 'from-indigo-500 to-blue-600';
                             @endphp
-                            <tr class="hover:bg-[#FCFAFC] transition-all duration-300">
+                            <tr class="hover:bg-indigo-50/50 transition-all duration-300">
                                 <td class="py-4 px-6 text-center">
                                     <div class="bg-gradient-to-br {{ $bgClass }} text-white w-10 h-10 rounded-xl flex items-center justify-center text-[10px] font-bold shadow-md mx-auto">{{ $doc->file_type }}</div>
                                 </td>

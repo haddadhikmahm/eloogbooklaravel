@@ -90,7 +90,7 @@
                 </thead>
             <tbody class="divide-y-2 divide-gray-100">
                 @foreach($members as $member)
-                <tr class="hover:bg-[#FCFAFC] transition-all duration-300">
+                <tr class="hover:bg-indigo-50/50 transition-all duration-300">
                     <td class="py-5 px-6 text-center">
                         <input type="checkbox" name="members[]" value="{{ $member->id }}" form="bulkDeleteForm" class="member-checkbox rounded border-gray-300 text-indigo-500 focus:ring-indigo-500 cursor-pointer">
                     </td>

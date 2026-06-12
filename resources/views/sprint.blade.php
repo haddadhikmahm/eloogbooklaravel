@@ -72,11 +72,11 @@
                         </thead>
                     <tbody class="divide-y-2 divide-gray-100">
                         @foreach($backlogs as $backlog)
-                        <tr class="hover:bg-[#F8F5F2]/50 transition-colors duration-200">
-                            <td class="py-4 px-5 text-sm text-[#6D6257] text-left font-medium">{{ $backlog->drawings_title }}</td>
+                        <tr class="hover:bg-indigo-50/50 transition-colors duration-200">
+                            <td class="py-4 px-5 text-sm text-gray-800 text-left font-medium">{{ $backlog->drawings_title }}</td>
                             <td class="py-4 px-5 text-sm text-gray-600 text-center">{{ $backlog->discipline }}</td>
                             <td class="py-4 px-5 text-sm text-gray-600 text-center">
-                                <span class="bg-[#F8F5F2] px-3 py-1 rounded-full text-xs font-semibold text-[#6D6257] border border-[#E2DDD8]/30">{{ $backlog->personnel_name }}</span>
+                                <span class="bg-indigo-50 px-3 py-1 rounded-full text-xs font-semibold text-indigo-900 border border-indigo-200">{{ $backlog->personnel_name }}</span>
                             </td>
                             <td class="py-4 px-5 text-sm text-gray-600 text-center font-semibold">{{ $backlog->amount }}</td>
                             <td class="py-4 px-2 text-center">
