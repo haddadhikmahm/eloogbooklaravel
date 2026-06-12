@@ -28,8 +28,7 @@
             
             <!-- Logo -->
             <div class="flex items-center justify-center mb-12">
-                <span class="text-[40px] font-bold tracking-wide text-[#CBB964] drop-shadow-sm">BITA</span>
-                <span class="ml-2 text-[40px] font-bold italic text-[#CBB964] drop-shadow-sm" style="-webkit-text-stroke: 1px #A39345; color: transparent;">15</span>
+                <img src="{{ asset('image.png') }}" alt="BITA 15 Logo" class="h-14 md:h-16 object-contain">
             </div>
 
             <!-- Title -->
