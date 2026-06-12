@@ -62,31 +62,54 @@
 
                 <!-- Notification & Profile -->
                 <div class="flex items-center gap-4 border-l border-gray-200 pl-4 md:pl-5 ml-auto">
-                        <div class="text-gray-400 relative">
-                            <i class="far fa-bell text-lg"></i>
-                            <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
-                        </div>
-                        
-                        <!-- Profile Dropdown -->
+                        <!-- Notification Bell -->
+                        @php
+                            $recentKanbans = \App\Models\KanbanTask::latest()->take(2)->get();
+                            $recentRevisions = \App\Models\ClientRevision::latest()->take(2)->get();
+                            $hasNotifications = $recentKanbans->count() > 0 || $recentRevisions->count() > 0;
+                        @endphp
                         <div class="relative group">
-                            <button class="flex items-center gap-3 focus:outline-none">
-                                <div class="hidden md:block text-right">
-                                    <p class="text-[13px] font-bold text-gray-800">{{ auth()->user()->name ?? 'Guest User' }}</p>
-                                    <p class="text-[10px] text-gray-500">{{ auth()->user()->email ?? 'guest@eloogbook.com' }}</p>
-                                </div>
-                                <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name ?? 'Guest User') }}&background=AF8C64&color=fff&bold=true" alt="Profile" class="w-8 h-8 md:w-9 md:h-9 rounded-full object-cover shadow-sm">
-                                <i class="fas fa-chevron-down text-gray-400 text-xs ml-1 hidden md:block"></i>
+                            <button class="text-gray-400 hover:text-gray-600 relative transition p-1 focus:outline-none">
+                                <i class="far fa-bell text-lg"></i>
+                                @if($hasNotifications)
+                                <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+                                @endif
                             </button>
                             
-                            <!-- Dropdown Menu -->
-                            <div class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 border border-gray-100 hidden group-hover:block z-50">
-                                <form method="POST" action="{{ route('logout') }}">
-                                    @csrf
-                                    <a href="{{ route('logout') }}" onclick="event.preventDefault(); this.closest('form').submit();" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-50 transition">
-                                        <i class="fas fa-sign-out-alt mr-2"></i> Logout
-                                    </a>
-                                </form>
+                            <!-- Notification Dropdown -->
+                            <div class="absolute right-0 mt-2 w-72 bg-white rounded-md shadow-lg border border-gray-100 hidden group-hover:block z-50 overflow-hidden">
+                                <div class="bg-gray-50 px-4 py-2 border-b border-gray-100">
+                                    <h3 class="text-[11px] font-bold text-gray-700 uppercase tracking-wider">Recent Activity</h3>
+                                </div>
+                                <div class="max-h-64 overflow-y-auto">
+                                    @if(!$hasNotifications)
+                                    <div class="p-4 text-center text-sm text-gray-500">No recent activity.</div>
+                                    @else
+                                        @foreach($recentKanbans as $kt)
+                                        <div class="px-4 py-3 border-b border-gray-50 hover:bg-gray-50 transition cursor-pointer">
+                                            <p class="text-[10px] text-gray-400 font-bold mb-0.5">KANBAN TASK</p>
+                                            <p class="text-[13px] font-bold text-gray-800 line-clamp-2 leading-tight">{{ $kt->title }}</p>
+                                            <p class="text-[10px] text-gray-500 mt-1">{{ $kt->created_at->diffForHumans() }}</p>
+                                        </div>
+                                        @endforeach
+                                        @foreach($recentRevisions as $rr)
+                                        <div class="px-4 py-3 border-b border-gray-50 hover:bg-gray-50 transition cursor-pointer">
+                                            <p class="text-[10px] text-red-400 font-bold mb-0.5">CLIENT REVISION</p>
+                                            <p class="text-[13px] font-bold text-gray-800 line-clamp-2 leading-tight">{{ $rr->description }}</p>
+                                            <p class="text-[10px] text-gray-500 mt-1">{{ $rr->created_at->diffForHumans() }}</p>
+                                        </div>
+                                        @endforeach
+                                    @endif
+                                </div>
                             </div>
+                        </div>
+                        
+                        <div class="flex items-center gap-3">
+                            <div class="hidden md:block text-right">
+                                <p class="text-[13px] font-bold text-gray-800">{{ auth()->user()->name ?? 'Guest User' }}</p>
+                                <p class="text-[10px] text-gray-500">{{ auth()->user()->email ?? 'guest@eloogbook.com' }}</p>
+                            </div>
+                            <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name ?? 'Guest User') }}&background=AF8C64&color=fff&bold=true" alt="Profile" class="w-8 h-8 md:w-9 md:h-9 rounded-full object-cover shadow-sm">
                         </div>
                     </div>
                 </div>
@@ -122,9 +145,9 @@
                                         <span class="text-gray-400 text-xs mr-1">♦</span> {{ $p->name }}
                                     </a>
                                     @endforeach
-                                    <a href="#" class="block px-3 py-2 text-[11px] font-bold text-[#867B6F] hover:text-gray-800 hover:bg-[#EAE4DD] transition text-center">
+                                    <button type="button" onclick="document.getElementById('newProjectModal').classList.remove('hidden')" class="w-full block px-3 py-2 text-[11px] font-bold text-[#867B6F] hover:text-gray-800 hover:bg-[#EAE4DD] transition text-center focus:outline-none">
                                         + New Project
-                                    </a>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -171,6 +194,12 @@
                     <div class="flex items-center px-5 py-3 text-sm opacity-50 cursor-not-allowed">
                         <i class="far fa-question-circle w-6 text-center mr-2"></i> Help Center
                     </div>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <a href="{{ route('logout') }}" onclick="event.preventDefault(); this.closest('form').submit();" class="flex items-center px-5 py-3 text-sm hover:bg-white/10 transition border-t border-white/10">
+                            <i class="fas fa-sign-out-alt w-6 text-center mr-2"></i> Logout
+                        </a>
+                    </form>
                 </div>
             </aside>
 
@@ -178,6 +207,35 @@
             <main class="flex-1 overflow-y-auto bg-[#FCFBFA] p-4 md:p-8 custom-scrollbar w-full relative z-0">
                 @yield('content')
             </main>
+        </div>
+    </div>
+
+    <!-- Modal New Project -->
+    <div id="newProjectModal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center">
+        <div class="bg-white rounded-xl shadow-lg w-full max-w-md overflow-hidden">
+            <div class="flex justify-between items-center p-5 border-b border-[#EBE6E0]">
+                <h3 class="font-bold text-gray-800 text-lg">Create New Project</h3>
+                <button onclick="document.getElementById('newProjectModal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600 transition">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form method="POST" action="{{ route('projects.store') }}">
+                @csrf
+                <div class="p-5">
+                    <div class="mb-4">
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Project Name</label>
+                        <input type="text" name="name" class="w-full border border-[#EBE6E0] rounded-md px-3 py-2 text-sm focus:outline-none focus:border-[#BCA99D] focus:ring-1 focus:ring-[#BCA99D]" placeholder="e.g. DED Coal Terminal" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Project Type</label>
+                        <input type="text" name="type" class="w-full border border-[#EBE6E0] rounded-md px-3 py-2 text-sm focus:outline-none focus:border-[#BCA99D] focus:ring-1 focus:ring-[#BCA99D]" placeholder="e.g. Detailed Engineering Design" required>
+                    </div>
+                </div>
+                <div class="p-5 border-t border-[#EBE6E0] bg-gray-50 flex justify-end gap-3">
+                    <button type="button" onclick="document.getElementById('newProjectModal').classList.add('hidden')" class="px-4 py-2 text-sm font-bold text-gray-600 hover:text-gray-800 transition">Cancel</button>
+                    <button type="submit" class="bg-[#BCA99D] hover:bg-[#A99587] text-gray-800 font-bold px-5 py-2 rounded-md text-sm transition shadow-sm">Save Project</button>
+                </div>
+            </form>
         </div>
     </div>
 

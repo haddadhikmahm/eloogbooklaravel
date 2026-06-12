@@ -5,20 +5,22 @@
     <!-- Header Area -->
     <div class="flex justify-between items-start mb-8 pt-2">
         <div class="flex-1">
-            <div class="flex justify-between items-center mb-6">
-                <h1 class="text-[28px] font-bold text-[#6D6257]">Team & Discipline</h1>
-                <button onclick="document.getElementById('teamModal').classList.remove('hidden')" class="bg-[#BFA99C] text-white px-5 py-2 rounded-md text-[13px] font-bold shadow-sm hover:bg-[#A69186] transition flex items-center gap-2">
-                    <i class="fas fa-plus"></i> Add Member
-                </button>
-            </div>
-            <!-- Filters -->
-            <div class="flex gap-3 flex-wrap">
-                <a href="{{ route('dashboard.team', ['discipline' => 'All Personnel']) }}" class="{{ request('discipline', 'All Personnel') == 'All Personnel' ? 'bg-[#BFA99C] text-white' : 'bg-white border border-[#DCD3CB] text-gray-600 hover:bg-gray-50' }} px-5 py-2 rounded-md text-[13px] font-bold shadow-sm transition">All Personnel</a>
-                <a href="{{ route('dashboard.team', ['discipline' => 'Sipil']) }}" class="{{ request('discipline') == 'Sipil' ? 'bg-[#BFA99C] text-white' : 'bg-white border border-[#DCD3CB] text-gray-600 hover:bg-gray-50' }} px-5 py-2 rounded-md text-[13px] font-bold shadow-sm transition">Sipil</a>
-                <a href="{{ route('dashboard.team', ['discipline' => 'Struktur']) }}" class="{{ request('discipline') == 'Struktur' ? 'bg-[#BFA99C] text-white' : 'bg-white border border-[#DCD3CB] text-gray-600 hover:bg-gray-50' }} px-5 py-2 rounded-md text-[13px] font-bold shadow-sm transition">Struktur</a>
-                <a href="{{ route('dashboard.team', ['discipline' => 'Arsitektur']) }}" class="{{ request('discipline') == 'Arsitektur' ? 'bg-[#BFA99C] text-white' : 'bg-white border border-[#DCD3CB] text-gray-600 hover:bg-gray-50' }} px-5 py-2 rounded-md text-[13px] font-bold shadow-sm transition">Arsitektur</a>
-                <a href="{{ route('dashboard.team', ['discipline' => 'Mekanikal']) }}" class="{{ request('discipline') == 'Mekanikal' ? 'bg-[#BFA99C] text-white' : 'bg-white border border-[#DCD3CB] text-gray-600 hover:bg-gray-50' }} px-5 py-2 rounded-md text-[13px] font-bold shadow-sm transition">Mekanikal</a>
-                <a href="{{ route('dashboard.team', ['discipline' => 'Elektrikal']) }}" class="{{ request('discipline') == 'Elektrikal' ? 'bg-[#BFA99C] text-white' : 'bg-white border border-[#DCD3CB] text-gray-600 hover:bg-gray-50' }} px-5 py-2 rounded-md text-[13px] font-bold shadow-sm transition">Elektrikal</a>
+            <h1 class="text-[28px] font-bold text-[#6D6257] mb-6">Team & Discipline</h1>
+            <!-- Filters Area -->
+            <div class="flex flex-col xl:flex-row xl:items-center justify-between gap-4 mr-0 lg:mr-8">
+                <div class="flex gap-3 flex-wrap">
+                    <a href="{{ route('dashboard.team', ['discipline' => 'All Personnel']) }}" class="{{ request('discipline', 'All Personnel') == 'All Personnel' ? 'bg-[#BFA99C] text-white' : 'bg-white border border-[#DCD3CB] text-gray-600 hover:bg-gray-50' }} px-5 py-2 rounded-md text-[13px] font-bold shadow-sm transition">All Personnel</a>
+                    <a href="{{ route('dashboard.team', ['discipline' => 'Sipil']) }}" class="{{ request('discipline') == 'Sipil' ? 'bg-[#BFA99C] text-white' : 'bg-white border border-[#DCD3CB] text-gray-600 hover:bg-gray-50' }} px-5 py-2 rounded-md text-[13px] font-bold shadow-sm transition">Sipil</a>
+                    <a href="{{ route('dashboard.team', ['discipline' => 'Struktur']) }}" class="{{ request('discipline') == 'Struktur' ? 'bg-[#BFA99C] text-white' : 'bg-white border border-[#DCD3CB] text-gray-600 hover:bg-gray-50' }} px-5 py-2 rounded-md text-[13px] font-bold shadow-sm transition">Struktur</a>
+                    <a href="{{ route('dashboard.team', ['discipline' => 'Arsitektur']) }}" class="{{ request('discipline') == 'Arsitektur' ? 'bg-[#BFA99C] text-white' : 'bg-white border border-[#DCD3CB] text-gray-600 hover:bg-gray-50' }} px-5 py-2 rounded-md text-[13px] font-bold shadow-sm transition">Arsitektur</a>
+                    <a href="{{ route('dashboard.team', ['discipline' => 'Mekanikal']) }}" class="{{ request('discipline') == 'Mekanikal' ? 'bg-[#BFA99C] text-white' : 'bg-white border border-[#DCD3CB] text-gray-600 hover:bg-gray-50' }} px-5 py-2 rounded-md text-[13px] font-bold shadow-sm transition">Mekanikal</a>
+                    <a href="{{ route('dashboard.team', ['discipline' => 'Elektrikal']) }}" class="{{ request('discipline') == 'Elektrikal' ? 'bg-[#BFA99C] text-white' : 'bg-white border border-[#DCD3CB] text-gray-600 hover:bg-gray-50' }} px-5 py-2 rounded-md text-[13px] font-bold shadow-sm transition">Elektrikal</a>
+                </div>
+                <div>
+                    <button onclick="document.getElementById('teamModal').classList.remove('hidden')" class="bg-[#BCA99D] hover:bg-[#A99587] text-white font-bold px-5 py-2.5 rounded-md text-sm transition shadow-sm flex items-center gap-2">
+                        <i class="fas fa-plus"></i> Add Member
+                    </button>
+                </div>
             </div>
         </div>
         

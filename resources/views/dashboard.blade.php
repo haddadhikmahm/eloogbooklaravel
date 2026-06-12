@@ -3,12 +3,10 @@
 @section('content')
 <div class="w-full max-w-[1200px] mx-auto pb-10">
     <!-- Header & Stats -->
-    <div class="flex flex-col lg:flex-row lg:items-end justify-between mb-8 gap-6 pt-2">
-        <div>
-            <h1 class="text-[28px] font-bold text-[#6D6257]">Logbook Revisi Klien</h1>
-        </div>
+    <div class="mb-8 pt-2">
+        <h1 class="text-[28px] font-bold text-[#6D6257] mb-6">Logbook Revisi Klien</h1>
         
-        <div class="flex flex-wrap gap-3 sm:gap-4 md:gap-5 justify-start lg:justify-end">
+        <div class="flex flex-wrap gap-3 sm:gap-4 md:gap-5">
             <div class="bg-white border border-[#EBE6E0] rounded-lg p-3 sm:p-4 w-32 sm:w-36 shadow-sm">
                 <p class="text-[13px] font-bold text-gray-800 mb-1">Total Revisi</p>
                 <p class="text-[32px] font-light text-gray-600 leading-none">{{ $allRevisionsCount }}</p>
@@ -23,24 +21,20 @@
             </div>
         </div>
     </div>
-        
-    <div class="pb-1 mb-6">
-        <button onclick="document.getElementById('revisionModal').classList.remove('hidden')" class="bg-[#BCA99D] hover:bg-[#A99587] text-gray-800 font-bold px-5 py-2.5 rounded-md text-sm transition shadow-sm flex items-center gap-1">
-            Create Revision <span class="text-lg font-normal leading-none">+</span>
-        </button>
-    </div>
 
     <!-- Filters Area -->
-    <div class="flex flex-wrap gap-3 md:gap-4 mb-6">
-        <a href="{{ route('dashboard.logbook', ['status' => 'All']) }}" class="{{ request('status', 'All') == 'All' ? 'bg-[#BFA99C]' : 'bg-white border border-[#DCD3CB]' }} text-gray-800 px-7 py-2 rounded-full text-sm font-bold shadow-sm transition hover:bg-[#A99587]">
-            All
-        </a>
-        <a href="{{ route('dashboard.logbook', ['status' => 'Open']) }}" class="{{ request('status') == 'Open' ? 'bg-[#BFA99C]' : 'bg-white border border-[#DCD3CB]' }} text-gray-800 px-7 py-2 rounded-full text-sm font-bold shadow-sm hover:bg-gray-50 transition">
-            Open
-        </a>
-        <a href="{{ route('dashboard.logbook', ['status' => 'Close']) }}" class="{{ request('status') == 'Close' ? 'bg-[#BFA99C]' : 'bg-white border border-[#DCD3CB]' }} text-gray-800 px-7 py-2 rounded-full text-sm font-bold shadow-sm hover:bg-gray-50 transition">
-            Close
-        </a>
+    <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
+        <div class="flex flex-wrap gap-2">
+            <a href="{{ route('dashboard.logbook', ['status' => 'All']) }}" class="px-7 py-2 rounded-full text-sm font-bold transition shadow-sm {{ request('status', 'All') === 'All' ? 'bg-[#BFA99C] text-gray-800' : 'bg-white text-gray-800 border border-[#DCD3CB] hover:bg-gray-50' }}">All</a>
+            <a href="{{ route('dashboard.logbook', ['status' => 'Open']) }}" class="px-7 py-2 rounded-full text-sm font-bold transition shadow-sm {{ request('status') === 'Open' ? 'bg-[#BFA99C] text-gray-800' : 'bg-white text-gray-800 border border-[#DCD3CB] hover:bg-gray-50' }}">Open</a>
+            <a href="{{ route('dashboard.logbook', ['status' => 'Close']) }}" class="px-7 py-2 rounded-full text-sm font-bold transition shadow-sm {{ request('status') === 'Close' ? 'bg-[#BFA99C] text-gray-800' : 'bg-white text-gray-800 border border-[#DCD3CB] hover:bg-gray-50' }}">Close</a>
+        </div>
+        
+        <div>
+            <button onclick="document.getElementById('revisionModal').classList.remove('hidden')" class="bg-[#BCA99D] hover:bg-[#A99587] text-gray-800 font-bold px-5 py-2.5 rounded-md text-sm transition shadow-sm flex items-center gap-1">
+                Create Revision <span class="text-lg font-normal leading-none">+</span>
+            </button>
+        </div>
     </div>
 
     <!-- Data Table -->

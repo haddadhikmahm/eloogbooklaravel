@@ -8,6 +8,7 @@ use App\Http\Controllers\RevisionController;
 use App\Http\Controllers\SprintController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\ProjectController;
 
 Route::middleware('guest')->group(function () {
     Route::get('/', [AuthController::class, 'showLoginForm'])->name('login');
@@ -24,6 +25,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/documents', [DashboardController::class, 'documents'])->name('dashboard.documents');
     Route::get('/team', [DashboardController::class, 'team'])->name('dashboard.team');
     Route::get('/scurve', [DashboardController::class, 'scurve'])->name('dashboard.scurve');
+
+    // Projects CRUD
+    Route::post('/projects', [ProjectController::class, 'store'])->name('projects.store');
 
     // Kanban CRUD
     Route::post('/kanban', [KanbanController::class, 'store'])->name('kanban.store');
