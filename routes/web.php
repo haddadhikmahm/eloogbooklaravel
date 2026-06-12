@@ -9,6 +9,7 @@ use App\Http\Controllers\SprintController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\KanbanBoardController;
 
 Route::middleware('guest')->group(function () {
     Route::get('/', [AuthController::class, 'showLoginForm'])->name('login');
@@ -28,6 +29,12 @@ Route::middleware('auth')->group(function () {
 
     // Projects CRUD
     Route::post('/projects', [ProjectController::class, 'store'])->name('projects.store');
+    Route::get('/projects/switch/{project}', [ProjectController::class, 'switch'])->name('projects.switch');
+
+    // Kanban Boards CRUD
+    Route::post('/kanban-boards', [KanbanBoardController::class, 'store'])->name('kanban-boards.store');
+    Route::delete('/kanban-boards/{kanbanBoard}', [KanbanBoardController::class, 'destroy'])->name('kanban-boards.destroy');
+    Route::put('/kanban-boards/{kanbanBoard}/move', [KanbanBoardController::class, 'move'])->name('kanban-boards.move');
 
     // Kanban CRUD
     Route::post('/kanban', [KanbanController::class, 'store'])->name('kanban.store');
@@ -56,4 +63,5 @@ Route::middleware('auth')->group(function () {
     // Team CRUD
     Route::post('/team', [\App\Http\Controllers\TeamController::class, 'store'])->name('team.store');
     Route::delete('/team/{projectMember}', [\App\Http\Controllers\TeamController::class, 'destroy'])->name('team.destroy');
+    Route::post('/team/bulk-delete', [\App\Http\Controllers\TeamController::class, 'bulkDestroy'])->name('team.bulkDestroy');
 });

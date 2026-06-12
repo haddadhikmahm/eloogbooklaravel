@@ -35,6 +35,16 @@ class DatabaseSeeder extends Seeder
 
         // Create related data for the project using factories
         ClientRevision::factory(30)->create(['project_id' => $project->id]);
+        
+        $boards = ['To Do', 'In Progress', 'Waiting Client', 'Done'];
+        foreach($boards as $index => $board) {
+            \App\Models\KanbanBoard::create([
+                'project_id' => $project->id,
+                'name' => $board,
+                'order' => $index,
+            ]);
+        }
+
         KanbanTask::factory(15)->create(['project_id' => $project->id]);
         SprintBacklog::factory(12)->create(['project_id' => $project->id]);
         ProjectDocument::factory(10)->create(['project_id' => $project->id]);
@@ -44,6 +54,16 @@ class DatabaseSeeder extends Seeder
         // Optionally create more random projects to populate other pages
         Project::factory(3)->create()->each(function ($p) {
             ClientRevision::factory(10)->create(['project_id' => $p->id]);
+            
+            $boards = ['To Do', 'In Progress', 'Waiting Client', 'Done'];
+            foreach($boards as $index => $board) {
+                \App\Models\KanbanBoard::create([
+                    'project_id' => $p->id,
+                    'name' => $board,
+                    'order' => $index,
+                ]);
+            }
+
             KanbanTask::factory(8)->create(['project_id' => $p->id]);
             SprintBacklog::factory(5)->create(['project_id' => $p->id]);
             ProjectDocument::factory(5)->create(['project_id' => $p->id]);

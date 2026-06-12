@@ -17,12 +17,12 @@
 <body class="h-screen w-full flex overflow-hidden">
 
     <!-- Left Gradient Background -->
-    <div class="hidden md:block w-[45%] h-full bg-gradient-to-br from-[#AF8C64] via-[#D3C7BC] to-[#C9CAD0] rounded-r-[40px] shadow-lg relative z-10">
+    <div class="hidden md:block w-[45%] h-full bg-gradient-to-br from-[#AF8C64] via-[#D3C7BC] to-[#C9CAD0] rounded-r-[40px] shadow-xl relative z-10">
         <!-- Optional: You can put a background image here if needed -->
     </div>
 
     <!-- Right Login Form Area -->
-    <div class="flex-1 flex flex-col justify-center items-center relative bg-white px-6 sm:px-8">
+    <div class="flex-1 flex flex-col justify-center items-center relative bg-white/80 backdrop-blur-lg px-6 sm:px-8">
         
         <div class="w-full max-w-md">
             
@@ -48,7 +48,7 @@
                 <div>
                     <label for="email" class="block text-sm font-bold text-gray-800 mb-2 tracking-wide">Username/Email</label>
                     <input type="text" id="email" name="email" placeholder="Enter your Email" value="{{ old('email') }}"
-                        class="w-full border border-[#BCAEA2] rounded-md px-4 py-3 text-sm text-gray-800 focus:outline-none focus:ring-1 focus:ring-[#AF8C64] placeholder-gray-400">
+                        class="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#BCA99D] focus:border-transparent placeholder-gray-400 shadow-sm transition duration-200">
                 </div>
 
                 <!-- Password -->
@@ -56,8 +56,8 @@
                     <label for="password" class="block text-sm font-bold text-gray-800 mb-2 tracking-wide">Password</label>
                     <div class="relative">
                         <input type="password" id="password" name="password" placeholder="Enter your Password" 
-                            class="w-full border border-[#BCAEA2] rounded-md px-4 py-3 text-sm text-gray-800 focus:outline-none focus:ring-1 focus:ring-[#AF8C64] placeholder-gray-400">
-                        <button type="button" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                            class="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#BCA99D] focus:border-transparent placeholder-gray-400 shadow-sm transition duration-200">
+                        <button type="button" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition">
                             <i class="far fa-eye-slash text-sm"></i>
                         </button>
                     </div>
@@ -73,7 +73,7 @@
                 </div>
 
                 <!-- Sign In Button -->
-                <button type="submit" class="w-full bg-[#9B8877] hover:bg-[#867566] text-white font-bold py-3.5 rounded-md shadow-sm transition">
+                <button type="submit" class="w-full bg-gradient-to-r from-[#9B8877] to-[#867566] hover:shadow-lg hover:-translate-y-0.5 text-white font-bold py-3.5 rounded-xl shadow-md transition duration-200">
                     Sign In
                 </button>
 
@@ -87,7 +87,7 @@
                 </div>
 
                 <!-- Microsoft Button -->
-                <button type="button" class="w-full bg-[#9B8877] hover:bg-[#867566] text-white font-bold py-3.5 rounded-md shadow-sm transition flex items-center justify-center gap-3">
+                <button type="button" class="w-full bg-gradient-to-r from-gray-50 to-gray-100 hover:from-gray-100 hover:to-gray-200 border border-gray-300 text-gray-700 font-bold py-3.5 rounded-xl shadow-sm hover:shadow-md transition duration-200 flex items-center justify-center gap-3">
                     <svg width="20" height="20" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M10 0H0V10H10V0Z" fill="#F25022"/>
                         <path d="M21 0H11V10H21V0Z" fill="#7FBA00"/>

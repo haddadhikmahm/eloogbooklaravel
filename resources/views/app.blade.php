@@ -11,7 +11,8 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #fbfaf9;
+            background: linear-gradient(135deg, #fbfaf9 0%, #F1EBE6 100%);
+            background-attachment: fixed;
         }
         /* Custom Scrollbar */
         ::-webkit-scrollbar {
@@ -22,22 +23,66 @@
             background: transparent; 
         }
         ::-webkit-scrollbar-thumb {
-            background: #d6ccc2; 
-            border-radius: 4px;
+            background: rgba(99, 102, 241, 0.4); 
+            border-radius: 10px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #bcaaa4; 
+            background: rgba(99, 102, 241, 0.7); 
         }
+        
+        /* Animated Border Glow */
+        @keyframes glowingBorder {
+            0% { border-color: #818cf8; box-shadow: 0 0 5px rgba(129,140,248,0.2); }
+            50% { border-color: #c084fc; box-shadow: 0 0 20px rgba(192,132,252,0.6); }
+            100% { border-color: #818cf8; box-shadow: 0 0 5px rgba(129,140,248,0.2); }
+        }
+        .hover-glow {
+            transition: all 0.3s ease;
+        }
+        .hover-glow:hover {
+            animation: glowingBorder 2s infinite ease-in-out;
+            z-index: 10;
+        }
+
+        /* Pagination Overrides for Unified Theme */
+        nav[role="navigation"] span[aria-current="page"] > span {
+            background-color: #4f46e5 !important;
+            border-color: #4f46e5 !important;
+            color: white !important;
+        }
+        nav[role="navigation"] a {
+            transition: all 0.2s ease-in-out;
+        }
+        nav[role="navigation"] a:hover {
+            color: #4f46e5 !important;
+            border-color: #c7d2fe !important;
+            background-color: #e0e7ff !important;
+        }
+
+        /* Collapsible Sidebar Styles */
+        #sidebar.collapsed { width: 5.5rem !important; }
+        #sidebar.collapsed .sidebar-text { display: none; }
+        #sidebar.collapsed .sidebar-icon { margin-right: 0 !important; margin: 0 auto; display: block; text-align: center; font-size: 1.25rem; transition: all 0.3s; }
+        #sidebar.collapsed a { justify-content: center; padding-left: 0; padding-right: 0; }
+        #sidebar.collapsed .sidebar-section-title { display: none; }
+        #sidebar.collapsed #projectDropdownWrapper { display: none; }
+        #desktop-logo-area.collapsed { width: 5.5rem !important; padding-left: 0; padding-right: 0; justify-content: center; }
+        #desktop-logo-area.collapsed .sidebar-text { display: none; }
+        #sidebar { transition: width 0.3s ease-in-out, transform 0.3s ease-in-out; }
+        #desktop-logo-area { transition: width 0.3s ease-in-out; }
     </style>
 </head>
 <body class="flex h-screen overflow-hidden text-gray-800">
 
     <div class="flex flex-col w-full h-full">
         <!-- Top Navbar -->
-        <header class="h-16 bg-[#867B6F] flex items-center justify-between shrink-0 shadow-sm relative z-30">
+        <header class="h-16 bg-gradient-to-r from-slate-900 to-indigo-950 flex items-center justify-between shrink-0 shadow-md relative z-30">
             <!-- Left Area (Logo) - Matches Sidebar Width -->
-            <div class="w-64 flex items-center px-6 h-full hidden md:flex border-r border-white/10">
-                <img src="{{ asset('image.png') }}" alt="Logo BITA" class="h-10 object-contain">
+            <div id="desktop-logo-area" class="w-64 flex items-center px-6 h-full hidden md:flex border-r border-white/10">
+                <button id="desktop-menu-btn" class="text-white mr-4 p-2 focus:outline-none hover:bg-white/10 rounded-full transition-colors flex-shrink-0">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+                <img src="{{ asset('image.png') }}" alt="Logo BITA" class="h-10 object-contain sidebar-text">
             </div>
             
             <!-- Mobile Menu Button & Logo -->
@@ -51,12 +96,15 @@
             <!-- Right Area -->
             <div class="flex-1 flex items-center justify-between px-4 md:px-6 h-full">
                 <div class="flex items-center gap-4 md:gap-6 w-full max-w-2xl">
-                    <div class="hidden sm:block bg-[#F8F5F2] text-gray-700 px-4 py-1.5 rounded text-sm font-medium whitespace-nowrap shadow-sm">
-                        {{ \App\Models\Project::first()->type ?? 'Detailed Engineering Design' }}
+                    @php
+                        $activeProject = \App\Models\Project::find(session('active_project_id')) ?? \App\Models\Project::first();
+                    @endphp
+                    <div class="hidden sm:block bg-white/20 backdrop-blur-sm text-white px-4 py-1.5 rounded-full text-sm font-medium whitespace-nowrap border border-white/20">
+                        {{ $activeProject->type ?? 'Detailed Engineering Design' }}
                     </div>
-                    <form method="GET" action="{{ route('dashboard.kanban') }}" class="relative w-full max-w-xs md:max-w-none hidden sm:block">
-                        <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm"></i>
-                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Search tasks.." class="w-full pl-9 pr-4 py-2 rounded bg-[#F8F5F2] text-sm text-gray-700 focus:outline-none focus:ring-1 focus:ring-[#CBB964] shadow-inner placeholder-gray-400">
+                    <form method="GET" action="{{ route('dashboard.kanban') }}" class="relative w-full max-w-xs md:max-w-none hidden sm:block group">
+                        <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 group-focus-within:text-indigo-600 text-sm transition-colors"></i>
+                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Search tasks.." class="w-full pl-10 pr-4 py-2 rounded-full bg-white/10 text-sm text-white focus:outline-none focus:ring-2 focus:ring-indigo-400/50 shadow-sm border border-transparent focus:border-indigo-400/30 placeholder-gray-300 transition-all duration-300 backdrop-blur-sm">
                     </form>
                 </div>
 
@@ -104,12 +152,12 @@
                             </div>
                         </div>
                         
-                        <div class="flex items-center gap-3">
+                        <div class="flex items-center gap-3 bg-white/10 hover:bg-white/20 transition-colors duration-300 rounded-full py-1 pr-1 pl-4 cursor-pointer border border-white/10">
                             <div class="hidden md:block text-right">
-                                <p class="text-[13px] font-bold text-gray-800">{{ auth()->user()->name ?? 'Guest User' }}</p>
-                                <p class="text-[10px] text-gray-500">{{ auth()->user()->email ?? 'guest@eloogbook.com' }}</p>
+                                <p class="text-[13px] font-bold text-white leading-tight">{{ auth()->user()->name ?? 'Guest User' }}</p>
+                                <p class="text-[10px] text-gray-200">{{ auth()->user()->email ?? 'guest@eloogbook.com' }}</p>
                             </div>
-                            <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name ?? 'Guest User') }}&background=AF8C64&color=fff&bold=true" alt="Profile" class="w-8 h-8 md:w-9 md:h-9 rounded-full object-cover shadow-sm">
+                            <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name ?? 'Guest User') }}&background=4f46e5&color=fff&bold=true" alt="Profile" class="w-8 h-8 md:w-9 md:h-9 rounded-full object-cover border-2 border-white/50 shadow-sm">
                         </div>
                     </div>
                 </div>
@@ -122,82 +170,80 @@
             <div id="sidebar-overlay" class="fixed inset-0 bg-black/50 z-20 hidden md:hidden transition-opacity opacity-0"></div>
 
             <!-- Sidebar -->
-            <aside id="sidebar" class="absolute inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition duration-300 ease-in-out w-64 bg-[#F8F5F2] flex flex-col shrink-0 border-r border-[#E2DDD8] z-20 h-full">
+            <aside id="sidebar" class="absolute inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition duration-300 ease-in-out w-64 bg-white/70 backdrop-blur-md flex flex-col shrink-0 border-r border-white/50 shadow-sm z-20 h-full">
                 <div class="flex-1 overflow-y-auto py-5 custom-scrollbar">
                     
                     <!-- PROJECT Section -->
-                    <div class="mb-6">
-                        <p class="px-5 text-[11px] font-bold text-gray-500 tracking-wider mb-2">PROJECT</p>
-                        <div class="px-5">
-                            <div class="bg-[#D3C9BE] rounded shadow-sm border border-[#C5B9AE] overflow-hidden">
-                                <button type="button" onclick="document.getElementById('projectDropdown').classList.toggle('hidden')" class="w-full flex items-center justify-between px-3 py-2 hover:bg-[#C5B9AE] transition cursor-pointer">
-                                    <div class="flex items-center gap-2">
-                                        <div class="w-1.5 h-1.5 rounded-full bg-gray-600"></div>
-                                        <span class="text-xs font-semibold text-gray-800 truncate" style="max-width: 140px;" title="{{ \App\Models\Project::first()->name ?? 'No Project' }}">
-                                            {{ \App\Models\Project::first()->name ?? 'No Project' }}
-                                        </span>
-                                    </div>
-                                    <i class="fas fa-chevron-down text-gray-600 text-xs"></i>
-                                </button>
-                                <div id="projectDropdown" class="hidden bg-[#F8F5F2] border-t border-[#C5B9AE]">
-                                    @foreach(\App\Models\Project::all() as $p)
-                                    <a href="#" class="block px-3 py-1.5 text-[11px] text-gray-600 border-b border-[#E2DDD8] hover:bg-[#EAE4DD] hover:text-gray-800 transition">
-                                        <span class="text-gray-400 text-xs mr-1">♦</span> {{ $p->name }}
-                                    </a>
-                                    @endforeach
-                                    <button type="button" onclick="document.getElementById('newProjectModal').classList.remove('hidden')" class="w-full block px-3 py-2 text-[11px] font-bold text-[#867B6F] hover:text-gray-800 hover:bg-[#EAE4DD] transition text-center focus:outline-none">
-                                        + New Project
-                                    </button>
+                    <div class="mb-6 px-3">
+                        <p class="px-2 text-[10px] font-bold text-gray-400 tracking-widest mb-2 uppercase sidebar-section-title">Project</p>
+                        <div id="projectDropdownWrapper" class="bg-white rounded-xl shadow-[0_2px_10px_rgba(0,0,0,0.05)] border border-indigo-100 overflow-hidden">
+                            <button type="button" onclick="document.getElementById('projectDropdown').classList.toggle('hidden')" class="w-full flex items-center justify-between px-4 py-3 hover:bg-indigo-50/50 transition-colors duration-300 cursor-pointer">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-2 h-2 rounded-full bg-indigo-500 shadow-[0_0_8px_rgba(99,102,241,0.6)]"></div>
+                                    <span class="text-xs font-bold text-gray-800 truncate" style="max-width: 140px;" title="{{ $activeProject->name ?? 'No Project' }}">
+                                        {{ $activeProject->name ?? 'No Project' }}
+                                    </span>
                                 </div>
+                                <i class="fas fa-chevron-down text-indigo-400 text-xs transition-transform duration-300"></i>
+                            </button>
+                            <div id="projectDropdown" class="hidden bg-gray-50 border-t border-indigo-100">
+                                @foreach(\App\Models\Project::all() as $p)
+                                <a href="{{ route('projects.switch', $p->id) }}" class="block px-4 py-2.5 text-[11px] font-medium text-gray-600 border-b border-gray-200 hover:bg-indigo-100 hover:text-indigo-800 transition-colors duration-200 truncate" title="{{ $p->name }}">
+                                    <span class="text-indigo-500 text-[9px] mr-1.5"><i class="fas fa-circle"></i></span> {{ $p->name }}
+                                </a>
+                                @endforeach
+                                <button type="button" onclick="document.getElementById('newProjectModal').classList.remove('hidden')" class="w-full flex items-center justify-center gap-2 px-4 py-3 text-[11px] font-bold text-white bg-indigo-500 hover:bg-indigo-600 transition-colors duration-200 focus:outline-none">
+                                    <i class="fas fa-plus"></i> New Project
+                                </button>
                             </div>
                         </div>
                     </div>
 
                     <!-- UTAMA Section -->
-                    <div class="mb-6">
-                        <p class="px-5 text-[11px] font-bold text-gray-500 tracking-wider mb-2">UTAMA</p>
-                        <nav>
-                            <a href="{{ route('dashboard.index') }}" class="flex items-center px-5 py-2.5 text-sm {{ request()->routeIs('dashboard.index') ? 'font-semibold text-gray-800 bg-[#E8DFD5] border-l-4 border-[#A3978B] shadow-inner' : 'text-gray-600 hover:bg-[#EAE4DD] hover:text-gray-800 transition' }}">
-                                <i class="fas fa-th-large w-6 text-center {{ request()->routeIs('dashboard.index') ? 'text-gray-600' : 'text-gray-500' }} mr-2 text-sm"></i> Dashboard
+                    <div class="mb-6 px-3">
+                        <p class="px-2 text-[10px] font-bold text-gray-400 tracking-widest mb-2 uppercase sidebar-section-title">Utama</p>
+                        <nav class="space-y-1.5">
+                            <a href="{{ route('dashboard.index') }}" class="flex items-center px-4 py-2.5 text-sm rounded-xl transition-all duration-300 {{ request()->routeIs('dashboard.index') ? 'font-bold text-indigo-700 bg-indigo-50 shadow-sm border border-indigo-100' : 'text-gray-500 hover:bg-indigo-50/50 hover:text-indigo-600' }}">
+                                <i class="fas fa-th-large w-6 text-center {{ request()->routeIs('dashboard.index') ? 'text-indigo-600' : 'text-gray-400' }} mr-3 text-sm sidebar-icon"></i> <span class="sidebar-text">Dashboard</span>
                             </a>
-                            <a href="{{ route('dashboard.sprint') }}" class="flex items-center px-5 py-2.5 text-sm {{ request()->routeIs('dashboard.sprint') ? 'font-semibold text-gray-800 bg-[#E8DFD5] border-l-4 border-[#A3978B] shadow-inner' : 'text-gray-600 hover:bg-[#EAE4DD] hover:text-gray-800 transition' }}">
-                                <i class="fas fa-running w-6 text-center {{ request()->routeIs('dashboard.sprint') ? 'text-gray-600' : 'text-gray-500' }} mr-2 text-sm"></i> Sprint
+                            <a href="{{ route('dashboard.sprint') }}" class="flex items-center px-4 py-2.5 text-sm rounded-xl transition-all duration-300 {{ request()->routeIs('dashboard.sprint') ? 'font-bold text-indigo-700 bg-indigo-50 shadow-sm border border-indigo-100' : 'text-gray-500 hover:bg-indigo-50/50 hover:text-indigo-600' }}">
+                                <i class="fas fa-running w-6 text-center {{ request()->routeIs('dashboard.sprint') ? 'text-indigo-600' : 'text-gray-400' }} mr-3 text-sm sidebar-icon"></i> <span class="sidebar-text">Sprint</span>
                             </a>
-                            <a href="{{ route('dashboard.kanban') }}" class="flex items-center px-5 py-2.5 text-sm {{ request()->routeIs('dashboard.kanban') ? 'font-semibold text-gray-800 bg-[#E8DFD5] border-l-4 border-[#A3978B] shadow-inner' : 'text-gray-600 hover:bg-[#EAE4DD] hover:text-gray-800 transition' }}">
-                                <i class="fas fa-columns w-6 text-center {{ request()->routeIs('dashboard.kanban') ? 'text-gray-600' : 'text-gray-500' }} mr-2 text-sm"></i> Kanban Board
+                            <a href="{{ route('dashboard.kanban') }}" class="flex items-center px-4 py-2.5 text-sm rounded-xl transition-all duration-300 {{ request()->routeIs('dashboard.kanban') ? 'font-bold text-indigo-700 bg-indigo-50 shadow-sm border border-indigo-100' : 'text-gray-500 hover:bg-indigo-50/50 hover:text-indigo-600' }}">
+                                <i class="fas fa-columns w-6 text-center {{ request()->routeIs('dashboard.kanban') ? 'text-indigo-600' : 'text-gray-400' }} mr-3 text-sm sidebar-icon"></i> <span class="sidebar-text">Kanban Board</span>
                             </a>
-                            <a href="{{ route('dashboard.logbook') }}" class="flex items-center px-5 py-2.5 text-sm {{ request()->routeIs('dashboard.logbook') ? 'font-semibold text-gray-800 bg-[#E8DFD5] border-l-4 border-[#A3978B] shadow-inner' : 'text-gray-600 hover:bg-[#EAE4DD] hover:text-gray-800 transition' }}">
-                                <i class="fas fa-list-alt w-6 text-center {{ request()->routeIs('dashboard.logbook') ? 'text-gray-600' : 'text-gray-500' }} mr-2 text-sm"></i> Logbook Revision
+                            <a href="{{ route('dashboard.logbook') }}" class="flex items-center px-4 py-2.5 text-sm rounded-xl transition-all duration-300 {{ request()->routeIs('dashboard.logbook') ? 'font-bold text-indigo-700 bg-indigo-50 shadow-sm border border-indigo-100' : 'text-gray-500 hover:bg-indigo-50/50 hover:text-indigo-600' }}">
+                                <i class="fas fa-list-alt w-6 text-center {{ request()->routeIs('dashboard.logbook') ? 'text-indigo-600' : 'text-gray-400' }} mr-3 text-sm sidebar-icon"></i> <span class="sidebar-text">Logbook Revision</span>
                             </a>
                         </nav>
                     </div>
 
                     <!-- LAPORAN Section -->
-                    <div>
-                        <p class="px-5 text-[11px] font-bold text-gray-500 tracking-wider mb-2">LAPORAN</p>
-                        <nav>
-                            <a href="{{ route('dashboard.scurve') }}" class="flex items-center px-5 py-2.5 text-sm {{ request()->routeIs('dashboard.scurve') ? 'font-semibold text-gray-800 bg-[#E8DFD5] border-l-4 border-[#A3978B] shadow-inner' : 'text-gray-600 hover:bg-[#EAE4DD] hover:text-gray-800 transition' }}">
-                                <i class="fas fa-chart-line w-6 text-center {{ request()->routeIs('dashboard.scurve') ? 'text-gray-600' : 'text-gray-500' }} mr-2 text-sm"></i> S-Curve Progress
+                    <div class="px-3">
+                        <p class="px-2 text-[10px] font-bold text-gray-400 tracking-widest mb-2 uppercase sidebar-section-title">Laporan</p>
+                        <nav class="space-y-1.5">
+                            <a href="{{ route('dashboard.scurve') }}" class="flex items-center px-4 py-2.5 text-sm rounded-xl transition-all duration-300 {{ request()->routeIs('dashboard.scurve') ? 'font-bold text-indigo-700 bg-indigo-50 shadow-sm border border-indigo-100' : 'text-gray-500 hover:bg-indigo-50/50 hover:text-indigo-600' }}">
+                                <i class="fas fa-chart-line w-6 text-center {{ request()->routeIs('dashboard.scurve') ? 'text-indigo-600' : 'text-gray-400' }} mr-3 text-sm sidebar-icon"></i> <span class="sidebar-text">S-Curve Progress</span>
                             </a>
-                            <a href="{{ route('dashboard.team') }}" class="flex items-center px-5 py-2.5 text-sm {{ request()->routeIs('dashboard.team') ? 'font-semibold text-gray-800 bg-[#E8DFD5] border-l-4 border-[#A3978B] shadow-inner' : 'text-gray-600 hover:bg-[#EAE4DD] hover:text-gray-800 transition' }}">
-                                <i class="fas fa-users w-6 text-center {{ request()->routeIs('dashboard.team') ? 'text-gray-600' : 'text-gray-500' }} mr-2 text-sm"></i> Team & Discipline
+                            <a href="{{ route('dashboard.team') }}" class="flex items-center px-4 py-2.5 text-sm rounded-xl transition-all duration-300 {{ request()->routeIs('dashboard.team') ? 'font-bold text-indigo-700 bg-indigo-50 shadow-sm border border-indigo-100' : 'text-gray-500 hover:bg-indigo-50/50 hover:text-indigo-600' }}">
+                                <i class="fas fa-users w-6 text-center {{ request()->routeIs('dashboard.team') ? 'text-indigo-600' : 'text-gray-400' }} mr-3 text-sm sidebar-icon"></i> <span class="sidebar-text">Team & Discipline</span>
                             </a>
-                            <a href="{{ route('dashboard.documents') }}" class="flex items-center px-5 py-2.5 text-sm {{ request()->routeIs('dashboard.documents') ? 'font-semibold text-gray-800 bg-[#E8DFD5] border-l-4 border-[#A3978B] shadow-inner' : 'text-gray-600 hover:bg-[#EAE4DD] hover:text-gray-800 transition' }}">
-                                <i class="far fa-file-alt w-6 text-center {{ request()->routeIs('dashboard.documents') ? 'text-gray-600' : 'text-gray-500' }} mr-2 text-sm"></i> Supporting Documents
+                            <a href="{{ route('dashboard.documents') }}" class="flex items-center px-4 py-2.5 text-sm rounded-xl transition-all duration-300 {{ request()->routeIs('dashboard.documents') ? 'font-bold text-indigo-700 bg-indigo-50 shadow-sm border border-indigo-100' : 'text-gray-500 hover:bg-indigo-50/50 hover:text-indigo-600' }}">
+                                <i class="far fa-file-alt w-6 text-center {{ request()->routeIs('dashboard.documents') ? 'text-indigo-600' : 'text-gray-400' }} mr-3 text-sm sidebar-icon"></i> <span class="sidebar-text">Supporting Documents</span>
                             </a>
                         </nav>
                     </div>
                 </div>
 
                 <!-- Bottom Actions -->
-                <div class="bg-[#867B6F] text-white/90">
+                <div class="bg-slate-900 text-white/90">
                     <div class="flex items-center px-5 py-3 text-sm opacity-50 cursor-not-allowed">
-                        <i class="far fa-question-circle w-6 text-center mr-2"></i> Help Center
+                        <i class="far fa-question-circle w-6 text-center mr-2 sidebar-icon"></i> <span class="sidebar-text">Help Center</span>
                     </div>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
-                        <a href="{{ route('logout') }}" onclick="event.preventDefault(); this.closest('form').submit();" class="flex items-center px-5 py-3 text-sm hover:bg-white/10 transition border-t border-white/10">
-                            <i class="fas fa-sign-out-alt w-6 text-center mr-2"></i> Logout
+                        <a href="{{ route('logout') }}" onclick="event.preventDefault(); this.closest('form').submit();" class="flex items-center px-5 py-3 text-sm hover:bg-indigo-600 transition-colors border-t border-white/10">
+                            <i class="fas fa-sign-out-alt w-6 text-center mr-2 sidebar-icon"></i> <span class="sidebar-text">Logout</span>
                         </a>
                     </form>
                 </div>
@@ -211,29 +257,29 @@
     </div>
 
     <!-- Modal New Project -->
-    <div id="newProjectModal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center">
-        <div class="bg-white rounded-xl shadow-lg w-full max-w-md overflow-hidden">
-            <div class="flex justify-between items-center p-5 border-b border-[#EBE6E0]">
-                <h3 class="font-bold text-gray-800 text-lg">Create New Project</h3>
-                <button onclick="document.getElementById('newProjectModal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600 transition">
+    <div id="newProjectModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 hidden flex items-center justify-center transition-all duration-300">
+        <div class="bg-white rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] w-full max-w-md overflow-hidden transform transition-all">
+            <div class="flex justify-between items-center p-6 border-b-2 border-gray-100">
+                <h3 class="font-bold text-gray-800 text-lg tracking-tight">Create New Project</h3>
+                <button onclick="document.getElementById('newProjectModal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600 bg-gray-50 hover:bg-gray-100 rounded-full w-8 h-8 flex items-center justify-center transition-colors">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
             <form method="POST" action="{{ route('projects.store') }}">
                 @csrf
-                <div class="p-5">
-                    <div class="mb-4">
+                <div class="p-6">
+                    <div class="mb-5">
                         <label class="block text-sm font-bold text-gray-700 mb-2">Project Name</label>
-                        <input type="text" name="name" class="w-full border border-[#EBE6E0] rounded-md px-3 py-2 text-sm focus:outline-none focus:border-[#BCA99D] focus:ring-1 focus:ring-[#BCA99D]" placeholder="e.g. DED Coal Terminal" required>
+                        <input type="text" name="name" class="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all" placeholder="e.g. DED Coal Terminal" required>
                     </div>
-                    <div class="mb-4">
+                    <div class="mb-2">
                         <label class="block text-sm font-bold text-gray-700 mb-2">Project Type</label>
-                        <input type="text" name="type" class="w-full border border-[#EBE6E0] rounded-md px-3 py-2 text-sm focus:outline-none focus:border-[#BCA99D] focus:ring-1 focus:ring-[#BCA99D]" placeholder="e.g. Detailed Engineering Design" required>
+                        <input type="text" name="type" class="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all" placeholder="e.g. Detailed Engineering Design" required>
                     </div>
                 </div>
-                <div class="p-5 border-t border-[#EBE6E0] bg-gray-50 flex justify-end gap-3">
-                    <button type="button" onclick="document.getElementById('newProjectModal').classList.add('hidden')" class="px-4 py-2 text-sm font-bold text-gray-600 hover:text-gray-800 transition">Cancel</button>
-                    <button type="submit" class="bg-[#BCA99D] hover:bg-[#A99587] text-gray-800 font-bold px-5 py-2 rounded-md text-sm transition shadow-sm">Save Project</button>
+                <div class="p-6 border-t-2 border-gray-100 bg-gray-50 flex justify-end gap-3">
+                    <button type="button" onclick="document.getElementById('newProjectModal').classList.add('hidden')" class="px-5 py-2.5 text-sm font-bold text-gray-500 hover:text-gray-700 hover:bg-gray-200 rounded-xl transition-colors">Cancel</button>
+                    <button type="submit" class="bg-gradient-to-r from-indigo-600 to-blue-500 hover:from-indigo-500 hover:to-blue-400 text-white font-bold px-6 py-2.5 rounded-xl text-sm transition-all shadow-[0_4px_15px_rgba(79,70,229,0.4)] hover:shadow-[0_6px_20px_rgba(79,70,229,0.6)] transform hover:-translate-y-0.5">Save Project</button>
                 </div>
             </form>
         </div>
@@ -263,6 +309,16 @@
 
             btn.addEventListener('click', toggleMenu);
             overlay.addEventListener('click', toggleMenu);
+
+            // Desktop Menu Toggle
+            const desktopMenuBtn = document.getElementById('desktop-menu-btn');
+            const desktopLogoArea = document.getElementById('desktop-logo-area');
+            if(desktopMenuBtn) {
+                desktopMenuBtn.addEventListener('click', function() {
+                    sidebar.classList.toggle('collapsed');
+                    desktopLogoArea.classList.toggle('collapsed');
+                });
+            }
             
             // SweetAlert2 Toast configuration
             const Toast = Swal.mixin({

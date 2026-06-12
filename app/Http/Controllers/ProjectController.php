@@ -18,4 +18,10 @@ class ProjectController extends Controller
 
         return back()->with('success', 'Project created successfully');
     }
+
+    public function switch(Project $project)
+    {
+        session(['active_project_id' => $project->id]);
+        return back()->with('success', 'Switched to project: ' . $project->name);
+    }
 }

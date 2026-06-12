@@ -12,6 +12,7 @@ class KanbanController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
+            'status' => 'required|string',
         ]);
 
         $project = Project::first();
@@ -19,7 +20,7 @@ class KanbanController extends Controller
         KanbanTask::create([
             'project_id' => $project->id,
             'title' => $request->title,
-            'status' => 'To Do',
+            'status' => $request->status,
         ]);
 
         return redirect()->back()->with('success', 'Task created successfully.');

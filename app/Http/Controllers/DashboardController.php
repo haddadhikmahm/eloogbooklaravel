@@ -14,9 +14,14 @@ use App\Models\ProjectComment;
 
 class DashboardController extends Controller
 {
+    private function getActiveProject()
+    {
+        return Project::find(session('active_project_id')) ?? Project::first();
+    }
+
     public function index()
     {
-        $project = Project::first();
+        $project = $this->getActiveProject();
         
         // Dynamic stats
         $totalDocuments = ProjectDocument::where('project_id', $project->id)->count();
@@ -45,7 +50,7 @@ class DashboardController extends Controller
 
     public function sprint(Request $request)
     {
-        $project = Project::first();
+        $project = $this->getActiveProject();
         $query = SprintBacklog::where('project_id', $project->id);
 
         if ($search = $request->query('search')) {
@@ -64,7 +69,7 @@ class DashboardController extends Controller
 
     public function kanban(Request $request)
     {
-        $project = Project::first();
+        $project = $this->getActiveProject();
         $query = KanbanTask::where('project_id', $project->id);
 
         if ($search = $request->query('search')) {
@@ -72,12 +77,13 @@ class DashboardController extends Controller
         }
 
         $tasks = $query->get();
-        return view('kanban', compact('project', 'tasks'));
+        $kanbanBoards = \App\Models\KanbanBoard::where('project_id', $project->id)->orderBy('order')->get();
+        return view('kanban', compact('project', 'tasks', 'kanbanBoards'));
     }
 
     public function logbook(Request $request)
     {
-        $project = Project::first();
+        $project = $this->getActiveProject();
         $query = ClientRevision::where('project_id', $project->id);
 
         if ($status = $request->query('status')) {
@@ -98,14 +104,14 @@ class DashboardController extends Controller
 
     public function documents()
     {
-        $project = Project::first();
+        $project = $this->getActiveProject();
         $documents = ProjectDocument::where('project_id', $project->id)->get();
         return view('documents', compact('project', 'documents'));
     }
 
     public function team(Request $request)
     {
-        $project = Project::first();
+        $project = $this->getActiveProject();
         $query = ProjectMember::where('project_id', $project->id);
 
         if ($discipline = $request->query('discipline')) {
@@ -120,7 +126,7 @@ class DashboardController extends Controller
 
     public function scurve()
     {
-        $project = Project::first();
+        $project = $this->getActiveProject();
         
         // Progress per Discipline (reuse calculation)
         $disciplines = SprintBacklog::selectRaw('

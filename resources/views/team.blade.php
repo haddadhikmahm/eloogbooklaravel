@@ -1,23 +1,23 @@
 @extends('app')
 
 @section('content')
-<div class="w-full max-w-[1200px] mx-auto pb-10">
+<div class="w-full pb-10">
     <!-- Header Area -->
     <div class="flex justify-between items-start mb-8 pt-2">
         <div class="flex-1">
-            <h1 class="text-[28px] font-bold text-[#6D6257] mb-6">Team & Discipline</h1>
+            <h1 class="text-[32px] font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-blue-500 mb-6 tracking-tight">Team & Discipline</h1>
             <!-- Filters Area -->
             <div class="flex flex-col xl:flex-row xl:items-center justify-between gap-4 mr-0 lg:mr-8">
                 <div class="flex gap-3 flex-wrap">
-                    <a href="{{ route('dashboard.team', ['discipline' => 'All Personnel']) }}" class="{{ request('discipline', 'All Personnel') == 'All Personnel' ? 'bg-[#BFA99C] text-white' : 'bg-white border border-[#DCD3CB] text-gray-600 hover:bg-gray-50' }} px-5 py-2 rounded-md text-[13px] font-bold shadow-sm transition">All Personnel</a>
-                    <a href="{{ route('dashboard.team', ['discipline' => 'Sipil']) }}" class="{{ request('discipline') == 'Sipil' ? 'bg-[#BFA99C] text-white' : 'bg-white border border-[#DCD3CB] text-gray-600 hover:bg-gray-50' }} px-5 py-2 rounded-md text-[13px] font-bold shadow-sm transition">Sipil</a>
-                    <a href="{{ route('dashboard.team', ['discipline' => 'Struktur']) }}" class="{{ request('discipline') == 'Struktur' ? 'bg-[#BFA99C] text-white' : 'bg-white border border-[#DCD3CB] text-gray-600 hover:bg-gray-50' }} px-5 py-2 rounded-md text-[13px] font-bold shadow-sm transition">Struktur</a>
-                    <a href="{{ route('dashboard.team', ['discipline' => 'Arsitektur']) }}" class="{{ request('discipline') == 'Arsitektur' ? 'bg-[#BFA99C] text-white' : 'bg-white border border-[#DCD3CB] text-gray-600 hover:bg-gray-50' }} px-5 py-2 rounded-md text-[13px] font-bold shadow-sm transition">Arsitektur</a>
-                    <a href="{{ route('dashboard.team', ['discipline' => 'Mekanikal']) }}" class="{{ request('discipline') == 'Mekanikal' ? 'bg-[#BFA99C] text-white' : 'bg-white border border-[#DCD3CB] text-gray-600 hover:bg-gray-50' }} px-5 py-2 rounded-md text-[13px] font-bold shadow-sm transition">Mekanikal</a>
-                    <a href="{{ route('dashboard.team', ['discipline' => 'Elektrikal']) }}" class="{{ request('discipline') == 'Elektrikal' ? 'bg-[#BFA99C] text-white' : 'bg-white border border-[#DCD3CB] text-gray-600 hover:bg-gray-50' }} px-5 py-2 rounded-md text-[13px] font-bold shadow-sm transition">Elektrikal</a>
+                    <a href="{{ route('dashboard.team', ['discipline' => 'All Personnel']) }}" class="{{ request('discipline', 'All Personnel') == 'All Personnel' ? 'bg-gradient-to-r from-indigo-600 to-blue-500 text-white shadow-md' : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50' }} px-5 py-2.5 rounded-full text-[13px] font-bold shadow-sm transition-all duration-300">All Personnel</a>
+                    <a href="{{ route('dashboard.team', ['discipline' => 'Sipil']) }}" class="{{ request('discipline') == 'Sipil' ? 'bg-gradient-to-r from-indigo-600 to-blue-500 text-white shadow-md' : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50' }} px-5 py-2.5 rounded-full text-[13px] font-bold shadow-sm transition-all duration-300">Sipil</a>
+                    <a href="{{ route('dashboard.team', ['discipline' => 'Struktur']) }}" class="{{ request('discipline') == 'Struktur' ? 'bg-gradient-to-r from-indigo-600 to-blue-500 text-white shadow-md' : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50' }} px-5 py-2.5 rounded-full text-[13px] font-bold shadow-sm transition-all duration-300">Struktur</a>
+                    <a href="{{ route('dashboard.team', ['discipline' => 'Arsitektur']) }}" class="{{ request('discipline') == 'Arsitektur' ? 'bg-gradient-to-r from-indigo-600 to-blue-500 text-white shadow-md' : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50' }} px-5 py-2.5 rounded-full text-[13px] font-bold shadow-sm transition-all duration-300">Arsitektur</a>
+                    <a href="{{ route('dashboard.team', ['discipline' => 'Mekanikal']) }}" class="{{ request('discipline') == 'Mekanikal' ? 'bg-gradient-to-r from-indigo-600 to-blue-500 text-white shadow-md' : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50' }} px-5 py-2.5 rounded-full text-[13px] font-bold shadow-sm transition-all duration-300">Mekanikal</a>
+                    <a href="{{ route('dashboard.team', ['discipline' => 'Elektrikal']) }}" class="{{ request('discipline') == 'Elektrikal' ? 'bg-gradient-to-r from-indigo-600 to-blue-500 text-white shadow-md' : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50' }} px-5 py-2.5 rounded-full text-[13px] font-bold shadow-sm transition-all duration-300">Elektrikal</a>
                 </div>
                 <div>
-                    <button onclick="document.getElementById('teamModal').classList.remove('hidden')" class="bg-[#BCA99D] hover:bg-[#A99587] text-white font-bold px-5 py-2.5 rounded-md text-sm transition shadow-sm flex items-center gap-2">
+                    <button onclick="document.getElementById('teamModal').classList.remove('hidden')" class="bg-gradient-to-r from-indigo-600 to-blue-500 hover:from-indigo-500 hover:to-blue-400 text-white font-bold px-6 py-2.5 rounded-xl shadow-[0_4px_15px_rgba(79,70,229,0.3)] hover:shadow-[0_8px_20px_rgba(79,70,229,0.4)] hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2">
                         <i class="fas fa-plus"></i> Add Member
                     </button>
                 </div>
@@ -25,21 +25,20 @@
         </div>
         
         <!-- Active Project Card -->
-        <div class="bg-white border border-[#E2DDD8] rounded-xl p-5 shadow-sm w-[340px] flex gap-4 items-center">
-            <div class="w-14 h-14 bg-gray-100 rounded border border-[#DCD3CB] flex items-center justify-center">
-                <!-- Placeholder for map/image -->
-                <i class="fas fa-map-marked-alt text-gray-400 text-xl"></i>
+        <div class="bg-white/60 backdrop-blur-md border-2 border-gray-200 rounded-[20px] p-5 shadow-[0_8px_30px_rgba(0,0,0,0.04)] w-[340px] flex gap-4 items-center hover:shadow-[0_12px_40px_rgba(0,0,0,0.08)] transition duration-300 group hover-glow">
+            <div class="w-14 h-14 bg-gradient-to-br from-indigo-50 to-blue-100 rounded-2xl border-2 border-indigo-200 flex items-center justify-center shadow-inner group-hover:scale-110 transition-transform duration-300">
+                <i class="fas fa-map-marked-alt text-indigo-400 text-xl group-hover:rotate-3 transition-transform"></i>
             </div>
             <div>
-                <span class="bg-[#BFA99C] text-white text-[9px] font-bold px-2 py-0.5 rounded tracking-wide">ACTIVE</span>
-                <h3 class="font-bold text-gray-800 text-[13px] mt-1">{{ $project->code }} - {{ $project->name }}</h3>
-                <p class="text-[11px] text-gray-500 mt-1">{{ $project->type }}</p>
-                <div class="flex gap-4 mt-2">
-                    <div class="flex items-center gap-1 text-[11px] text-gray-500 font-semibold">
-                        <i class="fas fa-layer-group text-[#BFA99C]"></i> {{ $project->disciplines_count }} Disiplin
+                <span class="bg-gradient-to-r from-emerald-400 to-teal-500 text-white text-[9px] font-bold px-2.5 py-1 rounded-full tracking-wider shadow-sm inline-block">ACTIVE</span>
+                <h3 class="font-bold text-gray-800 text-[14px] mt-1.5">{{ $project->code }} - {{ $project->name }}</h3>
+                <p class="text-[11px] text-gray-500 mt-0.5">{{ $project->type }}</p>
+                <div class="flex gap-4 mt-2.5">
+                    <div class="flex items-center gap-1.5 text-[11px] text-gray-500 font-semibold">
+                        <i class="fas fa-layer-group text-indigo-500"></i> {{ $project->disciplines_count }} Disiplin
                     </div>
-                    <div class="flex items-center gap-1 text-[11px] text-gray-500 font-semibold">
-                        <i class="fas fa-users text-[#BFA99C]"></i> {{ $project->personnel_count }} Personil
+                    <div class="flex items-center gap-1.5 text-[11px] text-gray-500 font-semibold">
+                        <i class="fas fa-users text-indigo-500"></i> {{ $project->personnel_count }} Personil
                     </div>
                 </div>
             </div>
@@ -47,28 +46,37 @@
     </div>
 
     <!-- Team Table -->
-    <div class="bg-white border border-[#DCD3CB] rounded-lg overflow-x-auto shadow-sm">
-        <table class="w-full text-left border-collapse whitespace-nowrap min-w-[700px]">
-            <thead>
-                <tr class="bg-[#F8F5F2]">
-                    <th class="py-3 px-5 text-xs font-bold text-gray-500 border-b border-[#DCD3CB] w-12 text-center">
-                        <input type="checkbox" class="rounded border-gray-300 text-[#BFA99C] focus:ring-[#BFA99C]">
-                    </th>
-                    <th class="py-3 px-5 text-xs font-bold text-gray-500 border-b border-[#DCD3CB]">Nama & Email</th>
-                    <th class="py-3 px-5 text-xs font-bold text-gray-500 border-b border-[#DCD3CB]">Disiplin</th>
-                    <th class="py-3 px-5 text-xs font-bold text-gray-500 border-b border-[#DCD3CB]">Role</th>
-                    <th class="py-3 px-5 text-xs font-bold text-gray-500 border-b border-[#DCD3CB]">Access Level</th>
-                    <th class="py-3 px-5 text-xs font-bold text-gray-500 border-b border-[#DCD3CB] text-center">Active Doc.</th>
-                    <th class="py-3 px-5 text-xs font-bold text-gray-500 border-b border-[#DCD3CB] w-12 text-center"></th>
-                </tr>
-            </thead>
-            <tbody>
+    <form id="bulkDeleteForm" method="POST" action="{{ route('team.bulkDestroy') }}">
+        @csrf
+        <div class="mb-4 flex justify-end hidden" id="bulkActionContainer">
+            <button type="button" onclick="confirmBulkDelete()" class="bg-rose-500 hover:bg-rose-600 text-white font-bold px-5 py-2 rounded-xl shadow-md flex items-center gap-2 transition-all">
+                <i class="far fa-trash-alt"></i> Delete Selected (<span id="selectedCount">0</span>)
+            </button>
+        </div>
+        
+        <div class="bg-white border-2 border-gray-200 rounded-[24px] shadow-[0_8px_30px_rgba(0,0,0,0.04)] overflow-hidden mb-8 p-1 hover-glow">
+            <div class="bg-white rounded-[20px] overflow-hidden">
+            <table class="w-full text-left border-collapse whitespace-nowrap min-w-[700px]">
+                <thead>
+                    <tr class="bg-gradient-to-r from-indigo-50/50 to-blue-50/50 border-b-2 border-gray-200">
+                        <th class="py-5 px-6 text-xs font-bold text-gray-500 w-12 text-center">
+                            <input type="checkbox" id="selectAll" class="rounded border-gray-300 text-indigo-500 focus:ring-indigo-500 cursor-pointer">
+                        </th>
+                        <th class="py-5 px-6 text-xs font-bold text-indigo-900">Nama & Email</th>
+                        <th class="py-5 px-6 text-xs font-bold text-indigo-900">Disiplin</th>
+                        <th class="py-5 px-6 text-xs font-bold text-indigo-900">Role</th>
+                        <th class="py-5 px-6 text-xs font-bold text-indigo-900">Access Level</th>
+                        <th class="py-5 px-6 text-xs font-bold text-indigo-900 text-center">Active Doc.</th>
+                        <th class="py-5 px-6 text-xs font-bold text-indigo-900 w-12 text-center"></th>
+                    </tr>
+                </thead>
+            <tbody class="divide-y-2 divide-gray-100">
                 @foreach($members as $member)
-                <tr class="hover:bg-gray-50 transition">
-                    <td class="py-4 px-5 border-b border-[#DCD3CB] text-center">
-                        <input type="checkbox" class="rounded border-gray-300 text-[#BFA99C] focus:ring-[#BFA99C]">
+                <tr class="hover:bg-[#FCFAFC] hover:scale-[1.002] transition-all duration-300">
+                    <td class="py-5 px-6 text-center">
+                        <input type="checkbox" name="members[]" value="{{ $member->id }}" class="member-checkbox rounded border-gray-300 text-indigo-500 focus:ring-indigo-500 cursor-pointer">
                     </td>
-                    <td class="py-4 px-5 border-b border-[#DCD3CB]">
+                    <td class="py-5 px-6">
                         <div class="flex items-center gap-3">
                             <div class="w-8 h-8 rounded-full text-white flex items-center justify-center text-[11px] font-bold" style="background-color: {{ $member->color_hex }}">
                                 {{ $member->initials }}
@@ -79,13 +87,13 @@
                             </div>
                         </div>
                     </td>
-                    <td class="py-4 px-5 border-b border-[#DCD3CB] text-[13px] text-gray-700 font-medium">
+                    <td class="py-5 px-6 text-[13px] text-gray-700 font-medium">
                         {{ $member->discipline }}
                     </td>
-                    <td class="py-4 px-5 border-b border-[#DCD3CB] text-[13px] text-gray-700 font-medium">
+                    <td class="py-5 px-6 text-[13px] text-gray-700 font-medium">
                         {{ $member->role }}
                     </td>
-                    <td class="py-4 px-5 border-b border-[#DCD3CB]">
+                    <td class="py-5 px-6">
                         @if($member->access_level == 'Full Access')
                         <span class="inline-block bg-[#E8F5E9] text-[#2E7D32] border border-[#A5D6A7] px-3 py-1 rounded text-[11px] font-bold shadow-sm">
                             <i class="fas fa-check-circle mr-1"></i> Full Access
@@ -100,10 +108,10 @@
                         </span>
                         @endif
                     </td>
-                    <td class="py-4 px-5 border-b border-[#DCD3CB] text-center text-[13px] text-gray-700 font-bold">
+                    <td class="py-5 px-6 text-center text-[13px] text-gray-700 font-bold">
                         {{ $member->active_documents }}
                     </td>
-                    <td class="py-4 px-5 border-b border-[#DCD3CB] text-center">
+                    <td class="py-5 px-6 text-center">
                         <form method="POST" action="{{ route('team.destroy', $member->id) }}" class="inline delete-form">
                             @csrf
                             @method('DELETE')
@@ -116,30 +124,32 @@
                 @endforeach
             </tbody>
         </table>
+        </div>
     </div>
+    </form>
 
 </div>
 
 <!-- Add Member Modal -->
-<div id="teamModal" class="fixed inset-0 bg-black/50 hidden z-50 flex items-center justify-center">
-    <div class="bg-white rounded-xl shadow-xl w-full max-w-lg overflow-hidden">
-        <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center bg-[#F8F5F2]">
-            <h3 class="font-bold text-gray-800">Add Team Member</h3>
-            <button onclick="document.getElementById('teamModal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600"><i class="fas fa-times"></i></button>
+<div id="teamModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden z-50 flex items-center justify-center transition-all duration-300">
+    <div class="bg-white rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] border-2 border-gray-200 w-full max-w-lg overflow-hidden">
+        <div class="px-8 py-6 border-b-2 border-gray-200 flex justify-between items-center bg-gradient-to-r from-indigo-50/50 to-blue-50/50">
+            <h3 class="font-bold text-gray-800 text-xl tracking-tight">Add Team Member</h3>
+            <button onclick="document.getElementById('teamModal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600 bg-white hover:bg-gray-50 rounded-full w-8 h-8 flex items-center justify-center transition-colors shadow-sm"><i class="fas fa-times"></i></button>
         </div>
-        <form method="POST" action="{{ route('team.store') }}" class="p-6 flex flex-col gap-4">
+        <form method="POST" action="{{ route('team.store') }}" class="p-8 flex flex-col gap-5">
             @csrf
             <div>
-                <label class="block text-xs font-bold text-gray-700 mb-1">Full Name</label>
-                <input type="text" name="name" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-[#BCA99D]" required>
+                <label class="block text-xs font-bold text-gray-600 mb-2 uppercase tracking-wide">Full Name</label>
+                <input type="text" name="name" class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all shadow-sm" required>
             </div>
             <div>
-                <label class="block text-xs font-bold text-gray-700 mb-1">Email</label>
-                <input type="email" name="email" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-[#BCA99D]" required>
+                <label class="block text-xs font-bold text-gray-600 mb-2 uppercase tracking-wide">Email</label>
+                <input type="email" name="email" class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all shadow-sm" required>
             </div>
             <div>
-                <label class="block text-xs font-bold text-gray-700 mb-1">Discipline</label>
-                <select name="discipline" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-[#BCA99D]" required>
+                <label class="block text-xs font-bold text-gray-600 mb-2 uppercase tracking-wide">Discipline</label>
+                <select name="discipline" class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all shadow-sm appearance-none bg-white cursor-pointer" required>
                     <option value="Sipil">Sipil</option>
                     <option value="Struktur">Struktur</option>
                     <option value="Arsitektur">Arsitektur</option>
@@ -148,24 +158,76 @@
                 </select>
             </div>
             <div>
-                <label class="block text-xs font-bold text-gray-700 mb-1">Role</label>
-                <input type="text" name="role" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-[#BCA99D]" required placeholder="e.g. Lead Engineer">
+                <label class="block text-xs font-bold text-gray-600 mb-2 uppercase tracking-wide">Role</label>
+                <input type="text" name="role" class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all shadow-sm" required placeholder="e.g. Lead Engineer">
             </div>
             <div>
-                <label class="block text-xs font-bold text-gray-700 mb-1">Access Level</label>
-                <select name="access_level" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-[#BCA99D]" required>
+                <label class="block text-xs font-bold text-gray-600 mb-2 uppercase tracking-wide">Access Level</label>
+                <select name="access_level" class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all shadow-sm appearance-none bg-white cursor-pointer" required>
                     <option value="Full Access">Full Access</option>
                     <option value="Edit & Upload">Edit & Upload</option>
                     <option value="View Only">View Only</option>
                 </select>
             </div>
             
-            <div class="flex justify-end gap-3 mt-4">
-                <button type="button" onclick="document.getElementById('teamModal').classList.add('hidden')" class="px-4 py-2 text-sm font-bold text-gray-600 hover:bg-gray-100 rounded transition">Cancel</button>
-                <button type="submit" class="px-4 py-2 text-sm font-bold text-white bg-[#BFA99C] hover:bg-[#A69186] rounded transition">Save Member</button>
+            <div class="flex justify-end gap-3 mt-4 pt-4 border-t-2 border-gray-200">
+                <button type="button" onclick="document.getElementById('teamModal').classList.add('hidden')" class="px-5 py-2.5 text-sm font-bold text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-xl transition-colors">Cancel</button>
+                <button type="submit" class="bg-gradient-to-r from-indigo-600 to-blue-500 hover:from-indigo-500 hover:to-blue-400 text-white font-bold px-8 py-2.5 rounded-xl text-sm transition-all shadow-[0_4px_15px_rgba(79,70,229,0.3)] hover:shadow-[0_6px_20px_rgba(79,70,229,0.4)] transform hover:-translate-y-0.5">Save Member</button>
             </div>
         </form>
     </div>
 </div>
+@endsection
 
+@section('scripts')
+<script>
+    const selectAll = document.getElementById('selectAll');
+    const checkboxes = document.querySelectorAll('.member-checkbox');
+    const bulkActionContainer = document.getElementById('bulkActionContainer');
+    const selectedCount = document.getElementById('selectedCount');
+
+    function updateBulkAction() {
+        const checkedBoxes = document.querySelectorAll('.member-checkbox:checked');
+        const count = checkedBoxes.length;
+        
+        selectedCount.textContent = count;
+        
+        if (count > 0) {
+            bulkActionContainer.classList.remove('hidden');
+        } else {
+            bulkActionContainer.classList.add('hidden');
+        }
+
+        selectAll.checked = count > 0 && count === checkboxes.length;
+    }
+
+    if (selectAll) {
+        selectAll.addEventListener('change', function() {
+            checkboxes.forEach(cb => {
+                cb.checked = selectAll.checked;
+            });
+            updateBulkAction();
+        });
+    }
+
+    checkboxes.forEach(cb => {
+        cb.addEventListener('change', updateBulkAction);
+    });
+
+    function confirmBulkDelete() {
+        Swal.fire({
+            title: 'Delete Selected Members?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#EF4444',
+            cancelButtonColor: '#9CA3AF',
+            confirmButtonText: 'Yes, delete them!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('bulkDeleteForm').submit();
+            }
+        });
+    }
+</script>
 @endsection

@@ -1,7 +1,7 @@
 @extends('app')
 
 @section('content')
-<div class="w-full max-w-[1200px] mx-auto pb-10">
+<div class="w-full pb-10">
     <!-- Top Header & Project Progress -->
     <div class="flex justify-between items-start mb-8 pt-2">
         <div>
@@ -9,49 +9,71 @@
             <p class="text-[13px] text-gray-500 font-medium">Fase {{ $project->type ?? 'Detailed Engineering Design' }} • {{ str_replace('DED ', '', $project->name ?? 'Coal Terminal') }}</p>
         </div>
         
-        <div class="bg-white border border-[#E2DDD8] rounded-xl p-5 shadow-sm w-80">
-            <div class="flex justify-between items-center mb-3">
-                <h3 class="font-bold text-gray-800 text-[13px]">Penyelesaian Proyek</h3>
-                <span class="font-bold text-gray-800 text-lg">{{ $project->completion_percentage ?? 56 }}%</span>
-            </div>
-            <div class="w-full bg-[#EBE6E0] h-2.5 rounded-full overflow-hidden">
-                <div class="bg-[#867B6F] h-full rounded-full w-[{{ $project->completion_percentage ?? 56 }}%]"></div>
+        <div class="bg-gradient-to-br from-indigo-600 to-blue-700 border-2 border-indigo-400/50 rounded-[20px] p-6 shadow-[0_8px_30px_rgba(79,70,229,0.3)] hover:shadow-[0_12px_40px_rgba(79,70,229,0.4)] transition-shadow duration-300 w-80 relative overflow-hidden group hover-glow">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-bl-full opacity-50 group-hover:scale-110 transition-transform duration-500"></div>
+            <div class="absolute -bottom-6 -left-6 w-24 h-24 bg-white/10 rounded-full blur-xl"></div>
+            <div class="relative z-10">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-bold text-white/90 text-[13px] tracking-wide">Penyelesaian Proyek</h3>
+                    <span class="font-bold text-white text-2xl">{{ $project->completion_percentage ?? 56 }}%</span>
+                </div>
+                <div class="w-full bg-black/20 h-2.5 rounded-full overflow-hidden backdrop-blur-sm">
+                    <div class="bg-gradient-to-r from-emerald-400 to-teal-300 h-full rounded-full relative shadow-[0_0_10px_rgba(52,211,153,0.5)]" style="width: {{ $project->completion_percentage ?? 56 }}%">
+                        <div class="absolute inset-0 bg-white/30 w-full h-full animate-[shimmer_2s_infinite]"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
+    <style>
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+    </style>
+
     <!-- Summary Cards -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-8">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 mb-10">
         <!-- Card 1 -->
-        <div class="bg-white border border-[#E2DDD8] rounded-2xl p-5 shadow-sm flex flex-col justify-between h-28">
-            <div class="flex justify-between items-start">
-                <i class="far fa-file-alt text-[#D39B8F] text-xl"></i>
+        <div class="bg-gradient-to-br from-emerald-500 to-teal-600 border-2 border-emerald-300/50 rounded-[20px] p-6 shadow-[0_8px_25px_rgba(16,185,129,0.3)] hover:shadow-[0_15px_35px_rgba(16,185,129,0.4)] transform hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between h-36 relative overflow-hidden group hover-glow">
+            <div class="absolute -right-6 -top-6 w-32 h-32 bg-white/10 rounded-full group-hover:scale-150 transition-transform duration-700 blur-2xl"></div>
+            <div class="flex justify-between items-start relative z-10">
+                <div class="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-inner">
+                    <i class="far fa-file-alt text-white text-xl"></i>
+                </div>
             </div>
-            <div>
-                <p class="text-[28px] font-bold text-[#6D6257] leading-none mb-1">{{ number_format($totalDocuments) }}</p>
-                <p class="text-[9px] font-bold text-gray-400 tracking-widest uppercase">TOTAL DOKUMEN</p>
+            <div class="relative z-10 mt-2">
+                <p class="text-[36px] font-extrabold text-white leading-none mb-1">{{ number_format($totalDocuments) }}</p>
+                <p class="text-[10px] font-bold text-emerald-100 tracking-widest uppercase">Total Dokumen</p>
             </div>
         </div>
         
         <!-- Card 2 -->
-        <div class="bg-white border border-[#E2DDD8] rounded-2xl p-5 shadow-sm flex flex-col justify-between h-28">
-            <div class="flex justify-between items-start">
-                <i class="far fa-clipboard text-[#D39B8F] text-xl"></i>
+        <div class="bg-gradient-to-br from-amber-500 to-orange-500 border-2 border-amber-300/50 rounded-[20px] p-6 shadow-[0_8px_25px_rgba(245,158,11,0.3)] hover:shadow-[0_15px_35px_rgba(245,158,11,0.4)] transform hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between h-36 relative overflow-hidden group hover-glow">
+            <div class="absolute -right-6 -top-6 w-32 h-32 bg-white/10 rounded-full group-hover:scale-150 transition-transform duration-700 blur-2xl"></div>
+            <div class="flex justify-between items-start relative z-10">
+                <div class="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-inner">
+                    <i class="far fa-clipboard text-white text-xl"></i>
+                </div>
             </div>
-            <div>
-                <p class="text-[28px] font-bold text-[#6D6257] leading-none mb-1">{{ number_format($waitingReview) }}</p>
-                <p class="text-[9px] font-bold text-gray-400 tracking-widest uppercase">MENUNGGU TINJAUAN</p>
+            <div class="relative z-10 mt-2">
+                <p class="text-[36px] font-extrabold text-white leading-none mb-1">{{ number_format($waitingReview) }}</p>
+                <p class="text-[10px] font-bold text-amber-100 tracking-widest uppercase">Menunggu Tinjauan</p>
             </div>
         </div>
 
         <!-- Card 3 -->
-        <div class="bg-white border border-[#E2DDD8] rounded-2xl p-5 shadow-sm flex flex-col justify-between h-28">
-            <div class="flex justify-between items-start">
-                <i class="far fa-comments text-[#D39B8F] text-xl"></i>
+        <div class="bg-gradient-to-br from-rose-500 to-pink-600 border-2 border-rose-300/50 rounded-[20px] p-6 shadow-[0_8px_25px_rgba(244,63,94,0.3)] hover:shadow-[0_15px_35px_rgba(244,63,94,0.4)] transform hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between h-36 relative overflow-hidden group hover-glow">
+            <div class="absolute -right-6 -top-6 w-32 h-32 bg-white/10 rounded-full group-hover:scale-150 transition-transform duration-700 blur-2xl"></div>
+            <div class="flex justify-between items-start relative z-10">
+                <div class="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-inner">
+                    <i class="far fa-comments text-white text-xl"></i>
+                </div>
             </div>
-            <div>
-                <p class="text-[28px] font-bold text-[#6D6257] leading-none mb-1">{{ number_format($openCommentsCount) }}</p>
-                <p class="text-[9px] font-bold text-gray-400 tracking-widest uppercase">KOMENTAR TERBUKA</p>
+            <div class="relative z-10 mt-2">
+                <p class="text-[36px] font-extrabold text-white leading-none mb-1">{{ number_format($openCommentsCount) }}</p>
+                <p class="text-[10px] font-bold text-rose-100 tracking-widest uppercase">Komentar Terbuka</p>
             </div>
         </div>
     </div>
@@ -61,93 +83,100 @@
         <!-- Progress per Disiplin & Comment Widget Area -->
         <div class="flex-1 flex flex-col">
             <div class="flex justify-between items-center mb-6">
-                <h2 class="text-lg font-bold text-[#3D3A37]">Progress per Disiplin</h2>
-                <a href="{{ route('dashboard.scurve') }}" class="text-[11px] font-bold text-gray-500 hover:text-gray-800 transition">Lihat Detail</a>
+                <h2 class="text-xl font-bold text-[#3D3A37] tracking-tight">Progress per Disiplin</h2>
+                <a href="{{ route('dashboard.scurve') }}" class="text-[11px] font-bold text-[#BCA99D] hover:text-[#867B6F] transition-colors flex items-center gap-1 group">
+                    Lihat Detail <i class="fas fa-arrow-right text-[9px] transform group-hover:translate-x-1 transition-transform"></i>
+                </a>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 auto-rows-max h-fit">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 auto-rows-max h-fit">
                 @forelse($disciplines as $disc)
-                <div class="bg-white border border-[#E2DDD8] rounded-xl p-5 shadow-sm">
-                    <div class="flex justify-between items-center mb-2">
-                        <h3 class="font-bold text-[#3D3A37] text-[13px]">{{ $disc->discipline }} <span class="text-gray-600 ml-1">{{ $disc->percentage }}%</span></h3>
+                <div class="bg-white border-2 border-gray-200 rounded-[20px] p-6 shadow-[0_4px_20px_rgba(0,0,0,0.02)] hover:shadow-[0_12px_32px_rgba(0,0,0,0.06)] transition-all duration-300 group hover-glow">
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="font-bold text-[#6D6257] text-[13px] tracking-wide">{{ $disc->discipline }}</h3>
+                        <span class="text-[#3D3A37] font-bold bg-[#F8F5F2] px-2 py-0.5 rounded-md text-xs">{{ $disc->percentage }}%</span>
                     </div>
-                    <p class="text-[11px] text-gray-400 font-bold mb-3">{{ $disc->total_docs }} Dokumen</p>
-                    <div class="w-full bg-[#EBE6E0] h-1.5 rounded-full overflow-hidden">
-                        <div class="bg-[#867B6F] h-full rounded-full" style="width: {{ $disc->percentage }}%;"></div>
+                    <p class="text-[11px] text-[#BCA99D] font-bold mb-4 flex items-center gap-1"><i class="far fa-file-alt"></i> {{ $disc->total_docs }} Dokumen</p>
+                    <div class="w-full bg-gray-100 h-2.5 rounded-full overflow-hidden border border-gray-200 shadow-inner">
+                        <div class="bg-gradient-to-r from-indigo-400 to-blue-500 h-full rounded-full transition-all duration-1000 ease-out shadow-[0_0_8px_rgba(99,102,241,0.5)]" style="width: {{ $disc->percentage }}%;"></div>
                     </div>
                 </div>
                 @empty
-                <div class="col-span-2 text-sm text-gray-500 py-4">Belum ada data progres sprint per disiplin.</div>
+                <div class="col-span-2 text-sm text-gray-500 py-4 text-center bg-white rounded-[20px] border border-dashed border-[#E2DDD8]">Belum ada data progres sprint per disiplin.</div>
                 @endforelse
             </div>
         </div>
 
         <!-- Comment Register Widget -->
-        <div class="w-full lg:w-80">
-            <div class="bg-white rounded-xl border border-[#E2DDD8] shadow-[0_4px_20px_rgba(0,0,0,0.05)] overflow-hidden h-full flex flex-col">
+        <div class="w-full lg:w-[350px]">
+            <div class="bg-white rounded-[24px] border-2 border-gray-200 shadow-[0_8px_30px_rgba(0,0,0,0.04)] overflow-hidden h-full flex flex-col hover:shadow-[0_12px_40px_rgba(0,0,0,0.08)] transition-all duration-300 hover-glow">
                 <!-- Widget Header -->
-                <div class="px-5 py-4 flex justify-between items-center border-b border-[#E2DDD8]">
-                    <div class="flex items-center gap-2">
-                        <i class="fas fa-comment-dots text-[#6D6257]"></i>
-                        <h3 class="font-bold text-[#3D3A37] text-[13px]">Comment Register</h3>
+                <div class="px-6 py-5 flex justify-between items-center border-b-2 border-gray-200 bg-gradient-to-r from-white to-gray-50/50">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full bg-[#F8F5F2] flex items-center justify-center">
+                            <i class="fas fa-comment-dots text-[#BCA99D]"></i>
+                        </div>
+                        <h3 class="font-bold text-[#6D6257] text-[14px]">Comment Register</h3>
                     </div>
-                    <a href="#" class="text-[10px] font-bold text-gray-500 hover:text-gray-800 flex items-center gap-1">
-                        Semua <i class="fas fa-chevron-right text-[8px]"></i>
+                    <a href="#" class="text-[10px] font-bold text-[#BCA99D] hover:text-[#867B6F] flex items-center gap-1 group transition-colors">
+                        Semua <i class="fas fa-chevron-right text-[8px] transform group-hover:translate-x-1 transition-transform"></i>
                     </a>
                 </div>
 
                 <!-- Comments List -->
-                <div class="p-5 flex flex-col gap-4 overflow-y-auto flex-1">
+                <div class="p-6 flex flex-col gap-4 overflow-y-auto flex-1 custom-scrollbar">
                     @foreach($comments as $comment)
-                    <div class="bg-[#F8F5F2] border border-[#E2DDD8] rounded-lg p-4">
-                        <div class="flex justify-between items-start mb-2 group">
-                            <h4 class="text-[11px] font-bold text-gray-600">{{ $comment->document_code }}</h4>
+                    <div class="bg-white border-2 border-gray-200 rounded-2xl p-4 hover:shadow-[0_4px_15px_rgba(0,0,0,0.03)] transition-all duration-300 group hover-glow">
+                        <div class="flex justify-between items-start mb-3">
+                            <h4 class="text-[11px] font-bold text-[#6D6257] bg-[#F8F5F2] px-2 py-1 rounded-md">{{ $comment->document_code }}</h4>
                             <div class="flex items-center gap-2">
                                 <form method="POST" action="{{ route('comments.updateStatus', $comment->id) }}" class="inline">
                                     @csrf
                                     @method('PUT')
                                     <input type="hidden" name="status" value="{{ $comment->status == 'OPEN' ? 'CLOSE' : 'OPEN' }}">
-                                    <button type="submit" class="hover:opacity-80 transition" title="Toggle Status">
+                                    <button type="submit" class="hover:opacity-80 transition transform hover:scale-105" title="Toggle Status">
                                         @if($comment->status == 'OPEN')
-                                        <span class="bg-[#FFE0E0] text-[#D32F2F] text-[9px] font-bold px-2 py-0.5 rounded border border-red-200">OPEN</span>
+                                        <span class="bg-[#FFF5F5] text-[#D39B8F] text-[9px] font-bold px-2.5 py-1 rounded-full border border-[#D39B8F]/30 shadow-sm">OPEN</span>
                                         @else
-                                        <span class="bg-[#E6F4EA] text-[#1E8E3E] text-[9px] font-bold px-2 py-0.5 rounded border border-green-200">CLOSE</span>
+                                        <span class="bg-[#F0FDF4] text-[#4A7C4A] text-[9px] font-bold px-2.5 py-1 rounded-full border border-[#4A7C4A]/30 shadow-sm">CLOSE</span>
                                         @endif
                                     </button>
                                 </form>
-                                <form method="POST" action="{{ route('comments.destroy', $comment->id) }}" class="inline opacity-0 group-hover:opacity-100 transition-opacity delete-form">
+                                <form method="POST" action="{{ route('comments.destroy', $comment->id) }}" class="inline opacity-0 group-hover:opacity-100 transition-opacity duration-300 delete-form">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="text-red-400 hover:text-red-600 transition" title="Delete Comment">
-                                        <i class="far fa-trash-alt text-[10px]"></i>
+                                    <button type="submit" class="text-red-400 hover:text-red-600 hover:bg-red-50 p-1 rounded transition" title="Delete Comment">
+                                        <i class="far fa-trash-alt text-[11px]"></i>
                                     </button>
                                 </form>
                             </div>
                         </div>
-                        <p class="text-[11px] text-gray-800 mb-3 leading-relaxed">
+                        <p class="text-[12px] text-gray-600 mb-4 leading-relaxed pl-1">
                             {{ $comment->text }}
                         </p>
-                        <div class="flex justify-between items-center">
-                            <div class="flex items-center gap-2">
-                                <div class="w-5 h-5 rounded-full {{ $comment->status == 'OPEN' ? 'bg-[#E8DFD5] text-[#867B6F]' : 'bg-[#D4E2D4] text-[#4A7C4A]' }} flex items-center justify-center text-[8px] font-bold">{{ $comment->author_initials }}</div>
-                                <span class="text-[10px] font-semibold text-gray-700">{{ $comment->author_name }}</span>
+                        <div class="flex justify-between items-center pl-1">
+                            <div class="flex items-center gap-2.5">
+                                <div class="w-6 h-6 rounded-full {{ $comment->status == 'OPEN' ? 'bg-gradient-to-br from-[#E8DFD5] to-[#D3C9BE] text-[#6D6257]' : 'bg-gradient-to-br from-[#D4E2D4] to-[#B5D5B5] text-[#4A7C4A]' }} flex items-center justify-center text-[9px] font-bold shadow-sm">{{ $comment->author_initials }}</div>
+                                <span class="text-[11px] font-semibold text-[#6D6257]">{{ $comment->author_name }}</span>
                             </div>
-                            <span class="text-[9px] font-semibold text-gray-400">{{ \Carbon\Carbon::parse($comment->date)->translatedFormat('d F Y') }}</span>
+                            <span class="text-[10px] font-semibold text-[#BCA99D]">{{ \Carbon\Carbon::parse($comment->date)->translatedFormat('d F Y') }}</span>
                         </div>
                     </div>
                     @endforeach
                 </div>
 
                 <!-- Widget Footer (Add Comment) -->
-                <div class="border-t border-[#E2DDD8] p-3 bg-[#FCFBFA]">
-                    <form method="POST" action="{{ route('comments.store') }}" class="flex flex-col gap-2">
+                <div class="p-5 border-t-2 border-gray-200 bg-gradient-to-b from-white to-gray-50">
+                    <form method="POST" action="{{ route('comments.store') }}" class="flex flex-col gap-2 relative">
                         @csrf
                         <div class="flex gap-2">
-                            <input type="text" name="document_code" placeholder="Doc Code..." class="w-1/3 border border-[#E2DDD8] rounded px-2 py-1.5 text-[10px] focus:outline-none focus:ring-1 focus:ring-[#A6998A]" required>
-                            <input type="text" name="text" placeholder="Add a comment..." class="flex-1 border border-[#E2DDD8] rounded px-2 py-1.5 text-[10px] focus:outline-none focus:ring-1 focus:ring-[#A6998A]" required>
-                            <button type="submit" class="bg-[#A6998A] hover:bg-[#8C7D6D] text-white px-2.5 py-1.5 rounded transition">
-                                <i class="fas fa-paper-plane text-[10px]"></i>
-                            </button>
+                            <input type="text" name="document_code" placeholder="Doc Code" class="w-24 border border-[#E2DDD8] rounded-xl px-3 py-2.5 text-[11px] focus:outline-none focus:ring-2 focus:ring-[#BCA99D]/30 focus:border-transparent transition-all shadow-sm" required>
+                            <div class="flex-1 relative">
+                                <input type="text" name="text" placeholder="Add a comment..." class="w-full border border-[#E2DDD8] rounded-xl pl-3 pr-10 py-2.5 text-[11px] focus:outline-none focus:ring-2 focus:ring-[#BCA99D]/30 focus:border-transparent transition-all shadow-sm" required>
+                                <button type="submit" class="absolute right-1.5 top-1/2 transform -translate-y-1/2 w-7 h-7 bg-[#BCA99D] hover:bg-[#867B6F] text-white rounded-lg flex items-center justify-center transition-colors shadow-sm">
+                                    <i class="fas fa-paper-plane text-[10px]"></i>
+                                </button>
+                            </div>
                         </div>
                     </form>
                 </div>

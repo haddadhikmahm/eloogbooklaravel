@@ -18,7 +18,8 @@ class TeamController extends Controller
             'access_level' => 'required|string|in:Full Access,Edit & Upload,View Only',
         ]);
 
-        $project = Project::first();
+        $projectId = session('active_project_id');
+        $project = $projectId ? Project::find($projectId) : Project::first();
         
         $words = explode(' ', $request->name);
         $initials = strtoupper(substr($words[0], 0, 1) . (isset($words[1]) ? substr($words[1], 0, 1) : ''));
@@ -55,5 +56,28 @@ class TeamController extends Controller
         }
 
         return redirect()->back()->with('success', 'Member deleted.');
+    }
+
+    public function bulkDestroy(Request $request)
+    {
+        $request->validate([
+            'members' => 'required|array',
+            'members.*' => 'exists:project_members,id',
+        ]);
+
+        $count = count($request->members);
+        
+        if ($count > 0) {
+            $firstMember = ProjectMember::find($request->members[0]);
+            if ($firstMember) {
+                $project = Project::find($firstMember->project_id);
+                ProjectMember::whereIn('id', $request->members)->delete();
+                if ($project) {
+                    $project->decrement('personnel_count', $count);
+                }
+            }
+        }
+
+        return redirect()->back()->with('success', "$count members deleted.");
     }
 }
