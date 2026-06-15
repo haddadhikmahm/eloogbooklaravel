@@ -3,16 +3,47 @@
 @section('content')
 <div class="w-full mx-auto pb-10">
     <!-- Header -->
-    <div class="flex justify-between items-center mb-10 pt-2">
+    <div class="flex flex-col lg:flex-row justify-between lg:items-start mb-6 pt-2 gap-6">
         <h1 class="text-[28px] font-bold text-gray-800">Supporting Documents</h1>
-        <form method="POST" action="{{ route('documents.store') }}" enctype="multipart/form-data" id="uploadForm">
-            @csrf
-            <input type="hidden" name="category" value="{{ request('category', 'Supporting Documents') }}">
-            <input type="file" name="document" id="documentInput" class="hidden" onchange="window.document.getElementById('uploadForm').submit()">
-            <button type="button" onclick="window.document.getElementById('documentInput').click()" class="bg-gradient-to-r from-indigo-600 to-blue-500 text-white font-bold py-2.5 px-6 rounded-xl shadow-[0_4px_15px_rgba(79,70,229,0.4)] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(79,70,229,0.6)] flex items-center gap-2 transition duration-200">
-                <i class="fas fa-upload text-sm"></i> Upload
-            </button>
-        </form>
+        
+        <!-- Project Identity Card -->
+        <div class="flex items-start gap-4 w-full lg:w-auto bg-white/50 lg:bg-transparent p-4 lg:p-0 rounded-2xl lg:rounded-none shadow-sm lg:shadow-none border border-gray-100 lg:border-none">
+            <!-- Icon Box -->
+            <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-white border border-gray-200 flex items-center justify-center flex-shrink-0 shadow-sm">
+                <i class="fas fa-map-marked-alt text-xl sm:text-2xl text-[#8E9EAC]"></i>
+            </div>
+            
+            <!-- Info Section -->
+            <div class="flex flex-col">
+                <div class="mb-1.5 flex items-center gap-2">
+                    <span class="bg-[#C2A595] text-white text-[10px] font-bold px-2 py-0.5 rounded shadow-sm tracking-wide">ACTIVE</span>
+                </div>
+                <h2 class="text-[16px] sm:text-[18px] font-extrabold text-[#112338] leading-tight mb-1">
+                    {{ $project->code ? $project->code . ' - ' : '' }}{{ $project->name }}
+                </h2>
+                <p class="text-[#72839A] text-[12px] sm:text-[13px] font-medium mb-2">
+                    {{ $project->type ?? 'Detailed Engineering Design' }}
+                </p>
+                
+                <div class="flex items-center gap-4 text-[#72839A] text-[11px] font-bold">
+                    <div class="flex items-center gap-1.5">
+                        <i class="fas fa-layer-group text-[#AAB8C7]"></i>
+                        <span>{{ $project->disciplines_count ?? 0 }} Disiplin</span>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <i class="fas fa-user-friends text-[#AAB8C7]"></i>
+                        <span>{{ $project->personnel_count ?? 0 }} Personil</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Actions Row -->
+    <div class="flex justify-end mt-10 mb-10">
+        <button type="button" onclick="document.getElementById('uploadModal').classList.remove('hidden')" class="bg-[#AA9480] hover:bg-[#9A8470] text-white font-extrabold py-2.5 px-8 rounded-xl shadow-sm flex items-center gap-2 transition-all hover:-translate-y-0.5 hover:shadow-md">
+            <i class="fas fa-file-upload text-lg"></i> Upload Document
+        </button>
     </div>
 
     <!-- Active Filter -->
@@ -29,26 +60,16 @@
     </div>
 
     <!-- Folders Grid -->
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-5 md:gap-6 mb-12">
-        @php
-            $folderThemes = [
-                ['bg' => 'from-indigo-50 to-blue-50', 'border' => 'border-indigo-200', 'iconBg' => 'bg-indigo-100', 'iconHover' => 'group-hover:bg-indigo-200', 'icon' => 'text-indigo-500', 'textHover' => 'group-hover:text-indigo-700'],
-                ['bg' => 'from-emerald-50 to-teal-50', 'border' => 'border-emerald-200', 'iconBg' => 'bg-emerald-100', 'iconHover' => 'group-hover:bg-emerald-200', 'icon' => 'text-emerald-500', 'textHover' => 'group-hover:text-emerald-700'],
-                ['bg' => 'from-amber-50 to-orange-50', 'border' => 'border-amber-200', 'iconBg' => 'bg-amber-100', 'iconHover' => 'group-hover:bg-amber-200', 'icon' => 'text-amber-500', 'textHover' => 'group-hover:text-amber-700'],
-                ['bg' => 'from-purple-50 to-fuchsia-50', 'border' => 'border-purple-200', 'iconBg' => 'bg-purple-100', 'iconHover' => 'group-hover:bg-purple-200', 'icon' => 'text-purple-500', 'textHover' => 'group-hover:text-purple-700'],
-            ];
-        @endphp
-
+    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-5 md:gap-6 mb-12">
         @forelse($categories as $index => $cat)
-            @php $theme = $folderThemes[$index % 4]; @endphp
-            <a href="{{ route('dashboard.documents', ['category' => $cat->category]) }}" class="bg-gradient-to-br {{ $theme['bg'] }} border-2 {{ $theme['border'] }} rounded-[24px] p-6 shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.08)] transform hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between h-36 relative group cursor-pointer hover-glow">
+            <a href="{{ route('dashboard.documents', ['category' => $cat->category]) }}" class="bg-[#E6E1DC] rounded-[24px] p-6 shadow-sm hover:shadow-md transform hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between h-36 cursor-pointer group">
                 <div class="flex justify-between items-start">
-                    <div class="w-12 h-12 rounded-2xl {{ $theme['iconBg'] }} flex items-center justify-center {{ $theme['iconHover'] }} group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-inner">
-                        <i class="fas fa-folder text-xl {{ $theme['icon'] }}"></i>
-                    </div>
-                    <span class="text-xs font-bold text-gray-500 bg-white/50 px-2 py-1 rounded-lg">{{ $cat->count }} Files</span>
+                    <i class="fas fa-folder text-[40px] text-[#A69584] group-hover:text-[#9A8775] transition-colors"></i>
+                    @if($cat->count > 0)
+                    <span class="text-[10px] font-bold text-[#A69584]">{{ $cat->count }}</span>
+                    @endif
                 </div>
-                <h3 class="font-bold text-gray-700 text-[15px] mt-4 {{ $theme['textHover'] }} transition-colors truncate" title="{{ $cat->category }}">{{ $cat->category }}</h3>
+                <h3 class="font-extrabold text-[#1B293C] text-[17px] mt-4 truncate" title="{{ $cat->category }}">{{ $cat->category }}</h3>
             </a>
         @empty
             <div class="col-span-full text-center py-8 text-gray-400">
@@ -102,10 +123,10 @@
                         <thead>
                             <tr class="bg-gradient-to-r from-indigo-50/50 to-blue-50/50 border-b-2 border-gray-200">
                                 <th class="py-5 px-6 text-xs font-bold text-indigo-900 w-16 text-center">Format</th>
-                                <th class="py-5 px-6 text-xs font-bold text-indigo-900">Judul Dokumen</th>
-                                <th class="py-5 px-6 text-xs font-bold text-indigo-900">Kategori</th>
-                                <th class="py-5 px-6 text-xs font-bold text-indigo-900 text-center">Ukuran</th>
-                                <th class="py-5 px-6 text-xs font-bold text-indigo-900 text-center w-24">Aksi</th>
+                                <th class="py-5 px-6 text-xs font-bold text-indigo-900">Document Title</th>
+                                <th class="py-5 px-6 text-xs font-bold text-indigo-900">Category</th>
+                                <th class="py-5 px-6 text-xs font-bold text-indigo-900 text-center">Size</th>
+                                <th class="py-5 px-6 text-xs font-bold text-indigo-900 text-center w-24">Action</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y-2 divide-gray-100">
@@ -151,6 +172,96 @@
             <div class="px-6 py-4 mt-2 custom-pagination">
                 {{ $documents->links() }}
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- Upload Document Modal -->
+<div id="uploadModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 transition-all duration-300">
+    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-[1000px] max-h-[95vh] flex flex-col overflow-hidden transform scale-100">
+        <!-- Header -->
+        <div class="px-8 py-6 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+            <h2 class="text-[#0A58CA] font-extrabold flex items-center gap-3 text-[18px]">
+                <div class="bg-blue-100 w-10 h-10 rounded-full flex items-center justify-center"><i class="fas fa-file-upload"></i></div>
+                <span>Upload Document</span>
+            </h2>
+            <button type="button" onclick="document.getElementById('uploadModal').classList.add('hidden')" class="text-gray-400 hover:text-red-500 w-10 h-10 flex items-center justify-center rounded-full hover:bg-red-50 transition-colors">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+        
+        <!-- Modal Content -->
+        <div class="flex-1 overflow-y-auto p-6 md:p-10 custom-scrollbar">
+            <form method="POST" action="{{ route('documents.store') }}" enctype="multipart/form-data" class="flex flex-col md:flex-row gap-8 md:gap-12 w-full">
+                @csrf
+                
+                <!-- Left: Drag and Drop -->
+                <div class="flex-1 w-full">
+                    <div class="border-2 border-dashed border-[#F3C5C5] bg-[#FDF5F5] rounded-2xl h-[300px] md:h-[450px] flex flex-col items-center justify-center relative cursor-pointer hover:bg-[#FAEAEA] transition-colors group" onclick="document.getElementById('fileInputReal').click()">
+                        <input type="file" name="document" class="absolute w-px h-px opacity-0 overflow-hidden top-1/2 left-1/2" required id="fileInputReal" onchange="if(this.files.length > 0) { document.getElementById('filenameDisplay').innerText = this.files[0].name; document.getElementById('filenameDisplay').classList.remove('hidden'); }">
+                        
+                        <div class="w-16 h-20 bg-[#B83131] rounded-xl mb-6 flex items-center justify-center relative shadow-md group-hover:scale-110 transition-transform">
+                            <i class="fas fa-arrow-up text-white text-2xl"></i>
+                            <!-- Document fold corner -->
+                            <div class="absolute top-0 right-0 w-6 h-6 bg-[#FDF5F5] rounded-bl-xl group-hover:bg-[#FAEAEA] transition-colors"></div>
+                        </div>
+                        <h3 class="font-bold text-[#111] mb-2 text-[16px] md:text-[18px] text-center px-4">Click to Browse Files</h3>
+                        <div class="flex items-center gap-3 w-48 mb-4">
+                            <div class="flex-1 h-[1px] bg-[#E5D0D0]"></div>
+                            <span class="text-xs text-[#999] font-medium">OR</span>
+                            <div class="flex-1 h-[1px] bg-[#E5D0D0]"></div>
+                        </div>
+                        <button type="button" class="bg-white text-[#B83131] border-2 border-[#B83131] font-bold py-2 px-8 rounded-xl text-[14px] shadow-sm pointer-events-none group-hover:bg-[#B83131] group-hover:text-white transition-colors">Browse files</button>
+                        <div id="filenameDisplay" class="mt-6 text-[14px] font-bold text-[#B83131] hidden bg-white px-4 py-2 rounded-lg shadow-sm border border-[#F3C5C5] truncate max-w-[80%]"></div>
+                    </div>
+                </div>
+
+                <!-- Right: Metadata -->
+                <div class="flex-1 flex flex-col w-full">
+                    <div class="mb-8">
+                        <h3 class="text-[18px] font-extrabold text-gray-800 mb-1">Required Metadata</h3>
+                        <p class="text-[13px] text-gray-500 font-medium">Provide the information below to organize your document.</p>
+                    </div>
+
+                    <div class="space-y-5 flex-1">
+                        <div>
+                            <label class="block text-[13px] font-extrabold text-gray-700 mb-2">Document Title</label>
+                            <input type="text" name="title" placeholder="File Title" class="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 text-[14px] text-gray-700 focus:outline-none focus:border-[#0A58CA] focus:ring-4 focus:ring-blue-50 transition-all bg-gray-50 focus:bg-white" required>
+                        </div>
+
+                        <div>
+                            <label class="block text-[13px] font-extrabold text-gray-700 mb-2">Location (Folder)</label>
+                            <select name="category" id="categorySelect" class="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 text-[14px] text-gray-700 focus:outline-none focus:border-[#0A58CA] focus:ring-4 focus:ring-blue-50 transition-all bg-gray-50 focus:bg-white appearance-none cursor-pointer" required>
+                                @php $hasDefault = false; @endphp
+                                @foreach($categories as $cat)
+                                    @php if($cat->category == request('category', 'Supporting Documents')) $hasDefault = true; @endphp
+                                    <option value="{{ $cat->category }}" {{ request('category', 'Supporting Documents') == $cat->category ? 'selected' : '' }}>{{ $cat->category }}</option>
+                                @endforeach
+                                @if(!$hasDefault && request('category'))
+                                    <option value="{{ request('category') }}" selected>{{ request('category') }}</option>
+                                @elseif(!$hasDefault)
+                                    <option value="Supporting Documents" selected>Supporting Documents</option>
+                                @endif
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-[13px] font-extrabold text-gray-700 mb-2">Description</label>
+                            <textarea name="description" placeholder="Describe your document's content and purpose." rows="3" class="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 text-[14px] text-gray-700 focus:outline-none focus:border-[#0A58CA] focus:ring-4 focus:ring-blue-50 transition-all bg-gray-50 focus:bg-white"></textarea>
+                        </div>
+
+                        <div>
+                            <label class="block text-[13px] font-extrabold text-gray-700 mb-2">Keywords/Tags</label>
+                            <input type="text" name="tags" placeholder="e.g. report, annual, financial" class="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 text-[14px] text-gray-700 focus:outline-none focus:border-[#0A58CA] focus:ring-4 focus:ring-blue-50 transition-all bg-gray-50 focus:bg-white">
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end mt-8 pt-6 border-t border-gray-100">
+                        <button type="button" onclick="document.getElementById('uploadModal').classList.add('hidden')" class="px-6 py-2.5 text-sm font-bold text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-xl transition-colors mr-3">Cancel</button>
+                        <button type="submit" id="uploadBtnState" class="bg-[#B83131] text-white font-extrabold py-2.5 px-8 rounded-xl text-[14px] transition-all hover:bg-red-800 hover:shadow-lg transform hover:-translate-y-0.5">Upload File</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>

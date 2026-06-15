@@ -17,7 +17,7 @@ class ProjectMemberFactory extends Factory
             'email' => strtolower($firstName) . '@bita.com',
             'initials' => strtoupper(substr($firstName, 0, 1) . substr($lastName, 0, 1)),
             'color_hex' => $this->faker->hexColor(),
-            'discipline' => $this->faker->randomElement(['Arsitektur', 'Elektrikal', 'Mekanikal', 'Sipil', 'Struktur']),
+            'discipline' => $this->faker->randomElement(['Architectural', 'Electrical', 'Mechanical', 'Civil', 'Structural', 'Quantity Surveyor & Estimating', 'Project Control']),
             'role' => $this->faker->randomElement(['Project Manager', 'Senior Leader', 'Engineer', 'Drafter']),
             'access_level' => $this->faker->randomElement(['Full Access', 'Edit & Upload', 'View Only']),
             'active_documents' => $this->faker->numberBetween(10, 100),

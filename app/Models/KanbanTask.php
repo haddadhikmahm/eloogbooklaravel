@@ -10,4 +10,9 @@ class KanbanTask extends Model
     use HasFactory;
     
     protected $guarded = [];
+
+    public function sprint()
+    {
+        return $this->belongsTo(Sprint::class);
+    }
 }

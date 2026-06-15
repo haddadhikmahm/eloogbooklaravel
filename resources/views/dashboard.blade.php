@@ -2,41 +2,74 @@
 
 @section('content')
 <div class="w-full pb-10">
-    <!-- Header & Stats -->
-    <div class="mb-10 pt-4 flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6">
+    <!-- Header -->
+    <div class="flex flex-col lg:flex-row justify-between lg:items-start mb-6 pt-2 gap-6">
         <div>
-            <h1 class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-blue-500 tracking-tight mb-2">Logbook Revisi</h1>
+            <h1 class="text-[28px] sm:text-[32px] font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-blue-500 tracking-tight mb-2">Logbook Revisi</h1>
             <p class="text-gray-500 font-medium">Kelola dan pantau semua status revisi klien dengan mudah.</p>
         </div>
         
-        <div class="flex flex-wrap gap-4">
-            <!-- Stat Cards -->
-            <div class="bg-gradient-to-br from-indigo-500 to-blue-600 border-2 border-indigo-300/50 rounded-3xl p-5 w-36 shadow-[0_8px_25px_rgba(79,70,229,0.3)] hover:-translate-y-1 hover:shadow-[0_15px_35px_rgba(79,70,229,0.4)] transition-all duration-300 group relative overflow-hidden hover-glow">
-                <div class="absolute -right-4 -top-4 w-20 h-20 bg-white/10 rounded-full blur-xl group-hover:scale-150 transition-transform duration-700"></div>
-                <div class="w-10 h-10 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center mb-3 group-hover:scale-110 transition-transform shadow-inner relative z-10">
-                    <i class="fas fa-layer-group text-white text-lg"></i>
-                </div>
-                <p class="text-[32px] font-bold text-white leading-none mb-1 relative z-10">{{ $allRevisionsCount }}</p>
-                <p class="text-xs font-bold text-indigo-100 uppercase tracking-wider relative z-10">Total</p>
+        <!-- Project Identity Card -->
+        <div class="flex items-start gap-4 w-full lg:w-auto bg-white/50 lg:bg-transparent p-4 lg:p-0 rounded-2xl lg:rounded-none shadow-sm lg:shadow-none border border-gray-100 lg:border-none">
+            <!-- Icon Box -->
+            <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-white border border-gray-200 flex items-center justify-center flex-shrink-0 shadow-sm">
+                <i class="fas fa-map-marked-alt text-xl sm:text-2xl text-[#8E9EAC]"></i>
             </div>
             
-            <div class="bg-gradient-to-br from-emerald-400 to-teal-500 border-2 border-emerald-300/50 rounded-3xl p-5 w-36 shadow-[0_8px_25px_rgba(16,185,129,0.3)] hover:-translate-y-1 hover:shadow-[0_15px_35px_rgba(16,185,129,0.4)] transition-all duration-300 group relative overflow-hidden hover-glow">
-                <div class="absolute -right-4 -top-4 w-20 h-20 bg-white/10 rounded-full blur-xl group-hover:scale-150 transition-transform duration-700"></div>
-                <div class="w-10 h-10 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center mb-3 group-hover:scale-110 transition-transform shadow-inner relative z-10">
-                    <i class="far fa-folder-open text-white text-lg"></i>
+            <!-- Info Section -->
+            <div class="flex flex-col">
+                <div class="mb-1.5 flex items-center gap-2">
+                    <span class="bg-[#C2A595] text-white text-[10px] font-bold px-2 py-0.5 rounded shadow-sm tracking-wide">ACTIVE</span>
                 </div>
-                <p class="text-[32px] font-bold text-white leading-none mb-1 relative z-10">{{ $openRevisionsCount }}</p>
-                <p class="text-xs font-bold text-emerald-100 uppercase tracking-wider relative z-10">Open</p>
-            </div>
-            
-            <div class="bg-gradient-to-br from-rose-400 to-red-500 border-2 border-rose-300/50 rounded-3xl p-5 w-36 shadow-[0_8px_25px_rgba(244,63,94,0.3)] hover:-translate-y-1 hover:shadow-[0_15px_35px_rgba(244,63,94,0.4)] transition-all duration-300 group relative overflow-hidden hover-glow">
-                <div class="absolute -right-4 -top-4 w-20 h-20 bg-white/10 rounded-full blur-xl group-hover:scale-150 transition-transform duration-700"></div>
-                <div class="w-10 h-10 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center mb-3 group-hover:scale-110 transition-transform shadow-inner relative z-10">
-                    <i class="far fa-check-circle text-white text-lg"></i>
+                <h2 class="text-[16px] sm:text-[18px] font-extrabold text-[#112338] leading-tight mb-1">
+                    {{ $project->code ? $project->code . ' - ' : '' }}{{ $project->name }}
+                </h2>
+                <p class="text-[#72839A] text-[12px] sm:text-[13px] font-medium mb-2">
+                    {{ $project->type ?? 'Detailed Engineering Design' }}
+                </p>
+                
+                <div class="flex items-center gap-4 text-[#72839A] text-[11px] font-bold">
+                    <div class="flex items-center gap-1.5">
+                        <i class="fas fa-layer-group text-[#AAB8C7]"></i>
+                        <span>{{ $project->disciplines_count ?? 0 }} Disiplin</span>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <i class="fas fa-user-friends text-[#AAB8C7]"></i>
+                        <span>{{ $project->personnel_count ?? 0 }} Personil</span>
+                    </div>
                 </div>
-                <p class="text-[32px] font-bold text-white leading-none mb-1 relative z-10">{{ $closeRevisionsCount }}</p>
-                <p class="text-xs font-bold text-rose-100 uppercase tracking-wider relative z-10">Close</p>
             </div>
+        </div>
+    </div>
+
+    <!-- Stat Cards Area -->
+    <div class="flex flex-wrap justify-end gap-4 mb-8">
+        <!-- Stat Cards -->
+        <div class="bg-gradient-to-br from-indigo-500 to-blue-600 border-2 border-indigo-300/50 rounded-3xl p-5 w-36 shadow-[0_8px_25px_rgba(79,70,229,0.3)] hover:-translate-y-1 hover:shadow-[0_15px_35px_rgba(79,70,229,0.4)] transition-all duration-300 group relative overflow-hidden hover-glow">
+            <div class="absolute -right-4 -top-4 w-20 h-20 bg-white/10 rounded-full blur-xl group-hover:scale-150 transition-transform duration-700"></div>
+            <div class="w-10 h-10 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center mb-3 group-hover:scale-110 transition-transform shadow-inner relative z-10">
+                <i class="fas fa-layer-group text-white text-lg"></i>
+            </div>
+            <p class="text-[32px] font-bold text-white leading-none mb-1 relative z-10">{{ $allRevisionsCount }}</p>
+            <p class="text-xs font-bold text-indigo-100 uppercase tracking-wider relative z-10">Total</p>
+        </div>
+        
+        <div class="bg-gradient-to-br from-emerald-400 to-teal-500 border-2 border-emerald-300/50 rounded-3xl p-5 w-36 shadow-[0_8px_25px_rgba(16,185,129,0.3)] hover:-translate-y-1 hover:shadow-[0_15px_35px_rgba(16,185,129,0.4)] transition-all duration-300 group relative overflow-hidden hover-glow">
+            <div class="absolute -right-4 -top-4 w-20 h-20 bg-white/10 rounded-full blur-xl group-hover:scale-150 transition-transform duration-700"></div>
+            <div class="w-10 h-10 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center mb-3 group-hover:scale-110 transition-transform shadow-inner relative z-10">
+                <i class="far fa-folder-open text-white text-lg"></i>
+            </div>
+            <p class="text-[32px] font-bold text-white leading-none mb-1 relative z-10">{{ $openRevisionsCount }}</p>
+            <p class="text-xs font-bold text-emerald-100 uppercase tracking-wider relative z-10">Open</p>
+        </div>
+        
+        <div class="bg-gradient-to-br from-rose-400 to-red-500 border-2 border-rose-300/50 rounded-3xl p-5 w-36 shadow-[0_8px_25px_rgba(244,63,94,0.3)] hover:-translate-y-1 hover:shadow-[0_15px_35px_rgba(244,63,94,0.4)] transition-all duration-300 group relative overflow-hidden hover-glow">
+            <div class="absolute -right-4 -top-4 w-20 h-20 bg-white/10 rounded-full blur-xl group-hover:scale-150 transition-transform duration-700"></div>
+            <div class="w-10 h-10 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center mb-3 group-hover:scale-110 transition-transform shadow-inner relative z-10">
+                <i class="far fa-check-circle text-white text-lg"></i>
+            </div>
+            <p class="text-[32px] font-bold text-white leading-none mb-1 relative z-10">{{ $closeRevisionsCount }}</p>
+            <p class="text-xs font-bold text-rose-100 uppercase tracking-wider relative z-10">Close</p>
         </div>
     </div>
 
@@ -84,11 +117,11 @@
                 <table class="w-full text-left border-collapse whitespace-nowrap min-w-[800px]">
                 <thead>
                     <tr class="bg-gradient-to-r from-indigo-50/50 to-blue-50/50 border-b-2 border-gray-200">
-                        <th class="py-5 px-6 font-bold text-gray-700 text-sm text-center w-36">Tanggal</th>
-                        <th class="py-5 px-6 font-bold text-gray-700 text-sm text-center">Dokumen</th>
-                        <th class="py-5 px-6 font-bold text-gray-700 text-sm text-center w-32">Kode Revisi</th>
-                        <th class="py-5 px-6 font-bold text-gray-700 text-sm text-center">Revisi Klien</th>
-                        <th class="py-5 px-6 font-bold text-gray-700 text-sm text-center w-32">Personil</th>
+                        <th class="py-5 px-6 font-bold text-gray-700 text-sm text-center w-36">Date</th>
+                        <th class="py-5 px-6 font-bold text-gray-700 text-sm text-center">Document</th>
+                        <th class="py-5 px-6 font-bold text-gray-700 text-sm text-center w-32">Revision Code</th>
+                        <th class="py-5 px-6 font-bold text-gray-700 text-sm text-center">Client Revision</th>
+                        <th class="py-5 px-6 font-bold text-gray-700 text-sm text-center w-32">Personnel</th>
                         <th class="py-5 px-6 font-bold text-gray-700 text-sm text-center w-36">Status</th>
                     </tr>
                 </thead>
@@ -169,7 +202,7 @@
                     <input type="text" name="personnel_name" class="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all" required>
                 </div>
                 <div class="mt-4 flex justify-end">
-                    <button type="submit" class="bg-gradient-to-r from-indigo-600 to-blue-500 text-white font-bold px-8 py-2.5 rounded-xl shadow-[0_4px_15px_rgba(79,70,229,0.3)] hover:shadow-[0_8px_20px_rgba(79,70,229,0.4)] hover:-translate-y-0.5 transition duration-300">Simpan</button>
+                    <button type="submit" class="bg-gradient-to-r from-indigo-600 to-blue-500 text-white font-bold px-8 py-2.5 rounded-xl shadow-[0_4px_15px_rgba(79,70,229,0.3)] hover:shadow-[0_8px_20px_rgba(79,70,229,0.4)] hover:-translate-y-0.5 transition duration-300">Save</button>
                 </div>
             </form>
         </div>

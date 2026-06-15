@@ -13,6 +13,9 @@ class DocumentController extends Controller
         $request->validate([
             'document' => 'required|file|max:10240', // 10MB max
             'category' => 'nullable|string|max:255',
+            'title' => 'nullable|string|max:255',
+            'description' => 'nullable|string',
+            'tags' => 'nullable|string|max:255',
         ]);
 
         $projectId = session('active_project_id');
@@ -22,7 +25,7 @@ class DocumentController extends Controller
 
         $path = $file->store('documents', 'public');
         
-        $title = $file->getClientOriginalName();
+        $title = $request->title ?: $file->getClientOriginalName();
         $type = strtoupper($file->getClientOriginalExtension());
         $sizeBytes = $file->getSize();
         $sizeMb = round($sizeBytes / 1024 / 1024, 2);
@@ -35,6 +38,8 @@ class DocumentController extends Controller
             'project_id' => $project->id,
             'category' => $request->category ?? 'Supporting Documents',
             'title' => $title,
+            'description' => $request->description,
+            'tags' => $request->tags,
             'file_type' => $type ?: 'FILE',
             'file_size' => $sizeStr,
             'file_path' => $path,
@@ -55,7 +60,12 @@ class DocumentController extends Controller
     public function download(ProjectDocument $projectDocument)
     {
         if ($projectDocument->file_path && \Storage::disk('public')->exists($projectDocument->file_path)) {
-            return response()->download(storage_path('app/public/' . $projectDocument->file_path), $projectDocument->title);
+            $extension = strtolower($projectDocument->file_type);
+            $downloadName = $projectDocument->title;
+            if ($extension && $extension !== 'file' && !str_ends_with(strtolower($downloadName), '.' . $extension)) {
+                $downloadName .= '.' . $extension;
+            }
+            return response()->download(storage_path('app/public/' . $projectDocument->file_path), $downloadName);
         }
         return redirect()->back()->with('error', 'File not found.');
     }

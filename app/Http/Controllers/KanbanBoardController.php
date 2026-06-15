@@ -15,7 +15,7 @@ class KanbanBoardController extends Controller
             'name' => 'required|string|max:255',
         ]);
 
-        $project = Project::first();
+        $project = Project::find(session('active_project_id')) ?? Project::first();
         $maxOrder = KanbanBoard::where('project_id', $project->id)->max('order');
 
         KanbanBoard::create([

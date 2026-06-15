@@ -3,13 +3,48 @@
 @section('content')
 <div class="w-full pb-10">
     <!-- Top Header & Project Progress -->
-    <div class="flex justify-between items-start mb-8 pt-2">
+    <div class="flex flex-col lg:flex-row justify-between lg:items-start mb-6 pt-2 gap-6">
         <div>
-            <h1 class="text-[36px] font-bold text-gray-800 leading-tight mb-1 tracking-tight">Welcome, Kayla</h1>
-            <p class="text-[13px] text-gray-500 font-medium">Fase {{ $project->type ?? 'Detailed Engineering Design' }} • {{ str_replace('DED ', '', $project->name ?? 'Coal Terminal') }}</p>
+            <h1 class="text-[28px] sm:text-[32px] font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-blue-500 tracking-tight mb-2">Welcome, Kayla</h1>
+            <p class="text-gray-500 font-medium">Fase {{ $project->type ?? 'Detailed Engineering Design' }} • {{ str_replace('DED ', '', $project->name ?? 'Coal Terminal') }}</p>
         </div>
         
-        <div class="bg-gradient-to-br from-indigo-600 to-blue-700 border-2 border-indigo-400/50 rounded-[20px] p-6 shadow-[0_8px_30px_rgba(79,70,229,0.3)] hover:shadow-[0_12px_40px_rgba(79,70,229,0.4)] transition-shadow duration-300 w-80 relative overflow-hidden group hover-glow">
+        <!-- Project Identity Card -->
+        <div class="flex items-start gap-4 w-full lg:w-auto bg-white/50 lg:bg-transparent p-4 lg:p-0 rounded-2xl lg:rounded-none shadow-sm lg:shadow-none border border-gray-100 lg:border-none">
+            <!-- Icon Box -->
+            <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-white border border-gray-200 flex items-center justify-center flex-shrink-0 shadow-sm">
+                <i class="fas fa-map-marked-alt text-xl sm:text-2xl text-[#8E9EAC]"></i>
+            </div>
+            
+            <!-- Info Section -->
+            <div class="flex flex-col">
+                <div class="mb-1.5 flex items-center gap-2">
+                    <span class="bg-[#C2A595] text-white text-[10px] font-bold px-2 py-0.5 rounded shadow-sm tracking-wide">ACTIVE</span>
+                </div>
+                <h2 class="text-[16px] sm:text-[18px] font-extrabold text-[#112338] leading-tight mb-1">
+                    {{ $project->code ? $project->code . ' - ' : '' }}{{ $project->name }}
+                </h2>
+                <p class="text-[#72839A] text-[12px] sm:text-[13px] font-medium mb-2">
+                    {{ $project->type ?? 'Detailed Engineering Design' }}
+                </p>
+                
+                <div class="flex items-center gap-4 text-[#72839A] text-[11px] font-bold">
+                    <div class="flex items-center gap-1.5">
+                        <i class="fas fa-layer-group text-[#AAB8C7]"></i>
+                        <span>{{ $project->disciplines_count ?? 0 }} Disiplin</span>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <i class="fas fa-user-friends text-[#AAB8C7]"></i>
+                        <span>{{ $project->personnel_count ?? 0 }} Personil</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Progress Card Separated -->
+    <div class="flex justify-end mb-8">
+        <div class="bg-gradient-to-br from-indigo-600 to-blue-700 border-2 border-indigo-400/50 rounded-[20px] p-6 shadow-[0_8px_30px_rgba(79,70,229,0.3)] hover:shadow-[0_12px_40px_rgba(79,70,229,0.4)] transition-shadow duration-300 w-full sm:w-80 relative overflow-hidden group hover-glow">
             <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-bl-full opacity-50 group-hover:scale-110 transition-transform duration-500"></div>
             <div class="absolute -bottom-6 -left-6 w-24 h-24 bg-white/10 rounded-full blur-xl"></div>
             <div class="relative z-10">

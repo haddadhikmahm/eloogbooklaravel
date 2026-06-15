@@ -3,30 +3,63 @@
 @section('content')
 <div class="w-full max-w-[1200px] mx-auto pb-10">
     <!-- Header -->
-    <div class="flex justify-between items-start mb-6 pt-2">
-        <h1 class="text-[28px] font-bold text-gray-800">S-Curve Progress</h1>
+    <div class="flex flex-col lg:flex-row justify-between lg:items-start mb-6 pt-2 gap-6">
+        <h1 class="text-[28px] sm:text-[32px] font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-blue-500 tracking-tight">S-Curve Progress</h1>
         
-        <div class="flex gap-4">
-            <div class="bg-indigo-50 border border-gray-200 rounded-xl p-4 w-[280px]">
-                <h3 class="font-bold text-indigo-900 text-[13px] mb-2 uppercase tracking-wider">PROJECT PROGRESS</h3>
-                <div class="flex items-end gap-3 mb-1">
-                    <span class="text-[36px] font-light text-indigo-600 leading-none">{{ $project->completion_percentage ?? 56 }}%</span>
-                    <span class="text-[13px] font-bold text-gray-500 mb-1">Actual</span>
+        <!-- Project Identity Card -->
+        <div class="flex items-start gap-4 w-full lg:w-auto bg-white/50 lg:bg-transparent p-4 lg:p-0 rounded-2xl lg:rounded-none shadow-sm lg:shadow-none border border-gray-100 lg:border-none">
+            <!-- Icon Box -->
+            <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-white border border-gray-200 flex items-center justify-center flex-shrink-0 shadow-sm">
+                <i class="fas fa-map-marked-alt text-xl sm:text-2xl text-[#8E9EAC]"></i>
+            </div>
+            
+            <!-- Info Section -->
+            <div class="flex flex-col">
+                <div class="mb-1.5 flex items-center gap-2">
+                    <span class="bg-[#C2A595] text-white text-[10px] font-bold px-2 py-0.5 rounded shadow-sm tracking-wide">ACTIVE</span>
                 </div>
-                <div class="w-full bg-gray-200 h-2 rounded-full mt-3 overflow-hidden">
-                    <div class="bg-indigo-600 h-full rounded-full" style="width: {{ $project->completion_percentage ?? 56 }}%;"></div>
+                <h2 class="text-[16px] sm:text-[18px] font-extrabold text-[#112338] leading-tight mb-1">
+                    {{ $project->code ? $project->code . ' - ' : '' }}{{ $project->name }}
+                </h2>
+                <p class="text-[#72839A] text-[12px] sm:text-[13px] font-medium mb-2">
+                    {{ $project->type ?? 'Detailed Engineering Design' }}
+                </p>
+                
+                <div class="flex items-center gap-4 text-[#72839A] text-[11px] font-bold">
+                    <div class="flex items-center gap-1.5">
+                        <i class="fas fa-layer-group text-[#AAB8C7]"></i>
+                        <span>{{ $project->disciplines_count ?? 0 }} Disiplin</span>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <i class="fas fa-user-friends text-[#AAB8C7]"></i>
+                        <span>{{ $project->personnel_count ?? 0 }} Personil</span>
+                    </div>
                 </div>
             </div>
+        </div>
+    </div>
 
-            <div class="bg-white border border-gray-200 rounded-xl p-4 w-[280px] shadow-sm">
-                <h3 class="font-bold text-gray-400 text-[13px] mb-2 uppercase tracking-wider">TARGET PROGRESS</h3>
-                <div class="flex items-end gap-3 mb-1">
-                    <span class="text-[36px] font-light text-gray-700 leading-none">62%</span>
-                    <span class="text-[13px] font-bold text-gray-400 mb-1">Planned</span>
-                </div>
-                <div class="w-full bg-gray-100 h-2 rounded-full mt-3 overflow-hidden">
-                    <div class="bg-gray-300 h-full rounded-full w-[62%]"></div>
-                </div>
+    <!-- Progress Cards Area -->
+    <div class="flex flex-col sm:flex-row gap-4 mb-8">
+        <div class="bg-indigo-50 border border-gray-200 rounded-xl p-4 w-full sm:w-[280px]">
+            <h3 class="font-bold text-indigo-900 text-[13px] mb-2 uppercase tracking-wider">PROJECT PROGRESS</h3>
+            <div class="flex items-end gap-3 mb-1">
+                <span class="text-[36px] font-light text-indigo-600 leading-none">{{ $project->completion_percentage ?? 56 }}%</span>
+                <span class="text-[13px] font-bold text-gray-500 mb-1">Actual</span>
+            </div>
+            <div class="w-full bg-gray-200 h-2 rounded-full mt-3 overflow-hidden">
+                <div class="bg-indigo-600 h-full rounded-full" style="width: {{ $project->completion_percentage ?? 56 }}%;"></div>
+            </div>
+        </div>
+
+        <div class="bg-white border border-gray-200 rounded-xl p-4 w-full sm:w-[280px] shadow-sm">
+            <h3 class="font-bold text-gray-400 text-[13px] mb-2 uppercase tracking-wider">TARGET PROGRESS</h3>
+            <div class="flex items-end gap-3 mb-1">
+                <span class="text-[36px] font-light text-gray-700 leading-none">62%</span>
+                <span class="text-[13px] font-bold text-gray-400 mb-1">Planned</span>
+            </div>
+            <div class="w-full bg-gray-100 h-2 rounded-full mt-3 overflow-hidden">
+                <div class="bg-gray-300 h-full rounded-full w-[62%]"></div>
             </div>
         </div>
     </div>

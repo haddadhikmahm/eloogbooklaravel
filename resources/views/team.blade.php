@@ -3,41 +3,53 @@
 @section('content')
 <div class="w-full pb-10">
     <!-- Header Area -->
-    <div class="flex justify-between items-start mb-8 pt-2">
-        <div class="flex-1">
-            <h1 class="text-[32px] font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-blue-500 mb-6 tracking-tight">Team & Discipline</h1>
-            <!-- Filters Area -->
-            <div class="flex flex-col xl:flex-row xl:items-center justify-between gap-4 mr-0 lg:mr-8">
-                <div class="flex gap-3 flex-wrap">
-                    <a href="{{ route('dashboard.team', ['discipline' => 'All Personnel']) }}" class="{{ request('discipline', 'All Personnel') == 'All Personnel' ? 'bg-gradient-to-r from-indigo-600 to-blue-500 text-white shadow-md' : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50' }} px-5 py-2.5 rounded-full text-[13px] font-bold shadow-sm transition-all duration-300">All Personnel</a>
-                    <a href="{{ route('dashboard.team', ['discipline' => 'Sipil']) }}" class="{{ request('discipline') == 'Sipil' ? 'bg-gradient-to-r from-indigo-600 to-blue-500 text-white shadow-md' : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50' }} px-5 py-2.5 rounded-full text-[13px] font-bold shadow-sm transition-all duration-300">Sipil</a>
-                    <a href="{{ route('dashboard.team', ['discipline' => 'Struktur']) }}" class="{{ request('discipline') == 'Struktur' ? 'bg-gradient-to-r from-indigo-600 to-blue-500 text-white shadow-md' : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50' }} px-5 py-2.5 rounded-full text-[13px] font-bold shadow-sm transition-all duration-300">Struktur</a>
-                    <a href="{{ route('dashboard.team', ['discipline' => 'Arsitektur']) }}" class="{{ request('discipline') == 'Arsitektur' ? 'bg-gradient-to-r from-indigo-600 to-blue-500 text-white shadow-md' : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50' }} px-5 py-2.5 rounded-full text-[13px] font-bold shadow-sm transition-all duration-300">Arsitektur</a>
-                    <a href="{{ route('dashboard.team', ['discipline' => 'Mekanikal']) }}" class="{{ request('discipline') == 'Mekanikal' ? 'bg-gradient-to-r from-indigo-600 to-blue-500 text-white shadow-md' : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50' }} px-5 py-2.5 rounded-full text-[13px] font-bold shadow-sm transition-all duration-300">Mekanikal</a>
-                    <a href="{{ route('dashboard.team', ['discipline' => 'Elektrikal']) }}" class="{{ request('discipline') == 'Elektrikal' ? 'bg-gradient-to-r from-indigo-600 to-blue-500 text-white shadow-md' : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50' }} px-5 py-2.5 rounded-full text-[13px] font-bold shadow-sm transition-all duration-300">Elektrikal</a>
-                </div>
-            </div>
-        </div>
+    <!-- Header Area -->
+    <div class="flex flex-col lg:flex-row justify-between lg:items-start mb-6 pt-2 gap-6">
+        <h1 class="text-[28px] sm:text-[32px] font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-blue-500 tracking-tight">Team & Discipline</h1>
         
-        <!-- Active Project Card -->
-        <div class="bg-white/60 backdrop-blur-md border-2 border-gray-200 rounded-[20px] p-5 shadow-[0_8px_30px_rgba(0,0,0,0.04)] w-[340px] flex gap-4 items-center hover:shadow-[0_12px_40px_rgba(0,0,0,0.08)] transition duration-300 group hover-glow">
-            <div class="w-14 h-14 bg-gradient-to-br from-indigo-50 to-blue-100 rounded-2xl border-2 border-indigo-200 flex items-center justify-center shadow-inner group-hover:scale-110 transition-transform duration-300">
-                <i class="fas fa-map-marked-alt text-indigo-400 text-xl group-hover:rotate-3 transition-transform"></i>
+        <!-- Project Identity Card -->
+        <div class="flex items-start gap-4 w-full lg:w-auto bg-white/50 lg:bg-transparent p-4 lg:p-0 rounded-2xl lg:rounded-none shadow-sm lg:shadow-none border border-gray-100 lg:border-none">
+            <!-- Icon Box -->
+            <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-white border border-gray-200 flex items-center justify-center flex-shrink-0 shadow-sm">
+                <i class="fas fa-map-marked-alt text-xl sm:text-2xl text-[#8E9EAC]"></i>
             </div>
-            <div>
-                <span class="bg-gradient-to-r from-emerald-400 to-teal-500 text-white text-[9px] font-bold px-2.5 py-1 rounded-full tracking-wider shadow-sm inline-block">ACTIVE</span>
-                <h3 class="font-bold text-gray-800 text-[14px] mt-1.5">{{ $project->code }} - {{ $project->name }}</h3>
-                <p class="text-[11px] text-gray-500 mt-0.5">{{ $project->type }}</p>
-                <div class="flex gap-4 mt-2.5">
-                    <div class="flex items-center gap-1.5 text-[11px] text-gray-500 font-semibold">
-                        <i class="fas fa-layer-group text-indigo-500"></i> {{ $project->disciplines_count }} Disiplin
+            
+            <!-- Info Section -->
+            <div class="flex flex-col">
+                <div class="mb-1.5 flex items-center gap-2">
+                    <span class="bg-[#C2A595] text-white text-[10px] font-bold px-2 py-0.5 rounded shadow-sm tracking-wide">ACTIVE</span>
+                </div>
+                <h2 class="text-[16px] sm:text-[18px] font-extrabold text-[#112338] leading-tight mb-1">
+                    {{ $project->code ? $project->code . ' - ' : '' }}{{ $project->name }}
+                </h2>
+                <p class="text-[#72839A] text-[12px] sm:text-[13px] font-medium mb-2">
+                    {{ $project->type ?? 'Detailed Engineering Design' }}
+                </p>
+                
+                <div class="flex items-center gap-4 text-[#72839A] text-[11px] font-bold">
+                    <div class="flex items-center gap-1.5">
+                        <i class="fas fa-layer-group text-[#AAB8C7]"></i>
+                        <span>{{ $project->disciplines_count ?? 0 }} Disiplin</span>
                     </div>
-                    <div class="flex items-center gap-1.5 text-[11px] text-gray-500 font-semibold">
-                        <i class="fas fa-users text-indigo-500"></i> {{ $project->personnel_count }} Personil
+                    <div class="flex items-center gap-1.5">
+                        <i class="fas fa-user-friends text-[#AAB8C7]"></i>
+                        <span>{{ $project->personnel_count ?? 0 }} Personil</span>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- Filters Area -->
+    <div class="flex flex-wrap items-center gap-3 mb-8">
+            <a href="{{ route('dashboard.team', ['discipline' => 'All Personnel']) }}" class="{{ request('discipline', 'All Personnel') == 'All Personnel' ? 'bg-gradient-to-r from-indigo-600 to-blue-500 text-white shadow-md' : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50' }} px-4 py-2 sm:px-5 sm:py-2.5 rounded-full text-[12px] sm:text-[13px] font-bold shadow-sm transition-all duration-300 whitespace-nowrap">All Personnel</a>
+            <a href="{{ route('dashboard.team', ['discipline' => 'Civil']) }}" class="{{ request('discipline') == 'Civil' ? 'bg-gradient-to-r from-indigo-600 to-blue-500 text-white shadow-md' : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50' }} px-4 py-2 sm:px-5 sm:py-2.5 rounded-full text-[12px] sm:text-[13px] font-bold shadow-sm transition-all duration-300 whitespace-nowrap">Civil</a>
+            <a href="{{ route('dashboard.team', ['discipline' => 'Structural']) }}" class="{{ request('discipline') == 'Structural' ? 'bg-gradient-to-r from-indigo-600 to-blue-500 text-white shadow-md' : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50' }} px-4 py-2 sm:px-5 sm:py-2.5 rounded-full text-[12px] sm:text-[13px] font-bold shadow-sm transition-all duration-300 whitespace-nowrap">Structural</a>
+            <a href="{{ route('dashboard.team', ['discipline' => 'Architectural']) }}" class="{{ request('discipline') == 'Architectural' ? 'bg-gradient-to-r from-indigo-600 to-blue-500 text-white shadow-md' : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50' }} px-4 py-2 sm:px-5 sm:py-2.5 rounded-full text-[12px] sm:text-[13px] font-bold shadow-sm transition-all duration-300 whitespace-nowrap">Architectural</a>
+            <a href="{{ route('dashboard.team', ['discipline' => 'Mechanical']) }}" class="{{ request('discipline') == 'Mechanical' ? 'bg-gradient-to-r from-indigo-600 to-blue-500 text-white shadow-md' : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50' }} px-4 py-2 sm:px-5 sm:py-2.5 rounded-full text-[12px] sm:text-[13px] font-bold shadow-sm transition-all duration-300 whitespace-nowrap">Mechanical</a>
+            <a href="{{ route('dashboard.team', ['discipline' => 'Electrical']) }}" class="{{ request('discipline') == 'Electrical' ? 'bg-gradient-to-r from-indigo-600 to-blue-500 text-white shadow-md' : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50' }} px-4 py-2 sm:px-5 sm:py-2.5 rounded-full text-[12px] sm:text-[13px] font-bold shadow-sm transition-all duration-300 whitespace-nowrap">Electrical</a>
+            <a href="{{ route('dashboard.team', ['discipline' => 'Quantity Surveyor & Estimating']) }}" class="{{ request('discipline') == 'Quantity Surveyor & Estimating' ? 'bg-gradient-to-r from-indigo-600 to-blue-500 text-white shadow-md' : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50' }} px-4 py-2 sm:px-5 sm:py-2.5 rounded-full text-[12px] sm:text-[13px] font-bold shadow-sm transition-all duration-300 whitespace-nowrap">Quantity Surveyor & Estimating</a>
+            <a href="{{ route('dashboard.team', ['discipline' => 'Project Control']) }}" class="{{ request('discipline') == 'Project Control' ? 'bg-gradient-to-r from-indigo-600 to-blue-500 text-white shadow-md' : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50' }} px-4 py-2 sm:px-5 sm:py-2.5 rounded-full text-[12px] sm:text-[13px] font-bold shadow-sm transition-all duration-300 whitespace-nowrap">Project Control</a>
     </div>
 
     <!-- Team Table -->
@@ -80,8 +92,8 @@
                         <th class="py-5 px-6 text-xs font-bold text-gray-500 w-12 text-center">
                             <input type="checkbox" id="selectAll" class="rounded border-gray-300 text-indigo-500 focus:ring-indigo-500 cursor-pointer">
                         </th>
-                        <th class="py-5 px-6 text-xs font-bold text-indigo-900">Nama & Email</th>
-                        <th class="py-5 px-6 text-xs font-bold text-indigo-900">Disiplin</th>
+                        <th class="py-5 px-6 text-xs font-bold text-indigo-900">Name & Email</th>
+                        <th class="py-5 px-6 text-xs font-bold text-indigo-900">Discipline</th>
                         <th class="py-5 px-6 text-xs font-bold text-indigo-900">Role</th>
                         <th class="py-5 px-6 text-xs font-bold text-indigo-900">Access Level</th>
                         <th class="py-5 px-6 text-xs font-bold text-indigo-900 text-center">Active Doc.</th>
@@ -172,11 +184,13 @@
             <div>
                 <label class="block text-xs font-bold text-gray-600 mb-2 uppercase tracking-wide">Discipline</label>
                 <select name="discipline" class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all shadow-sm appearance-none bg-white cursor-pointer" required>
-                    <option value="Sipil">Sipil</option>
-                    <option value="Struktur">Struktur</option>
-                    <option value="Arsitektur">Arsitektur</option>
-                    <option value="Mekanikal">Mekanikal</option>
-                    <option value="Elektrikal">Elektrikal</option>
+                    <option value="Civil">Civil</option>
+                    <option value="Structural">Structural</option>
+                    <option value="Architectural">Architectural</option>
+                    <option value="Mechanical">Mechanical</option>
+                    <option value="Electrical">Electrical</option>
+                    <option value="Quantity Surveyor & Estimating">Quantity Surveyor & Estimating</option>
+                    <option value="Project Control">Project Control</option>
                 </select>
             </div>
             <div>

@@ -257,8 +257,47 @@
             </aside>
 
             <!-- Content Area -->
-            <main class="flex-1 overflow-y-auto bg-[#FCFBFA] p-4 md:p-8 custom-scrollbar w-full relative z-0">
-                @yield('content')
+            <main class="flex-1 overflow-y-auto bg-[#FCFBFA] custom-scrollbar w-full relative z-0 flex flex-col">
+                
+                @if(isset($activeProject) && !request()->routeIs('dashboard.sprint') && !request()->routeIs('dashboard.documents') && !request()->routeIs('dashboard.team') && !request()->routeIs('dashboard.scurve') && !request()->routeIs('dashboard.logbook') && !request()->routeIs('dashboard.index') && !request()->routeIs('dashboard.kanban'))
+                <!-- Project Identity Card -->
+                <div class="bg-white px-6 py-6 md:px-10 md:py-8 border-b border-gray-100 shadow-[0_2px_10px_rgba(0,0,0,0.02)] shrink-0">
+                    <div class="flex items-start gap-5 max-w-[1200px] mx-auto">
+                        <!-- Icon Box -->
+                        <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gray-50/80 border border-gray-200 flex items-center justify-center flex-shrink-0 shadow-inner">
+                            <i class="fas fa-map-marked-alt text-2xl sm:text-3xl text-[#8E9EAC]"></i>
+                        </div>
+                        
+                        <!-- Info Section -->
+                        <div class="flex flex-col flex-1">
+                            <div class="mb-2">
+                                <span class="bg-[#C2A595] text-white text-[10px] font-bold px-2.5 py-0.5 rounded shadow-sm tracking-wide">ACTIVE</span>
+                            </div>
+                            <h1 class="text-[18px] sm:text-[22px] font-extrabold text-[#112338] leading-tight mb-1.5">
+                                {{ $activeProject->code ? $activeProject->code . ' - ' : '' }}{{ $activeProject->name }}
+                            </h1>
+                            <p class="text-[#72839A] text-[14px] sm:text-[15px] font-medium mb-3">
+                                {{ $activeProject->type ?? 'Detailed Engineering Design' }}
+                            </p>
+                            
+                            <div class="flex items-center gap-6 text-[#72839A] text-[13px] font-bold">
+                                <div class="flex items-center gap-2">
+                                    <i class="fas fa-layer-group text-[#AAB8C7] text-sm"></i>
+                                    <span>{{ $activeProject->disciplines_count ?? 0 }} Disiplin</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <i class="fas fa-user-friends text-[#AAB8C7] text-sm"></i>
+                                    <span>{{ $activeProject->personnel_count ?? 0 }} Personil</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @endif
+
+                <div class="p-4 md:p-8 flex-1 w-full max-w-full">
+                    @yield('content')
+                </div>
             </main>
         </div>
     </div>
@@ -352,6 +391,13 @@
             Toast.fire({
                 icon: 'error',
                 title: '{{ session('error') }}'
+            });
+            @endif
+
+            @if($errors->any())
+            Toast.fire({
+                icon: 'error',
+                title: '{!! addslashes($errors->first()) !!}'
             });
             @endif
 

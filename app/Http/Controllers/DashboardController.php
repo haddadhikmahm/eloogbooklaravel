@@ -64,21 +64,44 @@ class DashboardController extends Controller
         // Calculate totals for Goal Block
         $allBacklogs = SprintBacklog::where('project_id', $project->id)->get();
 
-        return view('sprint', compact('project', 'backlogs', 'allBacklogs'));
+        // Fetch Sprints for the Jira-like UI
+        $sprints = \App\Models\Sprint::with('tasks')->where('project_id', $project->id)->orderBy('start_date', 'desc')->get();
+
+        return view('sprint', compact('project', 'backlogs', 'allBacklogs', 'sprints'));
     }
 
     public function kanban(Request $request)
     {
         $project = $this->getActiveProject();
+        
+        // Fetch active sprint
+        $activeSprint = \App\Models\Sprint::with('tasks')
+            ->where('project_id', $project->id)
+            ->where('status', 'Aktif')
+            ->orderBy('start_date', 'desc')
+            ->first();
+
+        // If no active sprint, just get the latest one
+        if (!$activeSprint) {
+            $activeSprint = \App\Models\Sprint::with('tasks')
+                ->where('project_id', $project->id)
+                ->orderBy('start_date', 'desc')
+                ->first();
+        }
+
         $query = KanbanTask::where('project_id', $project->id);
+        
+        // If there's an active sprint, we probably want to show its tasks, 
+        // or all tasks if we filter by sprint. The image says "Filter by sprint ini".
+        // Let's pass $activeSprint to the view.
 
         if ($search = $request->query('search')) {
             $query->where('title', 'like', "%{$search}%");
         }
 
-        $tasks = $query->get();
+        $tasks = $query->with('sprint')->get();
         $kanbanBoards = \App\Models\KanbanBoard::where('project_id', $project->id)->orderBy('order')->get();
-        return view('kanban', compact('project', 'tasks', 'kanbanBoards'));
+        return view('kanban', compact('project', 'tasks', 'kanbanBoards', 'activeSprint'));
     }
 
     public function logbook(Request $request)

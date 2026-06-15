@@ -48,10 +48,14 @@ Route::middleware('auth')->group(function () {
     Route::put('/revisions/{clientRevision}', [RevisionController::class, 'updateStatus'])->name('revisions.updateStatus');
     Route::delete('/revisions/{clientRevision}', [RevisionController::class, 'destroy'])->name('revisions.destroy');
 
-    // Sprint Backlog CRUD
+    // Sprint Backlog CRUD (Legacy)
     Route::post('/sprints', [SprintController::class, 'store'])->name('sprints.store');
     Route::put('/sprints/{sprintBacklog}', [SprintController::class, 'updateStatus'])->name('sprints.updateStatus');
     Route::delete('/sprints/{sprintBacklog}', [SprintController::class, 'destroy'])->name('sprints.destroy');
+
+    // New Sprint Management
+    Route::post('/sprints/manage', [SprintController::class, 'storeNewSprint'])->name('sprints.manage.store');
+    Route::post('/sprints/manage/{sprint}/tasks', [SprintController::class, 'storeSprintTask'])->name('sprints.manage.storeTask');
 
     // Documents CRUD
     Route::post('/documents', [DocumentController::class, 'store'])->name('documents.store');

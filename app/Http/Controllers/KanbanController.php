@@ -15,7 +15,7 @@ class KanbanController extends Controller
             'status' => 'required|string',
         ]);
 
-        $project = Project::first();
+        $project = Project::find(session('active_project_id')) ?? Project::first();
 
         KanbanTask::create([
             'project_id' => $project->id,
