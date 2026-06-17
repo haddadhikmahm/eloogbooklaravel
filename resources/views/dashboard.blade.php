@@ -5,8 +5,8 @@
     <!-- Header -->
     <div class="flex flex-col lg:flex-row justify-between lg:items-start mb-6 pt-2 gap-6">
         <div>
-            <h1 class="text-[28px] sm:text-[32px] font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-blue-500 tracking-tight mb-2">Logbook Revisi</h1>
-            <p class="text-gray-500 font-medium">Kelola dan pantau semua status revisi klien dengan mudah.</p>
+            <h1 class="text-[28px] sm:text-[32px] font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-blue-500 tracking-tight mb-2">Revision Logbook</h1>
+            <p class="text-gray-500 font-medium">Manage and monitor all client revision statuses easily.</p>
         </div>
         
         <!-- Project Identity Card -->
@@ -19,7 +19,7 @@
             <!-- Info Section -->
             <div class="flex flex-col">
                 <div class="mb-1.5 flex items-center gap-2">
-                    <span class="bg-[#C2A595] text-white text-[10px] font-bold px-2 py-0.5 rounded shadow-sm tracking-wide">ACTIVE</span>
+                    <span class="bg-indigo-500 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow-sm tracking-wide">ACTIVE</span>
                 </div>
                 <h2 class="text-[16px] sm:text-[18px] font-extrabold text-[#112338] leading-tight mb-1">
                     {{ $project->code ? $project->code . ' - ' : '' }}{{ $project->name }}
@@ -31,11 +31,11 @@
                 <div class="flex items-center gap-4 text-[#72839A] text-[11px] font-bold">
                     <div class="flex items-center gap-1.5">
                         <i class="fas fa-layer-group text-[#AAB8C7]"></i>
-                        <span>{{ $project->disciplines_count ?? 0 }} Disiplin</span>
+                        <span>{{ $project->disciplines_count ?? 0 }} Disciplines</span>
                     </div>
                     <div class="flex items-center gap-1.5">
                         <i class="fas fa-user-friends text-[#AAB8C7]"></i>
-                        <span>{{ $project->personnel_count ?? 0 }} Personil</span>
+                        <span>{{ $project->personnel_count ?? 0 }} Personnel</span>
                     </div>
                 </div>
             </div>
@@ -96,13 +96,13 @@
     <div class="bg-white border-2 border-gray-200 rounded-[20px] shadow-[0_4px_24px_rgba(0,0,0,0.02)] overflow-hidden hover-glow mb-8">
         <!-- Table Header Bar -->
         <div class="bg-gradient-to-r from-indigo-50/50 to-blue-50/50 px-6 py-4 border-b-2 border-gray-200">
-            <h3 class="font-bold text-indigo-900 text-[14px]">Daftar Revisi Klien</h3>
+            <h3 class="font-bold text-indigo-900 text-[14px]">Client Revision List</h3>
         </div>
         
         <div class="p-6 pb-2">
             <!-- Top Actions Bar -->
             <div class="flex justify-between items-center mb-6">
-                <h2 class="text-indigo-900 text-[15px] font-bold tracking-wide">Data Logbook</h2>
+                <h2 class="text-indigo-900 text-[15px] font-bold tracking-wide">Logbook Data</h2>
                 
                 <form method="GET" action="{{ route('dashboard.logbook') }}" class="relative group">
                     @if(request('status'))
@@ -139,7 +139,7 @@
                                     @csrf
                                     @method('PUT')
                                     <input type="hidden" name="status" value="{{ strtolower($revision->status) == 'open' ? 'Close' : 'Open' }}">
-                                    <button type="submit" title="Toggle Status" class="inline-block {{ strtolower($revision->status) == 'open' ? 'bg-[#FCE3A1] text-[#916E18] border-[#F3D78A]' : 'bg-[#7AEC96] text-[#145525] border-[#68D983]' }} px-5 py-1.5 rounded text-xs font-bold shadow-sm border hover:opacity-80 transition">
+                                    <button type="submit" title="Toggle Status" class="inline-block {{ strtolower($revision->status) == 'open' ? 'bg-amber-100 text-amber-700 border-amber-300 hover:bg-amber-200' : 'bg-emerald-100 text-emerald-700 border-emerald-300 hover:bg-emerald-200' }} px-5 py-1.5 rounded text-xs font-bold shadow-sm border transition-colors">
                                         {{ ucfirst($revision->status) }}
                                     </button>
                                 </form>
@@ -173,16 +173,16 @@
             <form method="POST" action="{{ route('revisions.store') }}" class="flex flex-col gap-4">
                 @csrf
                 <div>
-                    <label class="block text-xs font-bold text-gray-700 mb-1">Tanggal</label>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Date</label>
                     <input type="date" name="date" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all" required>
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-gray-700 mb-1">Nama Dokumen</label>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Document Name</label>
                     <input type="text" name="document_name" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all" required>
                 </div>
                 <div class="flex gap-4">
                     <div class="flex-1">
-                        <label class="block text-xs font-bold text-gray-700 mb-1">Kode Revisi</label>
+                        <label class="block text-xs font-bold text-gray-700 mb-1">Revision Code</label>
                         <input type="text" name="revision_code" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all" required>
                     </div>
                     <div class="flex-1">
@@ -194,11 +194,11 @@
                     </div>
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-gray-700 mb-1">Revisi Klien (Deskripsi)</label>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Client Revision (Description)</label>
                     <textarea name="description" rows="3" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all" required></textarea>
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-gray-700 mb-1">Personil</label>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Personnel</label>
                     <input type="text" name="personnel_name" class="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all" required>
                 </div>
                 <div class="mt-4 flex justify-end">

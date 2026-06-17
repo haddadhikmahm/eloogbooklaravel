@@ -77,7 +77,7 @@ class DashboardController extends Controller
         // Fetch active sprint
         $activeSprint = \App\Models\Sprint::with('tasks')
             ->where('project_id', $project->id)
-            ->where('status', 'Aktif')
+            ->where('status', 'Active')
             ->orderBy('start_date', 'desc')
             ->first();
 
@@ -210,7 +210,7 @@ class DashboardController extends Controller
 
         // If empty (legacy project), seed it automatically
         if ($progresses->isEmpty()) {
-            $monthsList = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+            $monthsList = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
             $defaultPlanned = [0, 5, 12, 25, 45, 62, 75, 88, 95, 100, 100, 100];
             $defaultActual = [0, 3, 10, 20, 35, null, null, null, null, null, null, null];
             
@@ -339,5 +339,27 @@ class DashboardController extends Controller
         }
 
         return response()->json($results);
+    }
+
+    public function comments(Request $request)
+    {
+        $project = $this->getActiveProject();
+        $query = ProjectComment::where('project_id', $project->id);
+
+        if ($search = $request->query('search')) {
+            $query->where(function($q) use ($search) {
+                $q->where('document_code', 'like', "%{$search}%")
+                  ->orWhere('text', 'like', "%{$search}%")
+                  ->orWhere('author_name', 'like', "%{$search}%");
+            });
+        }
+
+        $commentsList = $query->orderBy('date', 'desc')->paginate(10)->withQueryString();
+        
+        $openCommentsCount = ProjectComment::where('project_id', $project->id)->where('status', 'OPEN')->count();
+        $closedCommentsCount = ProjectComment::where('project_id', $project->id)->where('status', 'CLOSE')->count();
+        $totalCommentsCount = ProjectComment::where('project_id', $project->id)->count();
+
+        return view('comments', compact('project', 'commentsList', 'openCommentsCount', 'closedCommentsCount', 'totalCommentsCount'));
     }
 }

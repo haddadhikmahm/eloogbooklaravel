@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -170,9 +170,9 @@
                             
                             <!-- Profile Dropdown -->
                             <div id="profileDropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-100 hidden z-50 overflow-hidden">
-                                <form method="POST" action="{{ route('logout') }}">
+                                <form id="logoutForm" method="POST" action="{{ route('logout') }}">
                                     @csrf
-                                    <a href="{{ route('logout') }}" onclick="event.preventDefault(); this.closest('form').submit();" class="flex items-center px-4 py-3 text-sm text-rose-500 hover:bg-rose-50 transition-colors font-medium">
+                                    <a href="#" onclick="confirmLogout(event)" class="flex items-center px-4 py-3 text-sm text-rose-500 hover:bg-rose-50 transition-colors font-medium">
                                         <i class="fas fa-sign-out-alt w-5 text-center mr-2"></i> Logout
                                     </a>
                                 </form>
@@ -218,9 +218,9 @@
                         </div>
                     </div>
 
-                    <!-- UTAMA Section -->
+                    <!-- MAIN Section -->
                     <div class="mb-6 px-3">
-                        <p class="px-2 text-[10px] font-bold text-gray-400 tracking-widest mb-2 uppercase sidebar-section-title">Utama</p>
+                        <p class="px-2 text-[10px] font-bold text-gray-400 tracking-widest mb-2 uppercase sidebar-section-title">Main Menu</p>
                         <nav class="space-y-1.5">
                             <a href="{{ route('dashboard.index') }}" class="flex items-center px-4 py-2.5 text-sm rounded-xl transition-all duration-300 {{ request()->routeIs('dashboard.index') ? 'font-bold text-indigo-700 bg-indigo-50 shadow-sm border border-indigo-100' : 'text-gray-500 hover:bg-indigo-50/50 hover:text-indigo-600' }}">
                                 <i class="fas fa-th-large w-6 text-center {{ request()->routeIs('dashboard.index') ? 'text-indigo-600' : 'text-gray-400' }} mr-3 text-sm sidebar-icon"></i> <span class="sidebar-text">Dashboard</span>
@@ -237,9 +237,9 @@
                         </nav>
                     </div>
 
-                    <!-- LAPORAN Section -->
+                    <!-- REPORTS Section -->
                     <div class="px-3">
-                        <p class="px-2 text-[10px] font-bold text-gray-400 tracking-widest mb-2 uppercase sidebar-section-title">Laporan</p>
+                        <p class="px-2 text-[10px] font-bold text-gray-400 tracking-widest mb-2 uppercase sidebar-section-title">Reports</p>
                         <nav class="space-y-1.5">
                             <a href="{{ route('dashboard.scurve') }}" class="flex items-center px-4 py-2.5 text-sm rounded-xl transition-all duration-300 {{ request()->routeIs('dashboard.scurve') ? 'font-bold text-indigo-700 bg-indigo-50 shadow-sm border border-indigo-100' : 'text-gray-500 hover:bg-indigo-50/50 hover:text-indigo-600' }}">
                                 <i class="fas fa-chart-line w-6 text-center {{ request()->routeIs('dashboard.scurve') ? 'text-indigo-600' : 'text-gray-400' }} mr-3 text-sm sidebar-icon"></i> <span class="sidebar-text">S-Curve Progress</span>
@@ -271,7 +271,7 @@
                         <!-- Info Section -->
                         <div class="flex flex-col flex-1">
                             <div class="mb-2">
-                                <span class="bg-[#C2A595] text-white text-[10px] font-bold px-2.5 py-0.5 rounded shadow-sm tracking-wide">ACTIVE</span>
+                                <span class="bg-indigo-500 text-white text-[10px] font-bold px-2.5 py-0.5 rounded shadow-sm tracking-wide">ACTIVE</span>
                             </div>
                             <h1 class="text-[18px] sm:text-[22px] font-extrabold text-[#112338] leading-tight mb-1.5">
                                 {{ $activeProject->code ? $activeProject->code . ' - ' : '' }}{{ $activeProject->name }}
@@ -283,11 +283,11 @@
                             <div class="flex items-center gap-6 text-[#72839A] text-[13px] font-bold">
                                 <div class="flex items-center gap-2">
                                     <i class="fas fa-layer-group text-[#AAB8C7] text-sm"></i>
-                                    <span>{{ $activeProject->disciplines_count ?? 0 }} Disiplin</span>
+                                    <span>{{ $activeProject->disciplines_count ?? 0 }} Disciplines</span>
                                 </div>
                                 <div class="flex items-center gap-2">
                                     <i class="fas fa-user-friends text-[#AAB8C7] text-sm"></i>
-                                    <span>{{ $activeProject->personnel_count ?? 0 }} Personil</span>
+                                    <span>{{ $activeProject->personnel_count ?? 0 }} Personnel</span>
                                 </div>
                             </div>
                         </div>
@@ -333,6 +333,25 @@
 
     <!-- Script for Mobile Menu -->
     <script>
+        function confirmLogout(e) {
+            e.preventDefault();
+            const form = e.target.closest('form') || document.getElementById('logoutForm');
+            Swal.fire({
+                title: 'Sign Out?',
+                text: "Are you sure you want to log out of your account?",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#ef4444',
+                cancelButtonColor: '#9ca3af',
+                confirmButtonText: '<i class="fas fa-sign-out-alt mr-1"></i> Yes, Logout',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             const btn = document.getElementById('mobile-menu-btn');
             const sidebar = document.getElementById('sidebar');

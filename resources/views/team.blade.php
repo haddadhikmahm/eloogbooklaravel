@@ -17,7 +17,7 @@
             <!-- Info Section -->
             <div class="flex flex-col">
                 <div class="mb-1.5 flex items-center gap-2">
-                    <span class="bg-[#C2A595] text-white text-[10px] font-bold px-2 py-0.5 rounded shadow-sm tracking-wide">ACTIVE</span>
+                    <span class="bg-indigo-500 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow-sm tracking-wide">ACTIVE</span>
                 </div>
                 <h2 class="text-[16px] sm:text-[18px] font-extrabold text-[#112338] leading-tight mb-1">
                     {{ $project->code ? $project->code . ' - ' : '' }}{{ $project->name }}
@@ -29,11 +29,11 @@
                 <div class="flex items-center gap-4 text-[#72839A] text-[11px] font-bold">
                     <div class="flex items-center gap-1.5">
                         <i class="fas fa-layer-group text-[#AAB8C7]"></i>
-                        <span>{{ $project->disciplines_count ?? 0 }} Disiplin</span>
+                        <span>{{ $project->disciplines_count ?? 0 }} Disciplines</span>
                     </div>
                     <div class="flex items-center gap-1.5">
                         <i class="fas fa-user-friends text-[#AAB8C7]"></i>
-                        <span>{{ $project->personnel_count ?? 0 }} Personil</span>
+                        <span>{{ $project->personnel_count ?? 0 }} Personnel</span>
                     </div>
                 </div>
             </div>

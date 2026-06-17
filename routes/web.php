@@ -14,6 +14,8 @@ use App\Http\Controllers\KanbanBoardController;
 Route::middleware('guest')->group(function () {
     Route::get('/', [AuthController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
+    Route::get('/forgot-password', [AuthController::class, 'showForgotPassword'])->name('password.request');
+    Route::post('/forgot-password', [AuthController::class, 'processForgotPassword'])->name('password.email');
 });
 
 Route::middleware('auth')->group(function () {
@@ -26,6 +28,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/documents', [DashboardController::class, 'documents'])->name('dashboard.documents');
     Route::get('/team', [DashboardController::class, 'team'])->name('dashboard.team');
     Route::get('/scurve', [DashboardController::class, 'scurve'])->name('dashboard.scurve');
+    Route::get('/comments', [DashboardController::class, 'comments'])->name('dashboard.comments');
     // Global Search
     Route::get('/api/global-search', [DashboardController::class, 'globalSearch'])->name('global.search');
 
@@ -55,6 +58,7 @@ Route::middleware('auth')->group(function () {
 
     // New Sprint Management
     Route::post('/sprints/manage', [SprintController::class, 'storeNewSprint'])->name('sprints.manage.store');
+    Route::delete('/sprints/manage/{sprint}', [SprintController::class, 'destroySprint'])->name('sprints.manage.destroy');
     Route::post('/sprints/manage/{sprint}/tasks', [SprintController::class, 'storeSprintTask'])->name('sprints.manage.storeTask');
 
     // Documents CRUD

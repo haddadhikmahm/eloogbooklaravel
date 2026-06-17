@@ -101,4 +101,10 @@ class SprintController extends Controller
 
         return redirect()->back()->with('success', 'Task added to sprint successfully.');
     }
+
+    public function destroySprint(\App\Models\Sprint $sprint)
+    {
+        $sprint->delete();
+        return redirect()->back()->with('success', 'Sprint deleted successfully.');
+    }
 }

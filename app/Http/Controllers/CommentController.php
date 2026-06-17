@@ -13,18 +13,23 @@ class CommentController extends Controller
         $request->validate([
             'document_code' => 'required|string|max:255',
             'text' => 'required|string',
+            'author_name' => 'nullable|string|max:255',
+            'status' => 'nullable|string|in:OPEN,CLOSE',
+            'date' => 'nullable|date',
         ]);
 
-        $project = Project::first();
+        $project = \App\Models\Project::find(session('active_project_id')) ?? \App\Models\Project::first();
+        $authorName = $request->author_name ?: 'Unknown';
+        $initials = strtoupper(substr($authorName, 0, 2));
 
         ProjectComment::create([
             'project_id' => $project->id,
             'document_code' => $request->document_code,
             'text' => $request->text,
-            'author_name' => 'Kayla', // hardcoded for prototype
-            'author_initials' => 'AK',
-            'status' => 'OPEN',
-            'date' => now(),
+            'author_name' => $authorName,
+            'author_initials' => $initials,
+            'status' => $request->status ?? 'OPEN',
+            'date' => $request->date ?? now(),
         ]);
 
         return redirect()->back()->with('success', 'Comment added.');

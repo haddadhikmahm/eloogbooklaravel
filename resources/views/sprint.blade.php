@@ -20,7 +20,7 @@
             <!-- Info Section -->
             <div class="flex flex-col flex-1">
                 <div class="mb-1.5 flex items-center justify-between">
-                    <span class="bg-[#C2A595] text-white text-[9px] font-bold px-2 py-0.5 rounded shadow-sm tracking-wide">ACTIVE</span>
+                    <span class="bg-indigo-500 text-white text-[9px] font-bold px-2 py-0.5 rounded shadow-sm tracking-wide">ACTIVE</span>
                 </div>
                 <h1 class="text-[16px] sm:text-[18px] font-extrabold text-[#112338] leading-tight mb-1 truncate" title="{{ $project->code ? $project->code . ' - ' : '' }}{{ $project->name }}">
                     {{ $project->code ? $project->code . ' - ' : '' }}{{ $project->name }}
@@ -32,11 +32,11 @@
                 <div class="flex items-center gap-4 text-[#72839A] text-[12px] font-bold">
                     <div class="flex items-center gap-1.5">
                         <i class="fas fa-layer-group text-[#AAB8C7] text-xs"></i>
-                        <span>{{ $project->disciplines_count }} Disiplin</span>
+                        <span>{{ $project->disciplines_count }} Disciplines</span>
                     </div>
                     <div class="flex items-center gap-1.5">
                         <i class="fas fa-user-friends text-[#AAB8C7] text-xs"></i>
-                        <span>{{ $project->personnel_count }} Personil</span>
+                        <span>{{ $project->personnel_count }} Personnel</span>
                     </div>
                 </div>
             </div>
@@ -107,9 +107,13 @@
                             <a href="{{ route('dashboard.kanban') }}" class="bg-[#333] hover:bg-[#444] text-[#DDD] border border-[#444] text-[12px] font-semibold px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-colors">
                                 <i class="fas fa-columns"></i> View in Kanban
                             </a>
-                            <button class="bg-[#333] hover:bg-[#444] text-[#DDD] border border-[#444] w-8 h-8 rounded-lg flex items-center justify-center transition-colors">
-                                <i class="fas fa-ellipsis-h text-[12px]"></i>
-                            </button>
+                            <form method="POST" action="{{ route('sprints.manage.destroy', $sprint->id) }}" class="inline delete-form">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="bg-[#333] hover:bg-red-500 hover:border-red-600 text-[#DDD] hover:text-white border border-[#444] w-8 h-8 rounded-lg flex items-center justify-center transition-colors" title="Delete Sprint">
+                                    <i class="far fa-trash-alt text-[12px]"></i>
+                                </button>
+                            </form>
                         </div>
                     </div>
                     
@@ -324,7 +328,7 @@
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-gray-600 mb-2 uppercase tracking-wide">Goal (Optional)</label>
-                    <input type="text" name="goal" placeholder="e.g. Revisi Dokumen DED" class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all shadow-sm">
+                    <input type="text" name="goal" placeholder="e.g. DED Document Revision" class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all shadow-sm">
                 </div>
                 <div class="flex gap-5">
                     <div class="flex-1">
@@ -339,9 +343,9 @@
                 <div>
                     <label class="block text-xs font-bold text-gray-600 mb-2 uppercase tracking-wide">Status</label>
                     <select name="status" class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all shadow-sm appearance-none bg-white cursor-pointer" required>
-                        <option value="Aktif">Aktif</option>
-                        <option value="Akan Datang">Akan Datang</option>
-                        <option value="Selesai">Selesai</option>
+                        <option value="Active">Active</option>
+                        <option value="Upcoming">Upcoming</option>
+                        <option value="Completed">Completed</option>
                     </select>
                 </div>
                 <div class="mt-4 pt-4 border-t border-gray-100 flex justify-end gap-3">

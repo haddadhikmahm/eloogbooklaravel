@@ -37,4 +37,19 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
         return redirect('/');
     }
+
+    public function showForgotPassword()
+    {
+        return view('forgot-password');
+    }
+
+    public function processForgotPassword(Request $request)
+    {
+        $request->validate([
+            'email' => ['required', 'email'],
+        ]);
+
+        // Just mock the password reset functionality for now by returning a success message
+        return back()->with('status', 'We have emailed your password reset link!');
+    }
 }

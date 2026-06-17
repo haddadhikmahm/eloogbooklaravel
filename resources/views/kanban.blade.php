@@ -18,7 +18,7 @@
             <!-- Info Section -->
             <div class="flex flex-col">
                 <div class="mb-1.5 flex items-center gap-2">
-                    <span class="bg-[#C2A595] text-white text-[10px] font-bold px-2 py-0.5 rounded shadow-sm tracking-wide">ACTIVE</span>
+                    <span class="bg-indigo-500 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow-sm tracking-wide">ACTIVE</span>
                 </div>
                 <h2 class="text-[16px] sm:text-[18px] font-extrabold text-[#112338] leading-tight mb-1">
                     {{ $project->code ? $project->code . ' - ' : '' }}{{ $project->name }}
@@ -30,11 +30,11 @@
                 <div class="flex items-center gap-4 text-[#72839A] text-[11px] font-bold">
                     <div class="flex items-center gap-1.5">
                         <i class="fas fa-layer-group text-[#AAB8C7]"></i>
-                        <span>{{ $project->disciplines_count ?? 0 }} Disiplin</span>
+                        <span>{{ $project->disciplines_count ?? 0 }} Disciplines</span>
                     </div>
                     <div class="flex items-center gap-1.5">
                         <i class="fas fa-user-friends text-[#AAB8C7]"></i>
-                        <span>{{ $project->personnel_count ?? 0 }} Personil</span>
+                        <span>{{ $project->personnel_count ?? 0 }} Personnel</span>
                     </div>
                 </div>
             </div>
@@ -51,7 +51,7 @@
         $startDate = $activeSprint->start_date ? $activeSprint->start_date->format('d M') : '';
         $endDate = $activeSprint->end_date ? $activeSprint->end_date->format('d M Y') : '';
         $daysRemaining = $activeSprint->end_date ? now()->diffInDays($activeSprint->end_date, false) : 0;
-        $daysText = $daysRemaining > 0 ? $daysRemaining . ' hari tersisa' : 'Berakhir';
+        $daysText = $daysRemaining > 0 ? $daysRemaining . ' days left' : 'Ended';
         
         // Custom short name logic for sprint badge
         $nameParts = explode(' ', $activeSprint->name);
@@ -80,9 +80,13 @@
                 <button class="bg-[#333] hover:bg-[#444] text-[#DDD] border border-[#444] text-[13px] font-semibold px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
                     <i class="far fa-play-circle"></i> Start Sprint
                 </button>
-                <button class="bg-[#333] hover:bg-[#444] text-[#DDD] border border-[#444] w-9 h-9 rounded-lg flex items-center justify-center transition-colors">
-                    <i class="fas fa-ellipsis-h text-[12px]"></i>
-                </button>
+                <form method="POST" action="{{ route('sprints.manage.destroy', $activeSprint->id) }}" class="inline delete-form">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="bg-[#333] hover:bg-red-500 hover:border-red-600 text-[#DDD] hover:text-white border border-[#444] w-9 h-9 rounded-lg flex items-center justify-center transition-colors" title="Delete Active Sprint">
+                        <i class="far fa-trash-alt text-[12px]"></i>
+                    </button>
+                </form>
             </div>
         </div>
 
@@ -92,19 +96,19 @@
                 <div class="bg-[#1E8E3E] h-full rounded-full transition-all duration-500" style="width: {{ $progressPercent }}%"></div>
             </div>
             <span class="font-bold text-white w-10 text-right">{{ $progressPercent }}%</span>
-            <span class="w-32 text-right">{{ $doneTasks }} / {{ $totalTasks }} task selesai</span>
+            <span class="w-32 text-right">{{ $doneTasks }} / {{ $totalTasks }} tasks done</span>
         </div>
 
         <div class="flex justify-between items-center border-t border-[#333] pt-5">
             <div class="flex items-center gap-3 overflow-x-auto pb-1 custom-scrollbar">
                 <i class="fas fa-filter text-[#666] ml-1 mr-1"></i>
-                <button class="bg-[#E6F4EA] text-[#1E8E3E] font-bold text-[12px] px-4 py-1.5 rounded-full whitespace-nowrap">Semua</button>
-                <button class="bg-transparent border border-[#555] text-[#CCC] hover:text-white font-medium text-[12px] px-4 py-1.5 rounded-full transition whitespace-nowrap">Saya</button>
+                <button class="bg-[#E6F4EA] text-[#1E8E3E] font-bold text-[12px] px-4 py-1.5 rounded-full whitespace-nowrap">All</button>
+                <button class="bg-transparent border border-[#555] text-[#CCC] hover:text-white font-medium text-[12px] px-4 py-1.5 rounded-full transition whitespace-nowrap">Me</button>
                 <button class="bg-transparent border border-[#555] text-[#CCC] hover:text-white font-medium text-[12px] px-4 py-1.5 rounded-full transition whitespace-nowrap">Design</button>
                 <button class="bg-transparent border border-[#555] text-[#CCC] hover:text-white font-medium text-[12px] px-4 py-1.5 rounded-full transition whitespace-nowrap">Frontend</button>
                 <button class="bg-transparent border border-[#555] text-[#CCC] hover:text-white font-medium text-[12px] px-4 py-1.5 rounded-full transition whitespace-nowrap">Backend</button>
             </div>
-            <span class="text-[#777] text-[12px] whitespace-nowrap ml-4">Filter by sprint ini</span>
+            <span class="text-[#777] text-[12px] whitespace-nowrap ml-4">Filter by this sprint</span>
         </div>
     </div>
     @endif

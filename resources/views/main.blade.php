@@ -6,7 +6,7 @@
     <div class="flex flex-col lg:flex-row justify-between lg:items-start mb-6 pt-2 gap-6">
         <div>
             <h1 class="text-[28px] sm:text-[32px] font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-blue-500 tracking-tight mb-2">Welcome, Kayla</h1>
-            <p class="text-gray-500 font-medium">Fase {{ $project->type ?? 'Detailed Engineering Design' }} • {{ str_replace('DED ', '', $project->name ?? 'Coal Terminal') }}</p>
+            <p class="text-gray-500 font-medium">Phase {{ $project->type ?? 'Detailed Engineering Design' }} • {{ str_replace('DED ', '', $project->name ?? 'Coal Terminal') }}</p>
         </div>
         
         <!-- Project Identity Card -->
@@ -19,7 +19,7 @@
             <!-- Info Section -->
             <div class="flex flex-col">
                 <div class="mb-1.5 flex items-center gap-2">
-                    <span class="bg-[#C2A595] text-white text-[10px] font-bold px-2 py-0.5 rounded shadow-sm tracking-wide">ACTIVE</span>
+                    <span class="bg-indigo-500 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow-sm tracking-wide">ACTIVE</span>
                 </div>
                 <h2 class="text-[16px] sm:text-[18px] font-extrabold text-[#112338] leading-tight mb-1">
                     {{ $project->code ? $project->code . ' - ' : '' }}{{ $project->name }}
@@ -31,11 +31,11 @@
                 <div class="flex items-center gap-4 text-[#72839A] text-[11px] font-bold">
                     <div class="flex items-center gap-1.5">
                         <i class="fas fa-layer-group text-[#AAB8C7]"></i>
-                        <span>{{ $project->disciplines_count ?? 0 }} Disiplin</span>
+                        <span>{{ $project->disciplines_count ?? 0 }} Disciplines</span>
                     </div>
                     <div class="flex items-center gap-1.5">
                         <i class="fas fa-user-friends text-[#AAB8C7]"></i>
-                        <span>{{ $project->personnel_count ?? 0 }} Personil</span>
+                        <span>{{ $project->personnel_count ?? 0 }} Personnel</span>
                     </div>
                 </div>
             </div>
@@ -49,7 +49,7 @@
             <div class="absolute -bottom-6 -left-6 w-24 h-24 bg-white/10 rounded-full blur-xl"></div>
             <div class="relative z-10">
                 <div class="flex justify-between items-center mb-4">
-                    <h3 class="font-bold text-white/90 text-[13px] tracking-wide">Penyelesaian Proyek</h3>
+                    <h3 class="font-bold text-white/90 text-[13px] tracking-wide">Project Completion</h3>
                     <span class="font-bold text-white text-2xl">{{ $project->completion_percentage ?? 56 }}%</span>
                 </div>
                 <div class="w-full bg-black/20 h-2.5 rounded-full overflow-hidden backdrop-blur-sm">
@@ -80,7 +80,7 @@
             </div>
             <div class="relative z-10 mt-2">
                 <p class="text-[36px] font-extrabold text-white leading-none mb-1">{{ number_format($totalDocuments) }}</p>
-                <p class="text-[10px] font-bold text-emerald-100 tracking-widest uppercase">Total Dokumen</p>
+                <p class="text-[10px] font-bold text-emerald-100 tracking-widest uppercase">Total Documents</p>
             </div>
         </div>
         
@@ -94,7 +94,7 @@
             </div>
             <div class="relative z-10 mt-2">
                 <p class="text-[36px] font-extrabold text-white leading-none mb-1">{{ number_format($waitingReview) }}</p>
-                <p class="text-[10px] font-bold text-amber-100 tracking-widest uppercase">Menunggu Tinjauan</p>
+                <p class="text-[10px] font-bold text-amber-100 tracking-widest uppercase">Awaiting Review</p>
             </div>
         </div>
 
@@ -108,7 +108,7 @@
             </div>
             <div class="relative z-10 mt-2">
                 <p class="text-[36px] font-extrabold text-white leading-none mb-1">{{ number_format($openCommentsCount) }}</p>
-                <p class="text-[10px] font-bold text-rose-100 tracking-widest uppercase">Komentar Terbuka</p>
+                <p class="text-[10px] font-bold text-rose-100 tracking-widest uppercase">Open Comments</p>
             </div>
         </div>
     </div>
@@ -118,9 +118,9 @@
         <!-- Progress per Disiplin & Comment Widget Area -->
         <div class="flex-1 flex flex-col">
             <div class="flex justify-between items-center mb-6">
-                <h2 class="text-xl font-bold text-gray-800 tracking-tight">Progress per Disiplin</h2>
+                <h2 class="text-xl font-bold text-gray-800 tracking-tight">Progress per Discipline</h2>
                 <a href="{{ route('dashboard.scurve') }}" class="text-[11px] font-bold text-gray-400 hover:text-gray-600 transition-colors flex items-center gap-1 group">
-                    Lihat Detail <i class="fas fa-arrow-right text-[9px] transform group-hover:translate-x-1 transition-transform"></i>
+                    View Details <i class="fas fa-arrow-right text-[9px] transform group-hover:translate-x-1 transition-transform"></i>
                 </a>
             </div>
 
@@ -131,13 +131,13 @@
                         <h3 class="font-bold text-gray-700 text-[13px] tracking-wide">{{ $disc->discipline }}</h3>
                         <span class="text-gray-800 font-bold bg-gray-100 px-2 py-0.5 rounded-md text-xs">{{ $disc->percentage }}%</span>
                     </div>
-                    <p class="text-[11px] text-gray-400 font-bold mb-4 flex items-center gap-1"><i class="far fa-file-alt"></i> {{ $disc->total_docs }} Dokumen</p>
+                    <p class="text-[11px] text-gray-400 font-bold mb-4 flex items-center gap-1"><i class="far fa-file-alt"></i> {{ $disc->total_docs }} Documents</p>
                     <div class="w-full bg-gray-100 h-2.5 rounded-full overflow-hidden border border-gray-200 shadow-inner">
                         <div class="bg-gradient-to-r from-indigo-400 to-blue-500 h-full rounded-full transition-all duration-1000 ease-out shadow-[0_0_8px_rgba(99,102,241,0.5)]" style="width: {{ $disc->percentage }}%;"></div>
                     </div>
                 </div>
                 @empty
-                <div class="col-span-2 text-sm text-gray-500 py-4 text-center bg-white rounded-[20px] border border-dashed border-gray-300">Belum ada data progres sprint per disiplin.</div>
+                <div class="col-span-2 text-sm text-gray-500 py-4 text-center bg-white rounded-[20px] border border-dashed border-gray-300">No sprint progress data per discipline yet.</div>
                 @endforelse
             </div>
         </div>
@@ -153,8 +153,8 @@
                         </div>
                         <h3 class="font-bold text-gray-800 text-[14px]">Comment Register</h3>
                     </div>
-                    <a href="#" class="text-[10px] font-bold text-indigo-400 hover:text-indigo-600 flex items-center gap-1 group transition-colors">
-                        Semua <i class="fas fa-chevron-right text-[8px] transform group-hover:translate-x-1 transition-transform"></i>
+                    <a href="{{ route('dashboard.comments') }}" class="text-[10px] font-bold text-indigo-400 hover:text-indigo-600 flex items-center gap-1 group transition-colors">
+                        View All <i class="fas fa-chevron-right text-[8px] transform group-hover:translate-x-1 transition-transform"></i>
                     </a>
                 </div>
 
@@ -194,7 +194,7 @@
                                 <div class="w-6 h-6 rounded-full {{ $comment->status == 'OPEN' ? 'bg-indigo-100 text-indigo-600' : 'bg-emerald-100 text-emerald-600' }} flex items-center justify-center text-[9px] font-bold shadow-sm">{{ $comment->author_initials }}</div>
                                 <span class="text-[11px] font-semibold text-gray-700">{{ $comment->author_name }}</span>
                             </div>
-                            <span class="text-[10px] font-semibold text-gray-400">{{ \Carbon\Carbon::parse($comment->date)->translatedFormat('d F Y') }}</span>
+                            <span class="text-[10px] font-semibold text-gray-400">{{ \Carbon\Carbon::parse($comment->date)->format('d F Y') }}</span>
                         </div>
                     </div>
                     @endforeach

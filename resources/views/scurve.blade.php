@@ -16,7 +16,7 @@
             <!-- Info Section -->
             <div class="flex flex-col">
                 <div class="mb-1.5 flex items-center gap-2">
-                    <span class="bg-[#C2A595] text-white text-[10px] font-bold px-2 py-0.5 rounded shadow-sm tracking-wide">ACTIVE</span>
+                    <span class="bg-indigo-500 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow-sm tracking-wide">ACTIVE</span>
                 </div>
                 <h2 class="text-[16px] sm:text-[18px] font-extrabold text-[#112338] leading-tight mb-1">
                     {{ $project->code ? $project->code . ' - ' : '' }}{{ $project->name }}
@@ -28,11 +28,11 @@
                 <div class="flex items-center gap-4 text-[#72839A] text-[11px] font-bold">
                     <div class="flex items-center gap-1.5">
                         <i class="fas fa-layer-group text-[#AAB8C7]"></i>
-                        <span>{{ $project->disciplines_count ?? 0 }} Disiplin</span>
+                        <span>{{ $project->disciplines_count ?? 0 }} Disciplines</span>
                     </div>
                     <div class="flex items-center gap-1.5">
                         <i class="fas fa-user-friends text-[#AAB8C7]"></i>
-                        <span>{{ $project->personnel_count ?? 0 }} Personil</span>
+                        <span>{{ $project->personnel_count ?? 0 }} Personnel</span>
                     </div>
                 </div>
             </div>
@@ -67,7 +67,7 @@
     <!-- S-Curve Chart Area -->
     <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-6 mb-8 relative">
         <div class="flex justify-between items-center mb-6">
-            <h3 class="font-bold text-gray-800 text-[15px]">Kurva S - Pekerjaan DED</h3>
+            <h3 class="font-bold text-gray-800 text-[15px]">S-Curve Chart - DED</h3>
             <div class="flex gap-6">
                 <div id="legend-planned" class="flex items-center gap-2 cursor-pointer transition-opacity hover:opacity-80" onclick="toggleDataset(0)">
                     <div class="w-4 h-1 bg-emerald-500"></div>
@@ -86,7 +86,7 @@
         </div>
     </div>
 
-    <!-- Progress Disiplin -->
+    <!-- Discipline Progress -->
     <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
         @php
             $colors = ['#1B9934', '#FFA600', '#008DDF', '#D32F2F', '#7E57C2'];
@@ -102,7 +102,7 @@
             </div>
         </div>
         @empty
-        <div class="col-span-5 text-sm text-gray-500 py-4">Belum ada data progres sprint per disiplin.</div>
+        <div class="col-span-5 text-sm text-gray-500 py-4">No sprint progress data per discipline yet.</div>
         @endforelse
     </div>
 </div>
